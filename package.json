@@ -1,0 +1,12 @@
+{
+  "name": "nexariq-ai",
+  "version": "1.0.0",
+  "dependencies": {
+    "@ai-sdk/xai": "^2.0.23",
+    "@supabase/supabase-js": "^2.45.4",
+    "ai": "^5.0.60"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
