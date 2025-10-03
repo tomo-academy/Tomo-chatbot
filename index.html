@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
@@ -2630,6 +2634,21 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDRKzkXTtv4Gpleej264l_Fv_U7j4nU2xE",
+            authDomain: "tomo-3c4bc.firebaseapp.com",
+            projectId: "tomo-3c4bc",
+            storageBucket: "tomo-3c4bc.firebasestorage.app",
+            messagingSenderId: "314585475223",
+            appId: "1:314585475223:web:38f9f825d0558d3207e1d2",
+            measurementId: "G-JT4K0CC8RY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
         // Global state
         const state = {
             messages: [],
@@ -2759,25 +2778,9 @@
         // Authentication functions
         async function signInWithGoogle() {
             try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.authEndpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: 'signIn',
-                        provider: 'google'
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    // Redirect to OAuth provider
-                    window.location.href = data.url;
-                } else {
-                    showToast(data.error || 'Failed to sign in with Google', 'error');
-                }
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showToast('Signed in with Google successfully', 'success');
             } catch (error) {
                 console.error('Google sign in error:', error);
                 showToast('Failed to sign in with Google', 'error');
@@ -2786,25 +2789,9 @@
 
         async function signInWithGitHub() {
             try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.authEndpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: 'signIn',
-                        provider: 'github'
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    // Redirect to OAuth provider
-                    window.location.href = data.url;
-                } else {
-                    showToast(data.error || 'Failed to sign in with GitHub', 'error');
-                }
+                const provider = new firebase.auth.GithubAuthProvider();
+                await auth.signInWithPopup(provider);
+                showToast('Signed in with GitHub successfully', 'success');
             } catch (error) {
                 console.error('GitHub sign in error:', error);
                 showToast('Failed to sign in with GitHub', 'error');
@@ -2813,19 +2800,7 @@
 
         async function signOut() {
             try {
-                // Clear local state
-                state.user = null;
-                state.accessToken = null;
-                state.isGuest = true;
-                
-                // Clear localStorage
-                localStorage.removeItem('nexariqToken');
-                localStorage.removeItem('nexariqUser');
-                
-                // Update UI
-                updateUserUI();
-                elements.guestBanner.style.display = 'flex';
-                
+                await auth.signOut();
                 showToast('Signed out successfully', 'success');
             } catch (error) {
                 console.error('Sign out error:', error);
@@ -2833,82 +2808,53 @@
             }
         }
 
-        async function checkAuthStatus() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const accessToken = urlParams.get('access_token');
-            const refreshToken = urlParams.get('refresh_token');
-            const error = urlParams.get('error');
-            
-            if (error) {
-                showToast('Authentication failed', 'error');
-                // Clean URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-                return;
-            }
-            
-            if (accessToken) {
-                // Save tokens
-                state.accessToken = accessToken;
-                localStorage.setItem('nexariqToken', accessToken);
-                
-                // Get user info
-                try {
-                    const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.authEndpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${accessToken}`
-                        },
-                        body: JSON.stringify({
-                            action: 'getUser'
-                        })
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        state.user = data.user;
-                        state.isGuest = false;
-                        
-                        // Save user to localStorage
-                        localStorage.setItem('nexariqUser', JSON.stringify(data.user));
-                        
-                        // Update UI
-                        updateUserUI();
-                        elements.guestBanner.style.display = 'none';
-                        
-                        // Load chat history
-                        loadChatHistory();
-                        
-                        showToast('Signed in successfully', 'success');
-                    } else {
-                        showToast('Failed to get user information', 'error');
-                    }
-                } catch (error) {
-                    console.error('Get user error:', error);
-                    showToast('Failed to get user information', 'error');
-                }
-                
-                // Clean URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-            } else {
-                // Check for saved token
-                const savedToken = localStorage.getItem('nexariqToken');
-                const savedUser = localStorage.getItem('nexariqUser');
-                
-                if (savedToken && savedUser) {
-                    state.accessToken = savedToken;
-                    state.user = JSON.parse(savedUser);
+        // Check authentication status
+        function checkAuthStatus() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // User is signed in
+                    state.user = {
+                        id: user.uid,
+                        email: user.email,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        emailVerified: user.emailVerified
+                    };
                     state.isGuest = false;
                     
+                    // Get Firebase ID token
+                    user.getIdToken().then(token => {
+                        state.accessToken = token;
+                        localStorage.setItem('nexariqToken', token);
+                    });
+                    
+                    // Save user to localStorage
+                    localStorage.setItem('nexariqUser', JSON.stringify(state.user));
+                    
+                    // Update UI
                     updateUserUI();
                     elements.guestBanner.style.display = 'none';
                     
                     // Load chat history
                     loadChatHistory();
+                } else {
+                    // User is signed out
+                    state.user = null;
+                    state.accessToken = null;
+                    state.isGuest = true;
+                    
+                    // Clear localStorage
+                    localStorage.removeItem('nexariqToken');
+                    localStorage.removeItem('nexariqUser');
+                    
+                    // Update UI
+                    updateUserUI();
+                    elements.guestBanner.style.display = 'flex';
                 }
-            }
+            });
         }
 
+        // Load chat history from Supabase
         async function loadChatHistory() {
             if (!state.accessToken) return;
             
@@ -2977,7 +2923,7 @@
                 elements.signOutBtn.style.display = 'none';
                 elements.loginFromProfileBtn.style.display = 'block';
             } else if (state.user) {
-                const name = state.user.user_metadata?.full_name || state.user.user_metadata?.name || state.user.email?.split('@')[0] || 'User';
+                const name = state.user.displayName || state.user.email?.split('@')[0] || 'User';
                 const initial = name.charAt(0).toUpperCase();
                 
                 elements.userAvatar.textContent = initial;
@@ -3517,7 +3463,7 @@ How can I assist you today? 🤔`;
                 messageEl.className = `message ${message.role === 'assistant' ? 'ai' : message.role}`;
                 
                 const avatar = message.role === 'user' 
-                    ? (state.isGuest ? 'G' : (state.user?.user_metadata?.full_name?.charAt(0) || state.user?.email?.charAt(0) || 'U'))
+                    ? (state.isGuest ? 'G' : (state.user?.displayName?.charAt(0) || state.user?.email?.charAt(0) || 'U'))
                     : `<img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">`;
                 
                 const time = formatTime(message.timestamp);
@@ -4415,7 +4361,7 @@ How can I assist you today? 🤔`;
             const exportData = {
                 exportDate: new Date().toISOString(),
                 user: {
-                    name: state.isGuest ? 'Guest User' : (state.user.user_metadata?.full_name || state.user.email?.split('@')[0] || 'User'),
+                    name: state.isGuest ? 'Guest User' : (state.user.displayName || state.user.email?.split('@')[0] || 'User'),
                     email: state.isGuest ? 'guest@tomo.academy' : state.user.email
                 },
                 likedMessages: Array.from(state.likedMessages),
