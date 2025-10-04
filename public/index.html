@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Nexariq AI - Student Assistant Platform</title>
+    <title>Tomo Academy - Student Assistant Platform</title>
     
-    <!-- Nexariq favicon -->
+    <!-- Tomo Academy favicon -->
     <link rel="icon" href="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.7/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
@@ -21,96 +21,96 @@
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* Premium Black Theme with Nexariq branding */
+        /* Corporate Professional Theme with Tomo Academy branding */
         :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
-            --secondary: #a78bfa;
-            --accent: #4c1d95;
-            --background: #0a0a0a;
-            --surface: #111111;
-            --surface-elevated: #1a1a1a;
-            --surface-highlight: #222222;
-            --border: #2a2a2a;
-            --text-primary: #f9fafb;
-            --text-secondary: #d1d5db;
-            --text-tertiary: #9ca3af;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.5);
-            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.5);
-            --radius-sm: 0.5rem;
-            --radius: 0.75rem;
-            --radius-lg: 1rem;
-            --transition: all 0.2s ease;
+            --primary: #1e3a8a;
+            --primary-dark: #1e2f5f;
+            --secondary: #3b82f6;
+            --accent: #1e40af;
+            --background: #ffffff;
+            --surface: #f8fafc;
+            --surface-elevated: #f1f5f9;
+            --surface-highlight: #e2e8f0;
+            --border: #cbd5e1;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.25rem;
+            --radius: 0.375rem;
+            --radius-lg: 0.5rem;
+            --transition: all 0.15s ease;
             --logo-size: 40px;
-            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #4c1d95 100%);
-            --gradient-accent: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
-            --code-bg: #1a1a1a;
-            --code-border: #2a2a2a;
-            --code-text: #e5e5e5;
-            --table-header-bg: rgba(124, 58, 237, 0.2);
-            --table-row-alt: rgba(255, 255, 255, 0.03);
-            --box-bg: rgba(124, 58, 237, 0.1);
+            --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --gradient-accent: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            --code-bg: #f8fafc;
+            --code-border: #e2e8f0;
+            --code-text: #1e293b;
+            --table-header-bg: rgba(30, 58, 138, 0.1);
+            --table-row-alt: rgba(0, 0, 0, 0.02);
+            --box-bg: rgba(30, 58, 138, 0.05);
             --box-border: var(--primary);
-            --user-name-gradient: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
-            --action-btn-bg: rgba(255, 255, 255, 0.1);
-            --action-btn-hover: rgba(255, 255, 255, 0.2);
-            --action-btn-active: rgba(124, 58, 237, 0.3);
-            --action-btn-like: #10b981;
-            --action-btn-dislike: #ef4444;
+            --user-name-gradient: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            --action-btn-bg: rgba(30, 58, 138, 0.1);
+            --action-btn-hover: rgba(30, 58, 138, 0.2);
+            --action-btn-active: rgba(30, 58, 138, 0.3);
+            --action-btn-like: #059669;
+            --action-btn-dislike: #dc2626;
             /* New gradient for user name */
-            --user-name-gradient-colorful: linear-gradient(90deg, #7c3aed 0%, #a78bfa 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
-            /* Nexariq-inspired gradients */
-            --nexariq-gradient: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
-            --nexariq-gradient-alt: linear-gradient(135deg, #a78bfa 0%, #4c1d95 100%);
-            --nexariq-glow: 0 0 20px rgba(124, 58, 237, 0.3);
+            --user-name-gradient-colorful: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #059669 100%);
+            /* Tomo Academy-inspired gradients */
+            --tomo-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --tomo-gradient-alt: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            --tomo-glow: 0 0 10px rgba(30, 58, 138, 0.2);
             /* Enhanced animation variables */
-            --animation-duration: 0.3s;
-            --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-blur: blur(10px);
-            --neon-glow: 0 0 15px rgba(124, 58, 237, 0.5);
-            --neon-glow-hover: 0 0 25px rgba(124, 58, 237, 0.8);
+            --animation-duration: 0.15s;
+            --animation-timing: ease;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(203, 213, 225, 0.5);
+            --glass-blur: blur(8px);
+            --neon-glow: 0 0 10px rgba(30, 58, 138, 0.3);
+            --neon-glow-hover: 0 0 15px rgba(30, 58, 138, 0.4);
             /* Student-specific colors */
             --math-color: #3b82f6;
-            --science-color: #10b981;
-            --history-color: #f59e0b;
-            --literature-color: #ec4899;
-            --coding-color: #8b5cf6;
-            --art-color: #ef4444;
+            --science-color: #059669;
+            --history-color: #d97706;
+            --literature-color: #8b5cf6;
+            --coding-color: #6366f1;
+            --art-color: #dc2626;
         }
 
-        /* Light theme variables */
-        [data-theme="light"] {
-            --background: #f9fafb;
-            --surface: #ffffff;
-            --surface-elevated: #f3f4f6;
-            --surface-highlight: #e5e7eb;
-            --border: #d1d5db;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --text-tertiary: #9ca3af;
-            --code-bg: #f3f4f6;
-            --code-border: #d1d5db;
-            --code-text: #111827;
-            --table-header-bg: rgba(124, 58, 237, 0.1);
-            --table-row-alt: rgba(0, 0, 0, 0.03);
-            --box-bg: rgba(124, 58, 237, 0.05);
-            --user-name-gradient: linear-gradient(135deg, #111827 0%, #4b5563 100%);
-            --action-btn-bg: rgba(0, 0, 0, 0.05);
-            --action-btn-hover: rgba(0, 0, 0, 0.1);
-            --action-btn-active: rgba(124, 58, 237, 0.1);
-            /* Light theme colorful gradient */
-            --user-name-gradient-colorful: linear-gradient(90deg, #7c3aed 0%, #a78bfa 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --neon-glow: 0 0 15px rgba(124, 58, 237, 0.3);
-            --neon-glow-hover: 0 0 25px rgba(124, 58, 237, 0.5);
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-elevated: #334155;
+            --surface-highlight: #475569;
+            --border: #475569;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --code-bg: #1e293b;
+            --code-border: #334155;
+            --code-text: #f1f5f9;
+            --table-header-bg: rgba(30, 58, 138, 0.2);
+            --table-row-alt: rgba(255, 255, 255, 0.02);
+            --box-bg: rgba(30, 58, 138, 0.1);
+            --user-name-gradient: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            --action-btn-bg: rgba(255, 255, 255, 0.05);
+            --action-btn-hover: rgba(255, 255, 255, 0.1);
+            --action-btn-active: rgba(30, 58, 138, 0.2);
+            /* Dark theme colorful gradient */
+            --user-name-gradient-colorful: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #059669 100%);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(71, 85, 105, 0.5);
+            --neon-glow: 0 0 10px rgba(30, 58, 138, 0.2);
+            --neon-glow-hover: 0 0 15px rgba(30, 58, 138, 0.3);
         }
 
         * {
@@ -123,38 +123,25 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--background);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5;
             overflow: hidden;
             height: 100vh;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
 
-        /* Enhanced Login Screen with glassmorphism */
+        /* Professional Login Screen */
         .login-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            /* Animated background */
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            transition: opacity 0.15s ease, visibility 0.15s ease;
         }
 
         .login-screen.hidden {
@@ -163,23 +150,15 @@
         }
 
         .login-container {
-            background-color: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
+            background-color: white;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg);
             padding: 2.5rem;
             width: 100%;
             max-width: 400px;
             text-align: center;
-            border: 1px solid var(--glass-border);
             position: relative;
-            overflow: hidden;
-            transform: translateY(0);
-            transition: transform var(--animation-duration) var(--animation-timing);
-        }
-
-        .login-container:hover {
-            transform: translateY(-5px);
+            border: 1px solid var(--border);
         }
 
         .login-container::before {
@@ -189,24 +168,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: var(--nexariq-gradient);
-        }
-
-        .login-container::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .login-container:hover::after {
-            opacity: 1;
+            background: var(--tomo-gradient);
         }
 
         .login-logo {
@@ -215,7 +177,6 @@
             justify-content: center;
             gap: 0.75rem;
             margin-bottom: 2rem;
-            position: relative;
         }
 
         .login-logo .logo-img {
@@ -224,24 +185,18 @@
             object-fit: contain;
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
-            transition: transform var(--animation-duration) var(--animation-timing);
-        }
-
-        .login-logo:hover .logo-img {
-            transform: rotate(10deg) scale(1.05);
         }
 
         .login-logo .logo-text {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-weight: 700;
             font-size: 1.5rem;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             letter-spacing: 1px;
-            position: relative;
         }
 
         .login-container h1 {
@@ -274,29 +229,10 @@
             border: 1px solid var(--border);
             background-color: var(--surface-elevated);
             color: var(--text-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .login-btn:hover::before {
-            left: 100%;
         }
 
         .login-btn:hover {
             background-color: var(--surface-highlight);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
         .login-btn.google {
@@ -334,19 +270,12 @@
         .login-error {
             margin-top: 1rem;
             padding: 0.75rem;
-            background-color: rgba(239, 68, 68, 0.1);
+            background-color: rgba(220, 38, 38, 0.1);
             border: 1px solid var(--error);
             border-radius: var(--radius);
             color: var(--error);
             font-size: 0.875rem;
             display: none;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         .login-error.show {
@@ -358,12 +287,6 @@
             display: none;
             margin-top: 1.5rem;
             text-align: left;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .register-form.active {
@@ -390,12 +313,12 @@
             color: var(--text-primary);
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
         .register-btn {
@@ -409,29 +332,10 @@
             cursor: pointer;
             transition: var(--transition);
             margin-top: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .register-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .register-btn:hover::before {
-            left: 100%;
         }
 
         .register-btn:hover {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
         .register-btn:disabled {
@@ -449,37 +353,25 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
-            position: relative;
         }
 
-        .login-toggle a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
+        .login-toggle a:hover {
+            text-decoration: underline;
         }
 
-        .login-toggle a:hover::after {
-            width: 100%;
-        }
-
-        /* App Container with enhanced transitions */
+        /* App Container */
         .app-container {
             display: flex;
             height: 100vh;
             overflow: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.15s ease, transform 0.15s ease;
         }
 
         .app-container.hidden {
             display: none;
         }
 
-        /* Enhanced Sidebar with glassmorphism - Premium Black UI */
+        /* Professional Sidebar */
         .sidebar {
             width: 280px;
             background-color: var(--surface);
@@ -499,7 +391,7 @@
             width: 1px;
             height: 100%;
             background: linear-gradient(to bottom, transparent, var(--primary), transparent);
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
         .sidebar-header {
@@ -511,13 +403,12 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-weight: 700;
             font-size: 1.25rem;
             color: var(--text-primary);
             text-decoration: none;
             margin-bottom: 1rem;
-            position: relative;
         }
 
         .logo-img {
@@ -525,35 +416,23 @@
             height: var(--logo-size);
             object-fit: contain;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            transition: transform var(--animation-duration) var(--animation-timing);
-        }
-
-        .logo:hover .logo-img {
-            transform: rotate(10deg) scale(1.05);
+            box-shadow: var(--shadow-sm);
         }
 
         .logo-icon {
             width: var(--logo-size);
             height: var(--logo-size);
             border-radius: var(--radius);
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 1.2rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
         }
 
         .logo-text {
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -575,32 +454,13 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .new-chat-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .new-chat-btn:hover::before {
-            left: 100%;
         }
 
         .new-chat-btn:hover {
             background-color: var(--surface-elevated);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
-        /* Enhanced Chat history with improved organization - Premium Black UI */
+        /* Professional Chat history */
         .chat-history {
             flex: 1;
             overflow-y: auto;
@@ -652,13 +512,11 @@
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.875rem;
-            position: relative;
         }
 
         .chat-history-action-btn:hover {
             background-color: var(--surface-highlight);
             color: var(--text-primary);
-            transform: scale(1.1);
         }
 
         /* Chat group headers for date grouping */
@@ -677,12 +535,11 @@
             border-radius: var(--radius-sm);
         }
 
-        /* Enhanced chat item layout - Premium Black UI */
+        /* Professional chat item layout - NO HOVER EFFECTS */
         .chat-item {
             padding: 0.75rem 1rem;
             border-radius: var(--radius);
             cursor: pointer;
-            transition: var(--transition);
             margin-bottom: 0.25rem;
             display: flex;
             align-items: center;
@@ -699,21 +556,11 @@
             height: 100%;
             width: 3px;
             background-color: transparent;
-            transition: background-color 0.3s ease;
-        }
-
-        .chat-item:hover {
-            background-color: var(--surface-elevated);
-            transform: translateX(3px);
-        }
-
-        .chat-item:hover::before {
-            background-color: var(--primary);
+            transition: background-color 0.15s ease;
         }
 
         .chat-item.active {
             background-color: var(--surface-elevated);
-            box-shadow: var(--neon-glow);
         }
 
         .chat-item.active::before {
@@ -734,11 +581,6 @@
             justify-content: center;
             color: var(--text-secondary);
             flex-shrink: 0;
-            transition: transform 0.2s ease;
-        }
-
-        .chat-item:hover .chat-item-icon {
-            transform: scale(1.1);
         }
 
         .chat-item-content {
@@ -763,7 +605,7 @@
             display: flex;
             gap: 0.25rem;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.15s ease;
         }
 
         .chat-item:hover .chat-item-actions {
@@ -788,7 +630,6 @@
         .chat-item-action-btn:hover {
             background-color: var(--surface-highlight);
             color: var(--text-primary);
-            transform: scale(1.1);
         }
 
         .chat-item-action-btn.delete:hover {
@@ -820,42 +661,21 @@
             overflow: hidden;
         }
 
-        .user-menu::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .user-menu:hover::before {
-            left: 100%;
-        }
-
         .user-menu:hover {
             background-color: var(--surface-highlight);
-            transform: translateY(-2px);
         }
 
         .user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 600;
             box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease;
-        }
-
-        .user-menu:hover .user-avatar {
-            transform: scale(1.1);
         }
 
         .user-info {
@@ -882,7 +702,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Enhanced Main Content - Premium Black UI */
+        /* Professional Main Content */
         .main-content {
             flex: 1;
             display: flex;
@@ -892,7 +712,7 @@
             background-color: var(--background);
         }
 
-        /* Enhanced Header with glassmorphism - Premium Black UI */
+        /* Professional Header */
         .header {
             height: 60px;
             background-color: var(--surface);
@@ -929,11 +749,6 @@
             color: var(--text-primary);
             font-size: 1.25rem;
             cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .mobile-menu-btn:hover {
-            transform: scale(1.1);
         }
 
         .mobile-back-btn {
@@ -944,11 +759,6 @@
             font-size: 1.25rem;
             cursor: pointer;
             margin-right: 0.5rem;
-            transition: transform 0.2s ease;
-        }
-
-        .mobile-back-btn:hover {
-            transform: scale(1.1);
         }
 
         .mobile-back-btn.visible {
@@ -956,10 +766,10 @@
         }
 
         .header-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 1.125rem;
             font-weight: 600;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -984,34 +794,13 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: var(--surface-highlight);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .header-btn:hover::before {
-            width: 100%;
-            height: 100%;
         }
 
         .header-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            background-color: var(--surface-highlight);
         }
 
-        /* Enhanced Chat Container - Premium Black UI */
+        /* Professional Chat Container */
         .chat-container {
             flex: 1;
             display: flex;
@@ -1077,11 +866,6 @@
             overflow: hidden;
             background-color: var(--primary);
             box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease;
-        }
-
-        .message:hover .message-avatar {
-            transform: scale(1.05);
         }
 
         .message-avatar-img {
@@ -1092,7 +876,7 @@
         }
 
         .message.user .message-avatar {
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             color: white;
         }
 
@@ -1107,20 +891,15 @@
             border-radius: var(--radius-lg);
             padding: 1rem 1.25rem;
             position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: var(--transition);
             word-wrap: break-word;
             overflow-wrap: break-word;
             max-width: 100%;
             box-shadow: var(--shadow-sm);
         }
 
-        .message:hover .message-content {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
         .message.user .message-content {
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             color: white;
             border-bottom-right-radius: var(--radius-sm);
         }
@@ -1227,7 +1006,7 @@
 
         .message-text code {
             font-family: 'JetBrains Mono', monospace;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(30, 58, 138, 0.1);
             padding: 0.125rem 0.25rem;
             border-radius: 0.25rem;
             font-size: 0.875em;
@@ -1249,7 +1028,7 @@
             gap: 0.5rem;
             margin-top: 0.75rem;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.15s ease;
         }
 
         .message:hover .message-actions {
@@ -1269,29 +1048,10 @@
             cursor: pointer;
             transition: var(--transition);
             position: relative;
-            overflow: hidden;
-        }
-
-        .message-action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: var(--action-btn-hover);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .message-action-btn:hover::before {
-            width: 100%;
-            height: 100%;
         }
 
         .message-action-btn:hover {
-            transform: scale(1.1);
+            background-color: var(--action-btn-hover);
         }
 
         .message-action-btn:active {
@@ -1323,7 +1083,7 @@
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.15s ease;
             margin-bottom: 0.5rem;
             box-shadow: var(--shadow-sm);
             z-index: 10;
@@ -1340,7 +1100,7 @@
             display: block;
         }
 
-        /* Enhanced Typing Indicator */
+        /* Professional Typing Indicator */
         .typing-indicator {
             display: flex;
             align-items: center;
@@ -1387,7 +1147,7 @@
             }
         }
 
-        /* Enhanced Chat Input with glassmorphism - Premium Black UI */
+        /* Professional Chat Input */
         .chat-input-container {
             padding: 1.5rem;
             background-color: var(--surface);
@@ -1418,7 +1178,6 @@
             transition: var(--transition);
             box-shadow: var(--shadow-sm);
             position: relative;
-            overflow: hidden;
         }
 
         .chat-input-wrapper::before {
@@ -1430,12 +1189,12 @@
             height: 1px;
             background: linear-gradient(to right, transparent, var(--primary), transparent);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.15s ease;
         }
 
         .chat-input-wrapper:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
         .chat-input-wrapper:focus-within::before {
@@ -1476,37 +1235,17 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chat-action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: var(--surface-highlight);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .chat-action-btn:hover::before {
-            width: 100%;
-            height: 100%;
         }
 
         .chat-action-btn:hover {
-            transform: scale(1.1);
+            background-color: var(--surface-highlight);
         }
 
         .chat-send-btn {
             width: 36px;
             height: 36px;
             border-radius: var(--radius);
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             border: none;
             color: white;
             display: flex;
@@ -1514,30 +1253,10 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chat-send-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .chat-send-btn:hover::before {
-            width: 100%;
-            height: 100%;
         }
 
         .chat-send-btn:hover {
-            transform: translateY(-2px) scale(1.05);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
 
@@ -1590,29 +1309,11 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .copy-btn::before, .preview-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .copy-btn:hover::before, .preview-btn:hover::before {
-            left: 100%;
+            transition: all 0.15s;
         }
 
         .copy-btn:hover, .preview-btn:hover {
             background-color: var(--surface-highlight);
-            transform: translateY(-1px);
         }
 
         .copy-btn.copied {
@@ -1627,7 +1328,7 @@
             white-space: pre-wrap;
         }
 
-        /* Enhanced Settings Panel with glassmorphism */
+        /* Professional Settings Panel */
         .settings-panel {
             position: fixed;
             right: -400px;
@@ -1641,7 +1342,7 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            transition: right 0.3s ease;
+            transition: right 0.15s ease;
         }
 
         .settings-panel.active {
@@ -1657,10 +1358,10 @@
         }
 
         .settings-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 1.125rem;
             font-weight: 600;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1683,7 +1384,6 @@
 
         .settings-close:hover {
             background-color: var(--surface-highlight);
-            transform: scale(1.1);
         }
 
         .settings-content {
@@ -1724,12 +1424,12 @@
             color: var(--text-primary);
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
         .form-text {
@@ -1816,25 +1516,8 @@
             border-radius: var(--radius);
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
         }
 
         .btn-primary {
@@ -1844,8 +1527,6 @@
 
         .btn-primary:hover {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
         .btn-secondary {
@@ -1856,8 +1537,6 @@
 
         .btn-secondary:hover {
             background-color: var(--surface-highlight);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
         }
 
         .btn-danger {
@@ -1866,12 +1545,10 @@
         }
 
         .btn-danger:hover {
-            background-color: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            background-color: #b91c1c;
         }
 
-        /* Enhanced User Profile Panel with glassmorphism */
+        /* Professional User Profile Panel */
         .user-profile-panel {
             position: fixed;
             left: -300px;
@@ -1885,7 +1562,7 @@
             z-index: 100;
             display: flex;
             flex-direction: column;
-            transition: left 0.3s ease;
+            transition: left 0.15s ease;
         }
 
         .user-profile-panel.active {
@@ -1901,10 +1578,10 @@
         }
 
         .user-profile-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Roboto', sans-serif;
             font-size: 1.125rem;
             font-weight: 600;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1927,7 +1604,6 @@
 
         .user-profile-close:hover {
             background-color: var(--surface-highlight);
-            transform: scale(1.1);
         }
 
         .user-profile-content {
@@ -1947,7 +1623,7 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1956,11 +1632,6 @@
             font-size: 2rem;
             margin-bottom: 1rem;
             box-shadow: var(--shadow-md);
-            transition: transform 0.2s ease;
-        }
-
-        .user-profile-avatar:hover {
-            transform: scale(1.05);
         }
 
         .user-profile-name {
@@ -2011,7 +1682,7 @@
             color: var(--text-secondary);
         }
 
-        /* Enhanced Toast Notifications with glassmorphism */
+        /* Professional Toast Notifications */
         .toast-container {
             position: fixed;
             bottom: 1.5rem;
@@ -2033,7 +1704,7 @@
             align-items: center;
             gap: 0.75rem;
             min-width: 300px;
-            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+            animation: slideIn 0.15s ease, slideOut 0.15s ease 2.7s forwards;
             opacity: 0;
             transform: translateX(100%);
         }
@@ -2091,7 +1762,7 @@
             color: var(--text-tertiary);
         }
 
-        /* Enhanced Confirmation Modal with glassmorphism */
+        /* Professional Confirmation Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -2119,7 +1790,7 @@
             max-width: 400px;
             border: 1px solid var(--glass-border);
             transform: scale(0.9);
-            animation: modalScale 0.3s ease forwards;
+            animation: modalScale 0.15s ease forwards;
         }
 
         @keyframes modalScale {
@@ -2149,7 +1820,7 @@
             gap: 1rem;
         }
 
-        /* Enhanced Search Modal with glassmorphism */
+        /* Professional Search Modal */
         .search-modal {
             position: fixed;
             top: 0;
@@ -2178,7 +1849,7 @@
             border: 1px solid var(--glass-border);
             overflow: hidden;
             transform: scale(0.9);
-            animation: modalScale 0.3s ease forwards;
+            animation: modalScale 0.15s ease forwards;
         }
 
         .search-header {
@@ -2239,7 +1910,7 @@
             margin-top: 0.25rem;
         }
 
-        /* Enhanced Rename Modal with glassmorphism */
+        /* Professional Rename Modal */
         .rename-modal {
             position: fixed;
             top: 0;
@@ -2281,23 +1952,6 @@
             font-size: 0.75rem;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .filter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .filter-btn:hover::before {
-            left: 100%;
         }
 
         .filter-btn:hover {
@@ -2333,7 +1987,7 @@
             color: var(--text-primary);
         }
 
-        /* Enhanced Mobile Responsiveness */
+        /* Professional Mobile Responsiveness */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
@@ -2549,13 +2203,13 @@
             }
         }
 
-        /* Enhanced Loading Spinner */
+        /* Professional Loading Spinner */
         .spinner {
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(30, 58, 138, 0.3);
             border-radius: 50%;
-            border-top-color: white;
+            border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -2565,7 +2219,7 @@
             }
         }
 
-        /* Enhanced Custom Scrollbar */
+        /* Professional Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -2584,7 +2238,7 @@
             background: var(--surface-highlight);
         }
 
-        /* Enhanced Overlay */
+        /* Professional Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -2600,15 +2254,22 @@
             display: block;
         }
         
-        /* Enhanced Brand styling */
-        .brand-nexariq {
-            font-family: 'Space Grotesk', sans-serif;
+        /* Professional Brand styling */
+        .brand-tomo {
+            font-family: 'Roboto', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
-            background: var(--nexariq-gradient);
+            background: var(--tomo-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        /* Developer branding */
+        .brand-nexariq {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
         
         /* Enhanced User name styling with colorful gradient */
@@ -2621,63 +2282,39 @@
             display: inline;
         }
         
-        /* Enhanced Mobile keyboard adjustments */
+        /* Professional Mobile keyboard adjustments */
         @media (max-width: 768px) and (orientation: portrait) {
             .keyboard-open .chat-messages {
                 height: calc(100% - 180px);
             }
         }
 
-        /* Enhanced animations for micro-interactions */
+        /* Professional animations for micro-interactions */
         .hover-lift {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         .hover-lift:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
 
         .hover-scale {
-            transition: transform 0.2s ease;
+            transition: transform 0.15s ease;
         }
 
         .hover-scale:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
-        /* Enhanced focus states */
+        /* Professional focus states */
         .focus-ring {
-            transition: box-shadow 0.2s ease;
+            transition: box-shadow 0.15s ease;
         }
 
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
-        }
-
-        /* Enhanced ripple effect */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .ripple:active::before {
-            width: 300px;
-            height: 300px;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
         }
 
         /* Student-specific features */
@@ -2692,32 +2329,32 @@
         }
 
         .subject-tag.math {
-            background-color: rgba(59, 130, 246, 0.2);
+            background-color: rgba(59, 130, 246, 0.1);
             color: var(--math-color);
         }
 
         .subject-tag.science {
-            background-color: rgba(16, 185, 129, 0.2);
+            background-color: rgba(5, 150, 105, 0.1);
             color: var(--science-color);
         }
 
         .subject-tag.history {
-            background-color: rgba(245, 158, 11, 0.2);
+            background-color: rgba(217, 119, 6, 0.1);
             color: var(--history-color);
         }
 
         .subject-tag.literature {
-            background-color: rgba(236, 72, 153, 0.2);
+            background-color: rgba(139, 92, 246, 0.1);
             color: var(--literature-color);
         }
 
         .subject-tag.coding {
-            background-color: rgba(139, 92, 246, 0.2);
+            background-color: rgba(99, 102, 241, 0.1);
             color: var(--coding-color);
         }
 
         .subject-tag.art {
-            background-color: rgba(239, 68, 68, 0.2);
+            background-color: rgba(220, 38, 38, 0.1);
             color: var(--art-color);
         }
 
@@ -2740,7 +2377,7 @@
         }
 
         .study-mode-toggle:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-lg);
         }
 
@@ -2827,7 +2464,6 @@
 
         .study-timer-btn:hover {
             background-color: var(--surface-highlight);
-            transform: scale(1.1);
         }
 
         /* Voice input button */
@@ -2843,30 +2479,10 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .voice-input-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: var(--surface-highlight);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s;
-        }
-
-        .voice-input-btn:hover::before {
-            width: 100%;
-            height: 100%;
         }
 
         .voice-input-btn:hover {
-            transform: scale(1.1);
+            background-color: var(--surface-highlight);
         }
 
         .voice-input-btn.recording {
@@ -2895,7 +2511,6 @@
 
         .export-option:hover {
             background-color: var(--surface-highlight);
-            transform: translateY(-1px);
         }
 
         /* Citation generator */
@@ -2945,11 +2560,11 @@
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">
-                <!-- Nexariq Logo Image -->
-                <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq AI" class="logo-img">
-                <span class="logo-text">Nexariq AI</span>
+                <!-- Tomo Academy Logo Image -->
+                <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Tomo Academy" class="logo-img">
+                <span class="logo-text">Tomo Academy</span>
             </div>
-            <h1>Welcome to Nexariq AI</h1>
+            <h1>Welcome to Tomo Academy</h1>
             <p>Your Personal Student Assistant</p>
             <div class="login-buttons">
                 <button class="login-btn google" id="googleSignInBtn">
@@ -2995,9 +2610,9 @@
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="#" class="logo">
-                    <!-- Nexariq Logo Image -->
-                    <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq AI" class="logo-img">
-                    <span class="logo-text">Nexariq AI</span>
+                    <!-- Tomo Academy Logo Image -->
+                    <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Tomo Academy" class="logo-img">
+                    <span class="logo-text">Tomo Academy</span>
                 </a>
                 <button class="new-chat-btn" id="newChatBtn">
                     <i class="fas fa-plus"></i>
@@ -3072,7 +2687,7 @@
                     <button class="mobile-back-btn" id="mobileBackBtn">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <div class="header-title">Nexariq AI</div>
+                    <div class="header-title">Tomo Academy</div>
                 </div>
                 <div class="header-actions">
                     <button class="header-btn" id="studyModeBtn" title="Study Mode">
@@ -3098,13 +2713,13 @@
                 <div class="chat-messages" id="chatMessages">
                     <div class="message ai">
                         <div class="message-avatar">
-                            <!-- Updated AI Avatar Image -->
-                            <img src="https://z-cdn-media.chatglm.cn/files/9e95cdab-fb04-4e3e-9707-3a1a42cf4af2_pasted_image_1759042616103.jpg?auth_key=1790578672-8ce8bef12666447cab9411207f3410af-0-15fac8a4b233794ce2b1a852cd1a5d56" alt="Nexariq AI" class="message-avatar-img">
+                            <!-- AI Avatar Image -->
+                            <img src="https://z-cdn-media.chatglm.cn/files/9e95cdab-fb04-4e3e-9707-3a1a42cf4af2_pasted_image_1759042616103.jpg?auth_key=1790578672-8ce8bef12666447cab9411207f3410af-0-15fac8a4b233794ce2b1a852cd1a5d56" alt="AI Assistant" class="message-avatar-img">
                         </div>
                         <div class="message-content">
                             <div class="message-text">
-                                <h2>Hello! I'm <span class="brand-nexariq">Nexariq AI</span></h2>
-                                <p>I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks:</p>
+                                <h2>Hello! I'm your AI Assistant</h2>
+                                <p>I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks:</p>
                                 
                                 <div class="info-box">
                                     <div class="info-box-title">My Capabilities</div>
@@ -3145,7 +2760,7 @@
 
                 <div class="chat-input-container">
                     <div class="chat-input-wrapper">
-                        <textarea class="chat-input" id="chatInput" placeholder="Ask Nexariq AI anything..." rows="1"></textarea>
+                        <textarea class="chat-input" id="chatInput" placeholder="Ask your AI Assistant anything..." rows="1"></textarea>
                         <div class="chat-actions">
                             <button class="chat-action-btn" id="attachBtn" title="Attach file">
                                 <i class="fas fa-paperclip"></i>
@@ -3588,7 +3203,7 @@
                 workflow: false
             },
             settings: {
-                theme: 'dark',
+                theme: 'light',
                 fontSize: 'medium',
                 typingSpeed: 'medium',
                 autoExecute: false,
@@ -3772,7 +3387,7 @@
         // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
             // Check for saved theme preference
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const savedTheme = localStorage.getItem('theme') || 'light';
             state.settings.theme = savedTheme;
             applyTheme(savedTheme);
             
@@ -4913,7 +4528,7 @@
                     state.dislikedMessages.clear();
                     
                     // Clear localStorage
-                    localStorage.removeItem('nexariqState');
+                    localStorage.removeItem('tomoState');
                 })
                 .catch(error => {
                     console.error('Error signing out:', error);
@@ -4968,7 +4583,7 @@
         // Load state from localStorage
         function loadState() {
             try {
-                const savedState = localStorage.getItem('nexariqState');
+                const savedState = localStorage.getItem('tomoState');
                 if (savedState) {
                     const parsedState = JSON.parse(savedState);
                     state.messages = parsedState.messages || [];
@@ -5000,7 +4615,7 @@
                     selectedModel: state.selectedModel,
                     currentChatTitle: state.currentChatTitle
                 };
-                localStorage.setItem('nexariqState', JSON.stringify(stateToSave));
+                localStorage.setItem('tomoState', JSON.stringify(stateToSave));
             } catch (error) {
                 console.error('Error saving state:', error);
             }
@@ -5087,9 +4702,9 @@
             // Add personalized welcome message
             const userName = state.userMemory.name || '';
             const welcomeMessage = userName 
-                ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
+                ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
 
 <div class="info-box">
     <div class="info-box-title">My Capabilities</div>
@@ -5104,9 +4719,9 @@ I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</s
 </div>
 
 I can format my responses with tables and boxes for better readability. How can I assist you today?`
-                : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
+                : `## Hello! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
 
 <div class="info-box">
     <div class="info-box-title">My Capabilities</div>
@@ -5227,14 +4842,14 @@ I can format my responses with tables and boxes for better readability. How can 
                     // Add welcome message
                     const userName = state.userMemory.name || '';
                     const welcomeMessage = userName 
-                        ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
+                        ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
 
 How can I assist you today?`
-                        : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
+                        : `## Hello! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
 
 How can I assist you today?`;
                     
@@ -5548,9 +5163,9 @@ How can I assist you today?`;
                 
                 const avatar = message.role === 'user' 
                     ? (state.userMemory.name ? state.userMemory.name.charAt(0).toUpperCase() : 'U')
-                    : `<img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">`;
+                    : `<img src="${aiAvatarUrl}" alt="AI Assistant" class="message-avatar-img">`;
                 
-                // Use full timestamp format for messages (Z.ai style)
+                // Use full timestamp format for messages
                 const time = formatDateTime(message.timestamp);
                 
                 messageEl.innerHTML = `
@@ -5731,16 +5346,16 @@ How can I assist you today?`;
                 // Prepare messages for API
                 const systemMessage = {
                     role: 'system',
-                    content: `You are Nexariq AI, an advanced AI assistant developed by Nexariq specifically for students. 
+                    content: `You are an AI assistant developed by Nexariq specifically for students at Tomo Academy. 
 
- ${state.userMemory.name ? `The user's name is ${state.userMemory.name}. Always address them by their name in a friendly, helpful manner like Microsoft Copilot.` : ''}
+ ${state.userMemory.name ? `The user's name is ${state.userMemory.name}. Always address them by their name in a friendly, helpful manner.` : ''}
 
  ${state.userPreferences.responseStyle ? `Use a ${state.userPreferences.responseStyle} tone in your responses.` : ''}
  ${state.userPreferences.detailLevel === 'high' ? 'Provide detailed and comprehensive responses with examples and explanations.' : state.userPreferences.detailLevel === 'low' ? 'Provide concise and brief responses.' : 'Provide balanced responses with appropriate detail.'}
  ${state.settings.structured ? 'When appropriate, use tables to organize information and boxes to highlight important points. Use markdown formatting for tables and blockquotes for boxes.' : ''}
  ${state.settings.studyMode ? 'You are in study mode. Provide responses optimized for learning and studying. Include study tips, memory techniques, and practice questions when relevant.' : ''}
 
-Remember the user's preferences and previous interactions to provide personalized responses. Always be helpful, encouraging, and supportive in your academic journey.`
+Remember the user's preferences and previous interactions to provide personalized responses. Always be helpful, encouraging, and supportive in their academic journey.`
                 };
                 
                 // Convert messages to API format
@@ -5767,12 +5382,12 @@ Remember the user's preferences and previous interactions to provide personalize
                 messageEl.className = 'message ai';
                 messageEl.id = `message-${messageId}`;
                 
-                // Use full timestamp format for messages (Z.ai style)
+                // Use full timestamp format for messages
                 const time = formatDateTime(timestamp);
                 
                 messageEl.innerHTML = `
                     <div class="message-avatar">
-                        <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
+                        <img src="${aiAvatarUrl}" alt="AI Assistant" class="message-avatar-img">
                     </div>
                     <div class="message-content">
                         <div class="message-text typing-text" id="text-${messageId}"></div>
@@ -5965,12 +5580,12 @@ Remember the user's preferences and previous interactions to provide personalize
             messageEl.className = 'message ai';
             messageEl.id = `message-${messageId}`;
             
-            // Use full timestamp format for messages (Z.ai style)
+            // Use full timestamp format for messages
             const time = formatDateTime(timestamp);
             
             messageEl.innerHTML = `
                 <div class="message-avatar">
-                    <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
+                    <img src="${aiAvatarUrl}" alt="AI Assistant" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="message-text typing-text" id="text-${messageId}"></div>
@@ -6031,7 +5646,7 @@ Remember the user's preferences and previous interactions to provide personalize
             scrollToBottom();
         }
 
-        // Type text with typing effect (Copilot-like slow typing)
+        // Type text with typing effect
         function typeText(text, elementId, speed, callback) {
             const element = document.getElementById(elementId);
             if (!element) return;
@@ -6068,7 +5683,7 @@ Remember the user's preferences and previous interactions to provide personalize
                     element.innerHTML = formatMessageContent(text.substring(0, i + 1));
                     i++;
                     
-                    // Continue typing with Copilot-like slower speed
+                    // Continue typing
                     setTimeout(type, speed);
                 } else if (callback) {
                     callback();
@@ -6096,7 +5711,7 @@ Remember the user's preferences and previous interactions to provide personalize
             
             typingIndicator.innerHTML = `
                 <div class="message-avatar">
-                    <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
+                    <img src="${aiAvatarUrl}" alt="AI Assistant" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="typing-indicator">
@@ -6646,12 +6261,12 @@ Remember the user's preferences and previous interactions to provide personalize
             
             // Auto remove after 3 seconds
             setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease forwards';
+                toast.style.animation = 'slideOut 0.15s ease forwards';
                 setTimeout(() => {
                     if (toast.parentNode) {
                         toast.parentNode.removeChild(toast);
                     }
-                }, 300);
+                }, 150);
             }, 3000);
         }
 
@@ -6884,14 +6499,14 @@ Remember the user's preferences and previous interactions to provide personalize
                 // Add welcome message
                 const userName = state.userMemory.name || '';
                 const welcomeMessage = userName 
-                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
+                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
 
 How can I assist you today?`
-                    : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
+                    : `## Hello! I'm your AI Assistant
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
 
 How can I assist you today?`;
                 
@@ -6980,7 +6595,7 @@ How can I assist you today?`;
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `tomo-chat-history-${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -6995,7 +6610,7 @@ How can I assist you today?`;
 
         // Export as TXT
         function exportAsTXT(data) {
-            let txtContent = `Nexariq AI Chat History\n`;
+            let txtContent = `Tomo Academy Chat History\n`;
             txtContent += `Export Date: ${new Date().toLocaleDateString()}\n`;
             txtContent += `User: ${data.user.name} (${data.user.email})\n\n`;
             
@@ -7005,7 +6620,7 @@ How can I assist you today?`;
                 txtContent += `Date: ${new Date(chat.timestamp).toLocaleDateString()}\n\n`;
                 
                 chat.messages.forEach(message => {
-                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const sender = message.role === 'user' ? 'You' : 'AI Assistant';
                     const time = new Date(message.timestamp).toLocaleTimeString();
                     txtContent += `[${time}] ${sender}:\n`;
                     txtContent += `${message.content}\n\n`;
@@ -7018,7 +6633,7 @@ How can I assist you today?`;
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = `tomo-chat-history-${new Date().toISOString().split('T')[0]}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -7039,19 +6654,19 @@ How can I assist you today?`;
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nexariq AI Chat History</title>
+    <title>Tomo Academy Chat History</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #7c3aed; }
+        h1 { color: #1e3a8a; }
         .chat { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
         .message { margin-bottom: 10px; }
         .user { color: #3b82f6; }
-        .ai { color: #10b981; }
-        .timestamp { color: #9ca3af; font-size: 0.8em; }
+        .ai { color: #059669; }
+        .timestamp { color: #64748b; font-size: 0.8em; }
     </style>
 </head>
 <body>
-    <h1>Nexariq AI Chat History</h1>
+    <h1>Tomo Academy Chat History</h1>
     <p>Export Date: ${new Date().toLocaleDateString()}</p>
     <p>User: ${data.user.name} (${data.user.email})</p>
 `;
@@ -7064,7 +6679,7 @@ How can I assist you today?`;
 `;
                 
                 chat.messages.forEach(message => {
-                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const sender = message.role === 'user' ? 'You' : 'AI Assistant';
                     const time = new Date(message.timestamp).toLocaleTimeString();
                     const className = message.role === 'user' ? 'user' : 'ai';
                     
@@ -7092,7 +6707,7 @@ How can I assist you today?`;
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.html`;
+            a.download = `tomo-chat-history-${new Date().toISOString().split('T')[0]}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -7111,7 +6726,7 @@ How can I assist you today?`;
             
             data.chats.forEach(chat => {
                 chat.messages.forEach(message => {
-                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const sender = message.role === 'user' ? 'You' : 'AI Assistant';
                     const date = new Date(message.timestamp).toLocaleDateString();
                     const title = chat.title.replace(/"/g, '""');
                     const content = message.content.replace(/"/g, '""').replace(/\n/g, '\\n');
@@ -7126,7 +6741,7 @@ How can I assist you today?`;
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `tomo-chat-history-${new Date().toISOString().split('T')[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
