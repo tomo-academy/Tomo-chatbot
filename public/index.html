@@ -1133,6 +1133,9 @@
             border: 1px solid var(--code-border);
             box-shadow: var(--shadow-md);
             max-width: 100%;
+            /* Fix for code overlap */
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
         .code-header {
@@ -1508,6 +1511,9 @@
             border-radius: 0;
             overflow: hidden;
             max-width: 100%;
+            /* Fix for code overlap */
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
         .code-line-numbers {
@@ -1536,6 +1542,9 @@
             white-space: pre;
             overflow-x: auto;
             max-width: calc(100% - 40px);
+            /* Fix for code overlap */
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
         /* Follow-up suggestions */
@@ -7278,8 +7287,11 @@ I can format my responses with tables and boxes for better readability. How can 
                 messageEl.className = `message ${message.role === 'assistant' ? 'ai' : message.role}`;
                 messageEl.setAttribute('data-message-index', index);
                 
+                // Fix for user profile photo not showing in chat
                 const avatar = message.role === 'user' 
-                    ? (state.userMemory.name ? state.userMemory.name.charAt(0).toUpperCase() : 'U')
+                    ? (state.user && state.user.photoURL 
+                        ? `<img src="${state.user.photoURL}" alt="User Avatar" class="message-avatar-img">`
+                        : (state.userMemory.name ? state.userMemory.name.charAt(0).toUpperCase() : 'U'))
                     : `<img src="${aiAvatarUrl}" alt="AI Assistant" class="message-avatar-img">`;
                 
                 // Use full timestamp format for messages
@@ -8162,12 +8174,13 @@ Remember the user's preferences and previous interactions to provide personalize
                 
                 // Fallback to mock images if API fails
                 setTimeout(() => {
-                    const seed = Math.random().toString(36).substring(7);
+                    // Generate more relevant mock images based on the prompt
+                    const seed = prompt.replace(/\s+/g, '-').toLowerCase();
                     const mockImages = [
-                        `https://picsum.photos/seed/${seed}1/512/512.jpg`,
-                        `https://picsum.photos/seed/${seed}2/512/512.jpg`,
-                        `https://picsum.photos/seed/${seed}3/512/512.jpg`,
-                        `https://picsum.photos/seed/${seed}4/512/512.jpg`
+                        `https://picsum.photos/seed/${seed}-car/512/512.jpg`,
+                        `https://picsum.photos/seed/${seed}-vehicle/512/512.jpg`,
+                        `https://picsum.photos/seed/${seed}-automobile/512/512.jpg`,
+                        `https://picsum.photos/seed/${seed}-transport/512/512.jpg`
                     ];
                     
                     state.imageGenResults = mockImages;
@@ -9243,6 +9256,7 @@ output
                         copyBtn.classList.remove('copied');
                     }, 2000);
                     
+                    // Add success message after copying code
                     showToast('Code copied to clipboard', 'success');
                 })
                 .catch(err => {
