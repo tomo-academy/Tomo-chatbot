@@ -2358,7 +2358,7 @@
             color: var(--art-color);
         }
 
-        /* Study mode toggle */
+        /* Study mode toggle - Fixed positioning to avoid overlap */
         .study-mode-toggle {
             position: fixed;
             bottom: 1.5rem;
@@ -2415,7 +2415,7 @@
             transform: translateX(24px);
         }
 
-        /* Study timer */
+        /* Study timer - Fixed positioning to avoid overlap */
         .study-timer {
             position: fixed;
             top: 80px;
@@ -2653,15 +2653,7 @@
                     </div>
                 </div>
                 <div id="chatHistory">
-                    <div class="chat-item active" data-chat-id="current">
-                        <div class="chat-item-icon">
-                            <i class="fas fa-comment"></i>
-                        </div>
-                        <div class="chat-item-content">
-                            <div class="chat-item-title">Current Conversation</div>
-                            <div class="chat-item-date">Just now</div>
-                        </div>
-                    </div>
+                    <!-- Chat history will be loaded here -->
                 </div>
             </div>
             <div class="sidebar-footer">
@@ -2687,7 +2679,7 @@
                     <button class="mobile-back-btn" id="mobileBackBtn">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <div class="header-title">Tomo Academy</div>
+                    <div class="header-title" id="headerTitle">Tomo Academy</div>
                 </div>
                 <div class="header-actions">
                     <button class="header-btn" id="studyModeBtn" title="Study Mode">
@@ -2711,51 +2703,7 @@
             <!-- Chat Container -->
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message ai">
-                        <div class="message-avatar">
-                            <!-- AI Avatar Image -->
-                            <img src="https://z-cdn-media.chatglm.cn/files/9e95cdab-fb04-4e3e-9707-3a1a42cf4af2_pasted_image_1759042616103.jpg?auth_key=1790578672-8ce8bef12666447cab9411207f3410af-0-15fac8a4b233794ce2b1a852cd1a5d56" alt="AI Assistant" class="message-avatar-img">
-                        </div>
-                        <div class="message-content">
-                            <div class="message-text">
-                                <h2>Hello! I'm your AI Assistant</h2>
-                                <p>I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks:</p>
-                                
-                                <div class="info-box">
-                                    <div class="info-box-title">My Capabilities</div>
-                                    <ul>
-                                        <li>Answering questions and providing explanations</li>
-                                        <li>Generating and executing code for programming assignments</li>
-                                        <li>Creating study materials and summaries</li>
-                                        <li>Helping with research and citations</li>
-                                        <li>Assisting with math and science problems</li>
-                                        <li>Providing writing feedback and suggestions</li>
-                                    </ul>
-                                </div>
-                                
-                                <p>I have access to various tools and can execute code in a secure sandbox environment. I'll remember your preferences and personalize our conversations to help you learn more effectively.</p>
-                                
-                                <blockquote>
-                                    <strong>Personalization:</strong> I'll remember your name and preferences throughout our conversations. Just tell me your name once, and I'll use it in all our future interactions!
-                                </blockquote>
-                            </div>
-                            <div class="message-actions">
-                                <button class="message-action-btn" title="Copy" onclick="copyMessage('welcome-message')">
-                                    <i class="fas fa-copy"></i>
-                                    <span class="tooltip">Copy</span>
-                                </button>
-                                <button class="message-action-btn" title="Good response" onclick="likeMessage('welcome-message')">
-                                    <i class="fas fa-thumbs-up"></i>
-                                    <span class="tooltip">Good response</span>
-                                </button>
-                                <button class="message-action-btn" title="Bad response" onclick="dislikeMessage('welcome-message')">
-                                    <i class="fas fa-thumbs-down"></i>
-                                    <span class="tooltip">Bad response</span>
-                                </button>
-                            </div>
-                            <div class="message-time">Just now</div>
-                        </div>
-                    </div>
+                    <!-- Messages will be loaded here -->
                 </div>
 
                 <div class="chat-input-container">
@@ -2830,8 +2778,8 @@
                         <div class="settings-description">Choose the app theme</div>
                     </div>
                     <select class="settings-select" id="themeSelect">
-                        <option value="dark" selected>Dark</option>
-                        <option value="light">Light</option>
+                        <option value="light" selected>Light</option>
+                        <option value="dark">Dark</option>
                         <option value="system">System</option>
                     </select>
                 </div>
@@ -3243,7 +3191,7 @@
             chatFilter: 'all',
             sortDirection: 'desc',
             sortBy: 'date',
-            currentChatTitle: 'Current Conversation',
+            currentChatTitle: 'New Chat',
             usersCollection: null,
             chatsCollection: null,
             currentChatDoc: null,
@@ -3258,7 +3206,13 @@
                 interval: null
             },
             voiceRecognition: null,
-            isRecording: false
+            isRecording: false,
+            // Enhanced for cross-device synchronization
+            unsyncedChanges: new Set(),
+            syncInProgress: false,
+            lastSyncTime: null,
+            syncInterval: 30000, // 30 seconds
+            syncTimer: null
         };
 
         // Typing speeds (characters per millisecond)
@@ -3381,7 +3335,8 @@
             studyTimerDisplay: document.getElementById('studyTimerDisplay'),
             studyTimerStartBtn: document.getElementById('studyTimerStartBtn'),
             studyTimerPauseBtn: document.getElementById('studyTimerPauseBtn'),
-            studyTimerResetBtn: document.getElementById('studyTimerResetBtn')
+            studyTimerResetBtn: document.getElementById('studyTimerResetBtn'),
+            headerTitle: document.getElementById('headerTitle')
         };
 
         // Initialize app
@@ -3406,11 +3361,18 @@
                     state.usersCollection = db.collection('users');
                     state.chatsCollection = db.collection('users').doc(user.uid).collection('chats');
                     loadChatHistory();
+                    
+                    // Start sync timer for cross-device synchronization
+                    startSyncTimer();
                 } else {
                     // User is signed out
                     state.user = null;
                     state.usersCollection = null;
                     state.chatsCollection = null;
+                    
+                    // Stop sync timer
+                    stopSyncTimer();
+                    
                     showLogin();
                 }
             });
@@ -4590,7 +4552,7 @@
                     state.settings = { ...state.settings, ...parsedState.settings };
                     state.workflows = parsedState.workflows || [];
                     state.selectedModel = parsedState.selectedModel || 'llama-3.3-70b-versatile';
-                    state.currentChatTitle = parsedState.currentChatTitle || 'Current Conversation';
+                    state.currentChatTitle = parsedState.currentChatTitle || 'New Chat';
                     
                     // Update model select
                     if (elements.modelSelect) {
@@ -4690,19 +4652,35 @@
                 });
             }
             
-            // Reset current chat
-            state.messages = [];
-            state.currentChatId = null;
-            state.currentChatDoc = null;
+            // Create a new chat document in Firestore
+            createNewChat();
+        }
+
+        // Create a new chat document in Firestore
+        function createNewChat() {
+            if (!state.chatsCollection) return;
             
-            // Reset current chat title
-            state.currentChatTitle = 'Current Conversation';
-            updateCurrentChatTitle(state.currentChatTitle);
+            // Generate a unique ID for the new chat
+            const newChatId = generateId();
             
-            // Add personalized welcome message
-            const userName = state.userMemory.name || '';
-            const welcomeMessage = userName 
-                ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
+            // Create a new chat document
+            state.chatsCollection.doc(newChatId).set({
+                title: 'New Chat',
+                messages: [],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                pinned: false
+            }).then(docRef => {
+                // Update state
+                state.currentChatId = newChatId;
+                state.currentChatDoc = docRef;
+                state.currentChatTitle = 'New Chat';
+                state.messages = [];
+                
+                // Add welcome message
+                const userName = state.userMemory.name || '';
+                const welcomeMessage = userName 
+                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
 
 I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
 
@@ -4719,7 +4697,7 @@ I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</s
 </div>
 
 I can format my responses with tables and boxes for better readability. How can I assist you today?`
-                : `## Hello! I'm your AI Assistant
+                    : `## Hello! I'm your AI Assistant
 
 I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
 
@@ -4736,38 +4714,36 @@ I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</s
 </div>
 
 I can format my responses with tables and boxes for better readability. How can I assist you today?`;
-            
-            state.messages.push({
-                id: generateId(),
-                role: 'assistant',
-                content: welcomeMessage,
-                timestamp: new Date().toISOString()
+                
+                state.messages.push({
+                    id: generateId(),
+                    role: 'assistant',
+                    content: welcomeMessage,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Update UI
+                renderMessages();
+                updateCurrentChatTitle('New Chat');
+                
+                // Update chat history
+                loadChatHistory();
+                
+                // Update active chat in sidebar
+                document.querySelectorAll('.chat-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const activeChatItem = document.querySelector(`.chat-item[data-chat-id="${newChatId}"]`);
+                if (activeChatItem) {
+                    activeChatItem.classList.add('active');
+                }
+                
+                showToast('New chat started', 'success');
+            }).catch(error => {
+                console.error('Error creating new chat:', error);
+                showToast('Error creating new chat', 'error');
             });
-            
-            renderMessages();
-            saveState();
-            
-            // Update active chat in sidebar
-            document.querySelectorAll('.chat-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            const activeChat = document.createElement('div');
-            activeChat.className = 'chat-item active';
-            activeChat.setAttribute('data-chat-id', 'current');
-            activeChat.innerHTML = `
-                <div class="chat-item-icon">
-                    <i class="fas fa-comment"></i>
-                </div>
-                <div class="chat-item-content">
-                    <div class="chat-item-title">${state.currentChatTitle}</div>
-                    <div class="chat-item-date">Just now</div>
-                </div>
-            `;
-            
-            elements.chatHistory.insertBefore(activeChat, elements.chatHistory.firstChild);
-            
-            showToast('New chat started', 'success');
         }
 
         // Load chat from Firestore
@@ -4775,13 +4751,23 @@ I can format my responses with tables and boxes for better readability. How can 
             if (!state.chatsCollection) return;
             
             // If switching to current chat, just render messages
-            if (chatId === 'current') {
+            if (chatId === state.currentChatId) {
                 renderMessages();
                 // Close sidebar on mobile after selecting a chat
                 if (window.innerWidth <= 768) {
                     closeSidebar();
                 }
                 return;
+            }
+            
+            // Save current chat to Firestore if it has messages
+            if (state.messages.length > 1 && state.currentChatDoc) {
+                state.currentChatDoc.update({
+                    messages: state.messages,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(error => {
+                    console.error('Error saving current chat:', error);
+                });
             }
             
             // Load chat from Firestore
@@ -4835,32 +4821,7 @@ I can format my responses with tables and boxes for better readability. How can 
                 
                 // If we're deleting the current chat, switch to a new one
                 if (state.currentChatId === chatId) {
-                    state.currentChatId = null;
-                    state.currentChatDoc = null;
-                    state.messages = [];
-                    
-                    // Add welcome message
-                    const userName = state.userMemory.name || '';
-                    const welcomeMessage = userName 
-                        ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
-
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
-
-How can I assist you today?`
-                        : `## Hello! I'm your AI Assistant
-
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
-
-How can I assist you today?`;
-                    
-                    state.messages.push({
-                        id: generateId(),
-                        role: 'assistant',
-                        content: welcomeMessage,
-                        timestamp: new Date().toISOString()
-                    });
-                    
-                    renderMessages();
+                    createNewChat();
                 }
                 
                 // Re-render chat history
@@ -4994,7 +4955,7 @@ How can I assist you today?`;
             showToast(`Sorted by ${state.sortBy} (${state.sortDirection === 'asc' ? 'oldest first' : 'newest first'})`, 'success');
         }
 
-        // Load chat history from Firestore with optimized queries
+        // Load chat history from Firestore with enhanced synchronization
         function loadChatHistory() {
             if (!state.chatsCollection) return;
             
@@ -5003,7 +4964,7 @@ How can I assist you today?`;
             
             // Use Firestore query with ordering and limit for faster loading
             state.chatsCollection
-                .orderBy('createdAt', 'desc')
+                .orderBy('updatedAt', 'desc')
                 .limit(50) // Limit initial load to 50 chats for better performance
                 .get()
                 .then(querySnapshot => {
@@ -5015,13 +4976,20 @@ How can I assist you today?`;
                             id: doc.id,
                             title: chatData.title || 'Untitled Chat',
                             messages: chatData.messages || [],
-                            timestamp: chatData.createdAt?.toDate() || new Date(),
+                            timestamp: chatData.updatedAt?.toDate() || chatData.createdAt?.toDate() || new Date(),
+                            createdAt: chatData.createdAt?.toDate() || new Date(),
+                            updatedAt: chatData.updatedAt?.toDate() || new Date(),
                             pinned: chatData.pinned || false,
                             subject: chatData.subject || 'general'
                         });
                     });
                     
                     renderChatHistory();
+                    
+                    // If there's no current chat, create one
+                    if (!state.currentChatId) {
+                        createNewChat();
+                    }
                 })
                 .catch(error => {
                     console.error('Error loading chat history:', error);
@@ -5044,7 +5012,7 @@ How can I assist you today?`;
                 oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
                 
                 filteredChats = filteredChats.filter(chat => {
-                    const chatDate = new Date(chat.timestamp);
+                    const chatDate = new Date(chat.updatedAt);
                     return chatDate >= oneWeekAgo;
                 });
             } else if (state.chatFilter !== 'all') {
@@ -5065,8 +5033,8 @@ How can I assist you today?`;
                         : b.title.localeCompare(a.title);
                 } else {
                     // Default sort by date
-                    const dateA = new Date(a.timestamp);
-                    const dateB = new Date(b.timestamp);
+                    const dateA = new Date(a.updatedAt);
+                    const dateB = new Date(b.updatedAt);
                     return state.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
                 }
             });
@@ -5078,8 +5046,8 @@ How can I assist you today?`;
             if (!state.currentChatId || state.currentChatId === 'current' || state.messages.length > 0) {
                 const activeChat = document.createElement('div');
                 activeChat.className = 'chat-item active';
-                activeChat.setAttribute('data-chat-id', 'current');
-                activeChat.onclick = () => loadChat('current');
+                activeChat.setAttribute('data-chat-id', state.currentChatId || 'current');
+                activeChat.onclick = () => loadChat(state.currentChatId || 'current');
                 activeChat.innerHTML = `
                     <div class="chat-item-icon">
                         <i class="fas fa-comment"></i>
@@ -5117,7 +5085,7 @@ How can I assist you today?`;
                         chatItem.setAttribute('data-chat-id', chat.id);
                         chatItem.onclick = () => loadChat(chat.id);
                         
-                        const date = new Date(chat.timestamp);
+                        const date = new Date(chat.updatedAt);
                         const formattedDate = formatChatItemDate(date);
                         
                         // Add subject tag if available
@@ -5289,7 +5257,6 @@ How can I assist you today?`;
             
             state.messages.push(userMessage);
             renderMessages();
-            saveState();
             
             // Update current chat title based on the first user message
             if (state.messages.length === 2) { // Welcome message + first user message
@@ -5297,40 +5264,13 @@ How can I assist you today?`;
                 state.currentChatTitle = newTitle;
                 updateCurrentChatTitle(newTitle);
                 
-                // Create a new chat document in Firestore if it doesn't exist
-                if (!state.currentChatDoc && state.chatsCollection) {
-                    // Determine subject based on message content
-                    let subject = 'general';
-                    if (message.toLowerCase().includes('math') || message.toLowerCase().includes('calculate') || message.toLowerCase().includes('equation')) {
-                        subject = 'math';
-                    } else if (message.toLowerCase().includes('science') || message.toLowerCase().includes('experiment') || message.toLowerCase().includes('biology')) {
-                        subject = 'science';
-                    } else if (message.toLowerCase().includes('history') || message.toLowerCase().includes('historical') || message.toLowerCase().includes('war')) {
-                        subject = 'history';
-                    } else if (message.toLowerCase().includes('literature') || message.toLowerCase().includes('book') || message.toLowerCase().includes('poem')) {
-                        subject = 'literature';
-                    } else if (message.toLowerCase().includes('code') || message.toLowerCase().includes('programming') || message.toLowerCase().includes('javascript')) {
-                        subject = 'coding';
-                    } else if (message.toLowerCase().includes('art') || message.toLowerCase().includes('design') || message.toLowerCase().includes('drawing')) {
-                        subject = 'art';
-                    }
-                    
-                    state.chatsCollection.add({
+                // Update chat title in Firestore
+                if (state.currentChatDoc) {
+                    state.currentChatDoc.update({
                         title: newTitle,
-                        messages: state.messages,
-                        subject: subject,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        pinned: false
-                    }).then(docRef => {
-                        state.currentChatId = docRef.id;
-                        state.currentChatDoc = docRef;
-                        
-                        // Update chat history
-                        loadChatHistory();
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }).catch(error => {
-                        console.error('Error creating chat document:', error);
-                        showToast('Error saving chat', 'error');
+                        console.error('Error updating chat title:', error);
                     });
                 }
             }
@@ -5499,11 +5439,20 @@ Remember the user's preferences and previous interactions to provide personalize
                     aiMessage.content = aiResponse;
                     
                     // Update current chat title based on AI response if it's the first response
-                    if (state.messages.length === 2 && !state.currentChatTitle || state.currentChatTitle === 'Current Conversation') {
+                    if (state.messages.length === 2 && !state.currentChatTitle || state.currentChatTitle === 'New Chat') {
                         const newTitle = generateChatTitle(aiResponse);
                         state.currentChatTitle = newTitle;
                         updateCurrentChatTitle(newTitle);
-                        saveState();
+                        
+                        // Update chat title in Firestore
+                        if (state.currentChatDoc) {
+                            state.currentChatDoc.update({
+                                title: newTitle,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }).catch(error => {
+                                console.error('Error updating chat title:', error);
+                            });
+                        }
                     }
                     
                     // Highlight code blocks after streaming is complete
@@ -6493,33 +6442,11 @@ Remember the user's preferences and previous interactions to provide personalize
                 state.currentChatDoc = null;
                 
                 // Reset current chat title
-                state.currentChatTitle = 'Current Conversation';
+                state.currentChatTitle = 'New Chat';
                 updateCurrentChatTitle(state.currentChatTitle);
                 
-                // Add welcome message
-                const userName = state.userMemory.name || '';
-                const welcomeMessage = userName 
-                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm your AI Assistant
-
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I remember your preferences and will personalize our conversations.
-
-How can I assist you today?`
-                    : `## Hello! I'm your AI Assistant
-
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students at <span class="brand-tomo">Tomo Academy</span>. I can help you with a wide range of academic tasks and will remember your preferences.
-
-How can I assist you today?`;
-                
-                state.messages.push({
-                    id: generateId(),
-                    role: 'assistant',
-                    content: welcomeMessage,
-                    timestamp: new Date().toISOString()
-                });
-                
-                // Re-render chat history and messages
-                renderChatHistory();
-                renderMessages();
+                // Create a new chat
+                createNewChat();
                 
                 showToast('All chats cleared successfully', 'success');
             }).catch(error => {
@@ -6561,7 +6488,7 @@ How can I assist you today?`;
             // Add current chat if it has messages
             if (state.messages.length > 1) {
                 exportData.chats.push({
-                    id: 'current',
+                    id: state.currentChatId || 'current',
                     title: state.currentChatTitle,
                     timestamp: new Date().toISOString(),
                     messages: state.messages
@@ -6781,7 +6708,7 @@ How can I assist you today?`;
                 
                 if (state.messages.length > 1) {
                     allChats.unshift({
-                        id: 'current',
+                        id: state.currentChatId || 'current',
                         title: state.currentChatTitle,
                         messages: state.messages,
                         timestamp: new Date().toISOString()
@@ -6810,7 +6737,7 @@ How can I assist you today?`;
             
             if (state.messages.length > 1) {
                 const currentChatResults = searchInChat({
-                    id: 'current',
+                    id: state.currentChatId || 'current',
                     title: state.currentChatTitle,
                     messages: state.messages,
                     timestamp: new Date().toISOString()
@@ -6873,8 +6800,8 @@ How can I assist you today?`;
             resultItem.className = 'search-result-item';
             resultItem.onclick = () => {
                 // Load the chat
-                if (chat.id === 'current') {
-                    loadChat('current');
+                if (chat.id === state.currentChatId || chat.id === 'current') {
+                    loadChat(chat.id || 'current');
                 } else {
                     loadChat(chat.id);
                 }
@@ -6914,6 +6841,114 @@ How can I assist you today?`;
             `;
             
             elements.searchResults.appendChild(resultItem);
+        }
+
+        // Enhanced sync functionality for cross-device synchronization
+        function startSyncTimer() {
+            if (state.syncTimer) {
+                clearInterval(state.syncTimer);
+            }
+            
+            state.syncTimer = setInterval(() => {
+                if (state.user && !state.syncInProgress) {
+                    syncChatHistory();
+                }
+            }, state.syncInterval);
+        }
+
+        function stopSyncTimer() {
+            if (state.syncTimer) {
+                clearInterval(state.syncTimer);
+                state.syncTimer = null;
+            }
+        }
+
+        // Sync chat history with Firestore
+        async function syncChatHistory() {
+            if (!state.chatsCollection || state.syncInProgress) return;
+            
+            state.syncInProgress = true;
+            
+            try {
+                // Get the latest timestamp from Firestore
+                const latestDoc = await state.chatsCollection
+                    .orderBy('updatedAt', 'desc')
+                    .limit(1)
+                    .get();
+                
+                let latestTimestamp = null;
+                if (latestDoc.docs.length > 0) {
+                    latestTimestamp = latestDoc.docs[0].data().updatedAt?.toDate();
+                }
+                
+                // If there are newer chats in Firestore, load them
+                if (latestTimestamp) {
+                    const localLatestTimestamp = state.chatHistory.length > 0 
+                        ? new Date(Math.max(...state.chatHistory.map(chat => 
+                            chat.updatedAt instanceof Date ? chat.updatedAt : new Date(chat.updatedAt)
+                        )))
+                        : new Date(0);
+                    
+                    if (latestTimestamp > localLatestTimestamp) {
+                        // Fetch only the newer chats
+                        const newerChats = await state.chatsCollection
+                            .where('updatedAt', '>', localLatestTimestamp)
+                            .orderBy('updatedAt', 'desc')
+                            .get();
+                        
+                        newerChats.forEach(doc => {
+                            const chatData = doc.data();
+                            const existingChatIndex = state.chatHistory.findIndex(c => c.id === doc.id);
+                            
+                            if (existingChatIndex === -1) {
+                                // Add new chat to local state
+                                state.chatHistory.push({
+                                    id: doc.id,
+                                    title: chatData.title || 'Untitled Chat',
+                                    messages: chatData.messages || [],
+                                    timestamp: chatData.updatedAt?.toDate() || chatData.createdAt?.toDate() || new Date(),
+                                    createdAt: chatData.createdAt?.toDate() || new Date(),
+                                    updatedAt: chatData.updatedAt?.toDate() || new Date(),
+                                    pinned: chatData.pinned || false,
+                                    subject: chatData.subject || 'general'
+                                });
+                            } else {
+                                // Update existing chat in local state
+                                state.chatHistory[existingChatIndex] = {
+                                    ...state.chatHistory[existingChatIndex],
+                                    messages: chatData.messages || [],
+                                    updatedAt: chatData.updatedAt?.toDate() || new Date()
+                                };
+                            }
+                        });
+                        
+                        // Re-render chat history
+                        renderChatHistory();
+                    }
+                }
+                
+                // Push local changes to Firestore
+                if (state.unsyncedChanges.size > 0) {
+                    for (const chatId of state.unsyncedChanges) {
+                        const chat = state.chatHistory.find(c => c.id === chatId);
+                        if (chat) {
+                            await state.chatsCollection.doc(chatId).update({
+                                messages: chat.messages,
+                                title: chat.title,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                    }
+                    
+                    state.unsyncedChanges.clear();
+                }
+                
+                state.lastSyncTime = new Date();
+            } catch (error) {
+                console.error('Error syncing chat history:', error);
+            } finally {
+                state.syncInProgress = false;
+            }
         }
 
         // Global functions for onclick handlers
