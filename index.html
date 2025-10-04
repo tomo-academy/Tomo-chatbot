@@ -2674,16 +2674,15 @@
             dislikedMessages: new Set()
         };
 
+     
         // API Configuration
-        const API_CONFIG = {
-            // Update this to your Vercel deployment URL
-            baseUrl: window.location.hostname === 'localhost' 
-                ? 'http://localhost:3000' 
-                : 'https://tomo-chatbot.vercel.app',
-            endpoint: '/api/chat',
-            authEndpoint: '/api/auth',
-            historyEndpoint: '/api/chat-history'
-        };
+const API_CONFIG = {
+    // Update this to your Vercel deployment URL
+    baseUrl: 'https://tomo-chatbot.vercel.app',
+    endpoint: '/api/chat',
+    authEndpoint: '/api/auth',
+    historyEndpoint: '/api/chat-history'
+};
 
         // DOM Elements
         const elements = {
