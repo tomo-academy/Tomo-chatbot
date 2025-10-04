@@ -1114,16 +1114,16 @@
         /* Enhanced Code Block Styles */
         .code-block {
             margin-top: 1rem;
-            border-radius: var(--radius);
+            border-radius: 12px;
             overflow: hidden;
-            background-color: var(--code-bg);
+            background-color: var(--editor-bg);
             border: 1px solid var(--code-border);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
         }
 
         .code-header {
-            background-color: var(--surface-highlight);
-            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1140,25 +1140,25 @@
 
         .code-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
         .copy-btn, .preview-btn {
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.75rem;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 4px;
             transition: all 0.2s;
         }
 
         .copy-btn:hover, .preview-btn:hover {
-            background-color: var(--surface-highlight);
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .copy-btn.copied {
@@ -1168,15 +1168,15 @@
         }
 
         .message-text pre {
-            background-color: var(--code-bg);
-            border-radius: var(--radius);
-            padding: 1rem;
+            background-color: var(--editor-bg);
+            border-radius: 0;
+            padding: 16px;
             overflow-x: auto;
-            margin: 0.75rem 0;
+            margin: 0;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
-            border: 1px solid var(--code-border);
-            color: var(--code-text);
+            border: none;
+            color: var(--editor-text);
             white-space: pre;
             word-break: normal;
             word-wrap: normal;
@@ -1185,7 +1185,6 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
             scrollbar-color: var(--border) var(--surface-elevated);
-            box-shadow: var(--shadow-sm);
         }
 
         .message-text pre::-webkit-scrollbar {
@@ -1348,7 +1347,7 @@
             }
         }
 
-        /* Professional Chat Input */
+        /* Grok-inspired Chat Input */
         .chat-input-container {
             padding: 1.5rem;
             background-color: var(--surface);
@@ -1371,14 +1370,15 @@
         .chat-input-wrapper {
             background-color: var(--surface-elevated);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 1rem 1.25rem;
+            border-radius: 24px;
+            padding: 12px 16px;
             display: flex;
             align-items: flex-end;
-            gap: 0.75rem;
+            gap: 12px;
             transition: var(--transition);
             box-shadow: var(--shadow-sm);
             position: relative;
+            overflow: hidden;
         }
 
         .chat-input-wrapper::before {
@@ -1413,6 +1413,7 @@
             max-height: 200px;
             line-height: 1.5;
             font-family: inherit;
+            padding: 4px 0;
         }
 
         .chat-input::placeholder {
@@ -1421,13 +1422,14 @@
 
         .chat-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 8px;
+            align-items: center;
         }
 
-        .chat-action-btn {
+        .chat-action-btn, .voice-input-btn {
             width: 36px;
             height: 36px;
-            border-radius: var(--radius);
+            border-radius: 50%;
             background-color: transparent;
             border: none;
             color: var(--text-secondary);
@@ -1438,14 +1440,21 @@
             transition: var(--transition);
         }
 
-        .chat-action-btn:hover {
+        .chat-action-btn:hover, .voice-input-btn:hover {
             background-color: var(--surface-highlight);
+            color: var(--text-primary);
+        }
+
+        .voice-input-btn.recording {
+            background-color: var(--error);
+            color: white;
+            animation: pulse 1.5s infinite;
         }
 
         .chat-send-btn {
             width: 36px;
             height: 36px;
-            border-radius: var(--radius);
+            border-radius: 50%;
             background: var(--tomo-gradient);
             border: none;
             color: white;
@@ -1467,66 +1476,189 @@
             transform: none;
         }
 
-        /* Enhanced Code Block Styles */
-        .code-block {
-            margin-top: 1rem;
-            border-radius: var(--radius);
+        /* Code with line numbers */
+        .code-with-line-numbers {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            background-color: var(--editor-bg);
+            border-radius: 0;
             overflow: hidden;
-            background-color: var(--code-bg);
-            border: 1px solid var(--code-border);
-            box-shadow: var(--shadow-sm);
         }
 
-        .code-header {
-            background-color: var(--surface-highlight);
-            padding: 0.5rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .code-line-numbers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid var(--code-border);
+            padding: 16px 0;
+            text-align: right;
+            color: var(--editor-line-numbers);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--code-border);
+            line-height: 1.5;
+            user-select: none;
         }
 
-        .code-language {
+        .code-content {
+            margin-left: 40px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Follow-up suggestions */
+        .follow-up-suggestions {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: var(--radius);
+        }
+
+        .follow-up-title {
             font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            color: var(--primary);
         }
 
-        .code-actions {
+        .follow-up-options {
             display: flex;
+            flex-wrap: wrap;
             gap: 0.5rem;
         }
 
-        .copy-btn, .preview-btn {
+        .follow-up-option {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
             background-color: var(--surface-elevated);
             border: 1px solid var(--border);
             color: var(--text-primary);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
             cursor: pointer;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            transition: all 0.2s;
+            transition: var(--transition);
+            font-size: 0.875rem;
         }
 
-        .copy-btn:hover, .preview-btn:hover {
+        .follow-up-option:hover {
             background-color: var(--surface-highlight);
         }
 
-        .copy-btn.copied {
-            background-color: var(--success);
-            color: white;
-            border-color: var(--success);
+        /* Dislike feedback modal */
+        .dislike-feedback-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Typing Effect */
-        .typing-text {
-            overflow: hidden;
-            white-space: pre-wrap;
+        .dislike-feedback-modal.active {
+            display: flex;
+        }
+
+        .dislike-feedback-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 400px;
+            padding: 1.5rem;
+        }
+
+        .dislike-feedback-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .dislike-feedback-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dislike-feedback-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--surface-elevated);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dislike-feedback-option:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .dislike-feedback-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(16, 163, 127, 0.1);
+        }
+
+        .dislike-feedback-option-text {
+            margin-left: 0.75rem;
+        }
+
+        .dislike-feedback-other {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            margin-bottom: 1rem;
+        }
+
+        .dislike-feedback-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .dislike-feedback-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .dislike-feedback-btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .dislike-feedback-btn-secondary:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .dislike-feedback-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .dislike-feedback-btn-primary:hover {
+            background-color: var(--primary-dark);
         }
 
         /* Professional Settings Panel */
@@ -2281,12 +2413,11 @@
             }
             
             .code-header {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
+                padding: 6px 12px;
             }
             
             .copy-btn, .preview-btn {
-                padding: 0.2rem 0.4rem;
+                padding: 3px 6px;
                 font-size: 0.7rem;
             }
             
@@ -2316,8 +2447,14 @@
             
             /* Adjust padding for better touch */
             .chat-input-wrapper {
-                padding: 0.75rem;
+                border-radius: 20px;
+                padding: 10px 14px;
+                gap: 10px;
                 width: 100%;
+            }
+            
+            .chat-input {
+                font-size: 16px; /* Prevents zoom on iOS */
             }
             
             /* Better mobile scrolling */
@@ -2327,7 +2464,7 @@
             
             /* Mobile preview button adjustments */
             .preview-btn {
-                padding: 0.3rem 0.6rem;
+                padding: 3px 6px;
             }
             
             /* Mobile code block optimizations */
@@ -2364,10 +2501,6 @@
             }
             
             /* Chat input improvements for mobile */
-            .chat-input {
-                font-size: 16px;
-            }
-            
             .chat-input-wrapper {
                 border-radius: var(--radius-lg);
                 border-left: none;
@@ -2403,7 +2536,7 @@
                 font-size: 1rem;
             }
             
-            /* Improve touch targets */
+            /* Better touch targets */
             .chat-item {
                 min-height: 60px;
             }
@@ -2687,94 +2820,6 @@
             background-color: var(--surface-highlight);
         }
 
-        /* Voice input button */
-        .voice-input-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            border: none;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .voice-input-btn:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .voice-input-btn.recording {
-            background-color: var(--error);
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Export options */
-        .export-options {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .export-option {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .export-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        /* Citation generator */
-        .citation-generator {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-radius: var(--radius);
-        }
-
-        .citation-formats {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .citation-format {
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .citation-format.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .citation-result {
-            padding: 0.75rem;
-            background-color: var(--surface-elevated);
-            border-radius: var(--radius);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
         /* Breadcrumb navigation */
         .breadcrumb {
             display: flex;
@@ -2975,894 +3020,6 @@
             font-size: 0.875rem;
         }
 
-        /* Code line numbers */
-        .code-with-line-numbers {
-            position: relative;
-            margin: 0;
-            padding: 0;
-            background-color: var(--code-bg);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .code-line-numbers {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 40px;
-            height: 100%;
-            background-color: var(--surface-highlight);
-            border-right: 1px solid var(--border);
-            padding: 1rem 0;
-            text-align: right;
-            color: var(--text-tertiary);
-            font-family: monospace;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            user-select: none;
-        }
-
-        .code-content {
-            margin-left: 40px;
-            padding: 1rem;
-            font-family: monospace;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            white-space: pre;
-            overflow-x: auto;
-        }
-
-        /* Math equation display */
-        .math-equation {
-            display: block;
-            text-align: center;
-            margin: 1rem 0;
-            padding: 1rem;
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-radius: var(--radius);
-            font-family: 'Times New Roman', serif;
-            font-size: 1.125rem;
-            overflow-x: auto;
-        }
-
-        /* Study streak indicator */
-        .study-streak {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background-color: var(--surface-elevated);
-            border-radius: var(--radius);
-            margin-bottom: 1rem;
-        }
-
-        .study-streak-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: var(--warning);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .study-streak-text {
-            flex: 1;
-        }
-
-        .study-streak-value {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .study-streak-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Study calendar */
-        .study-calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            background-color: var(--surface-elevated);
-            color: var(--text-secondary);
-        }
-
-        .calendar-day.today {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .calendar-day.studied {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .calendar-day-header {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* Study goal progress */
-        .study-goal {
-            margin-top: 1rem;
-        }
-
-        .study-goal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .study-goal-title {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .study-goal-value {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .study-goal-bar {
-            height: 8px;
-            background-color: var(--surface-highlight);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .study-goal-progress {
-            height: 100%;
-            background-color: var(--primary);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        /* Study session summary */
-        .study-session-summary {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-radius: var(--radius);
-        }
-
-        .study-session-title {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .study-session-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .study-session-stat {
-            text-align: center;
-        }
-
-        .study-session-stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .study-session-stat-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Study recommendations */
-        .study-recommendations {
-            margin-top: 1.5rem;
-        }
-
-        .study-recommendations-title {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .study-recommendation {
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            margin-bottom: 0.5rem;
-        }
-
-        .study-recommendation-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .study-recommendation-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Study resources */
-        .study-resources {
-            margin-top: 1.5rem;
-        }
-
-        .study-resources-title {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .study-resource {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .study-resource:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .study-resource-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .study-resource-content {
-            flex: 1;
-        }
-
-        .study-resource-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .study-resource-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Study notes */
-        .study-notes {
-            margin-top: 1.5rem;
-        }
-
-        .study-notes-title {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .study-note {
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            margin-bottom: 0.5rem;
-        }
-
-        .study-note-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .study-note-content {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .study-note-date {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            margin-top: 0.5rem;
-        }
-
-        /* Study reminders */
-        .study-reminders {
-            margin-top: 1.5rem;
-        }
-
-        .study-reminders-title {
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .study-reminder {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            margin-bottom: 0.5rem;
-        }
-
-        .study-reminder-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: var(--warning);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .study-reminder-content {
-            flex: 1;
-        }
-
-        .study-reminder-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .study-reminder-time {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .study-reminder-toggle {
-            position: relative;
-            width: 40px;
-            height: 20px;
-            background-color: var(--surface-highlight);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .study-reminder-toggle.active {
-            background-color: var(--primary);
-        }
-
-        .study-reminder-toggle-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 16px;
-            height: 16px;
-            background-color: white;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .study-reminder-toggle.active .study-reminder-toggle-slider {
-            transform: translateX(20px);
-        }
-
-        /* Fix for all modal buttons */
-        .modal button, .modal-overlay button, .search-modal button, 
-        .rename-modal button, .export-modal button, .citation-modal button,
-        .share-modal button, .flashcard-modal button, .quiz-modal button,
-        .dislike-feedback-modal button, .shortcuts-modal button {
-            pointer-events: auto !important;
-            z-index: 10 !important;
-            position: relative !important;
-        }
-
-        /* Enhanced Code Editor for Desktop */
-        @media (min-width: 769px) {
-            .code-editor-container {
-                display: flex;
-                flex-direction: column;
-                margin: 1rem 0;
-                border-radius: var(--radius);
-                overflow: hidden;
-                box-shadow: var(--shadow-md);
-                border: 1px solid var(--code-border);
-                background-color: var(--editor-bg);
-            }
-
-            .code-editor-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0.5rem 1rem;
-                background-color: var(--surface-highlight);
-                border-bottom: 1px solid var(--code-border);
-            }
-
-            .code-editor-title {
-                font-weight: 600;
-                color: var(--text-primary);
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .code-editor-actions {
-                display: flex;
-                gap: 0.5rem;
-            }
-
-            .code-editor-btn {
-                padding: 0.25rem 0.5rem;
-                border-radius: var(--radius-sm);
-                background-color: var(--surface-elevated);
-                border: 1px solid var(--border);
-                color: var(--text-primary);
-                font-size: 0.75rem;
-                cursor: pointer;
-                transition: var(--transition);
-                display: flex;
-                align-items: center;
-                gap: 0.25rem;
-            }
-
-            .code-editor-btn:hover {
-                background-color: var(--surface-highlight);
-            }
-
-            .code-editor-content {
-                display: flex;
-                height: 300px;
-            }
-
-            .code-editor-line-numbers {
-                width: 40px;
-                background-color: var(--editor-line-numbers);
-                color: var(--editor-line-numbers);
-                padding: 1rem 0;
-                text-align: right;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 0.875rem;
-                line-height: 1.5;
-                user-select: none;
-                overflow: hidden;
-            }
-
-            .code-editor-textarea {
-                flex: 1;
-                background-color: var(--editor-bg);
-                color: var(--editor-text);
-                border: none;
-                padding: 1rem;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 0.875rem;
-                line-height: 1.5;
-                resize: none;
-                outline: none;
-                overflow-y: auto;
-            }
-
-            .code-editor-output {
-                margin-top: 1rem;
-                padding: 1rem;
-                background-color: var(--surface-elevated);
-                border-radius: var(--radius);
-                border: 1px solid var(--border);
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 0.875rem;
-                white-space: pre-wrap;
-                max-height: 200px;
-                overflow-y: auto;
-            }
-
-            .code-editor-output-title {
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: var(--text-primary);
-            }
-        }
-
-        /* Mobile Code Editor */
-        @media (max-width: 768px) {
-            .code-editor-container {
-                margin: 0.75rem -1rem;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-
-            .code-editor-content {
-                height: 250px;
-            }
-
-            .code-editor-line-numbers {
-                width: 30px;
-                font-size: 0.75rem;
-            }
-
-            .code-editor-textarea {
-                font-size: 0.8rem;
-                padding: 0.75rem;
-            }
-        }
-
-        /* Follow-up suggestions */
-        .follow-up-suggestions {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-radius: var(--radius);
-        }
-
-        .follow-up-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .follow-up-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .follow-up-option {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.875rem;
-        }
-
-        .follow-up-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        /* Dislike feedback modal */
-        .dislike-feedback-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dislike-feedback-modal.active {
-            display: flex;
-        }
-
-        .dislike-feedback-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 400px;
-            padding: 1.5rem;
-        }
-
-        .dislike-feedback-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .dislike-feedback-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .dislike-feedback-option {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dislike-feedback-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .dislike-feedback-option.selected {
-            border-color: var(--primary);
-            background-color: rgba(16, 163, 127, 0.1);
-        }
-
-        .dislike-feedback-option-text {
-            margin-left: 0.75rem;
-        }
-
-        .dislike-feedback-other {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            resize: none;
-            margin-bottom: 1rem;
-        }
-
-        .dislike-feedback-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        .dislike-feedback-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .dislike-feedback-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .dislike-feedback-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .dislike-feedback-btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .dislike-feedback-btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Export Modal */
-        .export-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .export-modal.active {
-            display: flex;
-        }
-
-        .export-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 400px;
-            padding: 1.5rem;
-        }
-
-        .export-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .export-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .export-options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .export-option {
-            padding: 1rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .export-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .export-option-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .export-option-content {
-            flex: 1;
-        }
-
-        .export-option-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .export-option-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .export-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        .export-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .export-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .export-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        /* Citation Modal */
-        .citation-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .citation-modal.active {
-            display: flex;
-        }
-
-        .citation-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 500px;
-            padding: 1.5rem;
-        }
-
-        .citation-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .citation-formats {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .citation-format {
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .citation-format.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .citation-result {
-            padding: 0.75rem;
-            background-color: var(--surface-elevated);
-            border-radius: var(--radius);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-
-        .citation-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .citation-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .citation-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .citation-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .citation-btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .citation-btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
         /* Notification Banner */
         .notification-banner {
             position: fixed;
@@ -3966,121 +3123,6 @@
 
         .offline-indicator.active {
             display: block;
-        }
-
-        /* Empty state */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            color: var(--text-tertiary);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .empty-state-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            max-width: 400px;
-        }
-
-        .empty-state-action {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .empty-state-action:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Loading state */
-        .loading-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(16, 163, 127, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 1rem;
-        }
-
-        .loading-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Error state */
-        .error-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .error-icon {
-            font-size: 3rem;
-            color: var(--error);
-            margin-bottom: 1rem;
-        }
-
-        .error-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .error-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            max-width: 400px;
-        }
-
-        .error-action {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .error-action:hover {
-            background-color: var(--primary-dark);
         }
     </style>
 </head>
@@ -4659,85 +3701,6 @@
         </div>
     </div>
 
-    <!-- Export Modal -->
-    <div class="export-modal" id="exportModal">
-        <div class="export-container">
-            <div class="export-title">Export Chat History</div>
-            <div class="export-description">
-                Choose the format for exporting your chat history:
-            </div>
-            <div class="export-options">
-                <div class="export-option" id="exportJsonBtn">
-                    <i class="fas fa-code"></i>
-                    <div class="export-option-content">
-                        <div class="export-option-title">JSON</div>
-                        <div class="export-option-description">Structured data format</div>
-                    </div>
-                </div>
-                <div class="export-option" id="exportTxtBtn">
-                    <i class="fas fa-file-alt"></i>
-                    <div class="export-option-content">
-                        <div class="export-option-title">TXT</div>
-                        <div class="export-option-description">Plain text format</div>
-                    </div>
-                </div>
-                <div class="export-option" id="exportPdfBtn">
-                    <i class="fas fa-file-pdf"></i>
-                    <div class="export-option-content">
-                        <div class="export-option-title">PDF</div>
-                        <div class="export-option-description">Printable document</div>
-                    </div>
-                </div>
-                <div class="export-option" id="exportCsvBtn">
-                    <i class="fas fa-file-csv"></i>
-                    <div class="export-option-content">
-                        <div class="export-option-title">CSV</div>
-                        <div class="export-option-description">Spreadsheet format</div>
-                    </div>
-                </div>
-            </div>
-            <div class="export-actions">
-                <button class="export-btn export-btn-secondary" id="exportCancelBtn">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Citation Generator Modal -->
-    <div class="citation-modal" id="citationModal">
-        <div class="citation-container">
-            <div class="citation-title">Citation Generator</div>
-            <div class="form-group">
-                <label for="citationTitle" class="form-label">Title</label>
-                <input type="text" class="form-input" id="citationTitle" placeholder="Enter the title">
-            </div>
-            <div class="form-group">
-                <label for="citationAuthor" class="form-label">Author(s)</label>
-                <input type="text" class="form-input" id="citationAuthor" placeholder="Enter author(s)">
-            </div>
-            <div class="form-group">
-                <label for="citationYear" class="form-label">Year</label>
-                <input type="text" class="form-input" id="citationYear" placeholder="Enter publication year">
-            </div>
-            <div class="form-group">
-                <label for="citationPublisher" class="form-label">Publisher</label>
-                <input type="text" class="form-input" id="citationPublisher" placeholder="Enter publisher">
-            </div>
-            <div class="citation-formats">
-                <button class="citation-format active" data-format="apa">APA</button>
-                <button class="citation-format" data-format="mla">MLA</button>
-                <button class="citation-format" data-format="chicago">Chicago</button>
-                <button class="citation-format" data-format="harvard">Harvard</button>
-            </div>
-            <div class="citation-result" id="citationResult">
-                Your citation will appear here...
-            </div>
-            <div class="citation-actions">
-                <button class="citation-btn citation-btn-secondary" id="citationCancelBtn">Cancel</button>
-                <button class="citation-btn citation-btn-primary" id="copyCitationBtn">Copy Citation</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Dislike Feedback Modal -->
     <div class="dislike-feedback-modal" id="dislikeFeedbackModal">
         <div class="dislike-feedback-container">
@@ -5122,20 +4085,6 @@
             renameInput: document.getElementById('renameInput'),
             renameCancelBtn: document.getElementById('renameCancelBtn'),
             renameSaveBtn: document.getElementById('renameSaveBtn'),
-            exportModal: document.getElementById('exportModal'),
-            exportJsonBtn: document.getElementById('exportJsonBtn'),
-            exportTxtBtn: document.getElementById('exportTxtBtn'),
-            exportPdfBtn: document.getElementById('exportPdfBtn'),
-            exportCsvBtn: document.getElementById('exportCsvBtn'),
-            exportCancelBtn: document.getElementById('exportCancelBtn'),
-            citationModal: document.getElementById('citationModal'),
-            citationTitle: document.getElementById('citationTitle'),
-            citationAuthor: document.getElementById('citationAuthor'),
-            citationYear: document.getElementById('citationYear'),
-            citationPublisher: document.getElementById('citationPublisher'),
-            citationResult: document.getElementById('citationResult'),
-            citationCancelBtn: document.getElementById('citationCancelBtn'),
-            copyCitationBtn: document.getElementById('copyCitationBtn'),
             loginError: document.getElementById('loginError'),
             registerForm: document.getElementById('registerForm'),
             registerBtn: document.getElementById('registerBtn'),
@@ -5248,6 +4197,11 @@
             
             // Load state from localStorage
             loadState();
+            
+            // Apply settings after all elements are loaded
+            setTimeout(() => {
+                applySettings();
+            }, 100);
         });
 
         // Update online status
@@ -5799,7 +4753,10 @@
                     // Load settings
                     if (userData.settings) {
                         state.settings = { ...state.settings, ...userData.settings };
-                        applySettings();
+                        // Apply settings with a delay to ensure all elements are loaded
+                        setTimeout(() => {
+                            applySettings();
+                        }, 100);
                     }
                     
                     // Load user memory and preferences
@@ -5927,6 +4884,24 @@
             }
         }
 
+        // Save user data to Firestore
+        function saveUserData() {
+            if (!state.user) return;
+            
+            const userRef = db.collection('users').doc(state.user.uid);
+            
+            userRef.update({
+                settings: state.settings,
+                memory: state.userMemory,
+                preferences: state.userPreferences,
+                likedMessages: Array.from(state.likedMessages),
+                dislikedMessages: Array.from(state.dislikedMessages),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(error => {
+                console.error('Error saving user data:', error);
+            });
+        }
+
         // Setup event listeners
         function setupEventListeners() {
             // Authentication
@@ -6036,25 +5011,6 @@
             if (elements.citationBtn) {
                 elements.citationBtn.addEventListener('click', showCitationModal);
             }
-            if (elements.copyCitationBtn) {
-                elements.copyCitationBtn.addEventListener('click', copyCitation);
-            }
-            
-            // Citation format buttons
-            document.querySelectorAll('.citation-format').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.citation-format').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    generateCitation();
-                });
-            });
-            
-            // Citation input fields
-            [elements.citationTitle, elements.citationAuthor, elements.citationYear, elements.citationPublisher].forEach(input => {
-                if (input) {
-                    input.addEventListener('input', generateCitation);
-                }
-            });
             
             // Attach file
             if (elements.attachBtn) {
@@ -6151,35 +5107,6 @@
                 elements.sortChatsBtn.addEventListener('click', toggleChatSort);
             }
             
-            // Export options
-            if (elements.exportJsonBtn) {
-                elements.exportJsonBtn.addEventListener('click', () => exportChatHistory('json'));
-            }
-            if (elements.exportTxtBtn) {
-                elements.exportTxtBtn.addEventListener('click', () => exportChatHistory('txt'));
-            }
-            if (elements.exportPdfBtn) {
-                elements.exportPdfBtn.addEventListener('click', () => exportChatHistory('pdf'));
-            }
-            if (elements.exportCsvBtn) {
-                elements.exportCsvBtn.addEventListener('click', () => exportChatHistory('csv'));
-            }
-            if (elements.exportCancelBtn) {
-                elements.exportCancelBtn.addEventListener('click', hideExportModal);
-            }
-            
-            // Chat filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const filter = btn.getAttribute('data-filter');
-                    filterChats(filter);
-                    
-                    // Update active filter button
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                });
-            });
-            
             // Confirmation modal
             if (elements.confirmCancelBtn) {
                 elements.confirmCancelBtn.addEventListener('click', hideConfirmModal);
@@ -6202,11 +5129,6 @@
             }
             if (elements.renameSaveBtn) {
                 elements.renameSaveBtn.addEventListener('click', saveRenameChat);
-            }
-            
-            // Citation modal
-            if (elements.citationCancelBtn) {
-                elements.citationCancelBtn.addEventListener('click', hideCitationModal);
             }
             
             // Window resize
@@ -8258,6 +7180,22 @@ Remember the user's preferences and previous interactions to provide personalize
             showToast(`Agentic features ${state.settings.agentic ? 'enabled' : 'disabled'}`, 'success');
         }
 
+        // Toggle task notifications
+        function toggleTaskNotifications() {
+            state.settings.taskNotifications = !state.settings.taskNotifications;
+            elements.taskNotificationToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Task notifications ${state.settings.taskNotifications ? 'enabled' : 'disabled'}`, 'success');
+        }
+
+        // Toggle error notifications
+        function toggleErrorNotifications() {
+            state.settings.errorNotifications = !state.settings.errorNotifications;
+            elements.errorNotificationToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Error notifications ${state.settings.errorNotifications ? 'enabled' : 'disabled'}`, 'success');
+        }
+
         // Toggle memory
         function toggleMemory() {
             state.settings.memory = !state.settings.memory;
@@ -8353,71 +7291,138 @@ Remember the user's preferences and previous interactions to provide personalize
                 document.body.classList.remove('dyslexia-font');
             }
             
-            // Update settings UI
-            elements.themeSelect.value = state.settings.theme;
-            elements.fontSizeSelect.value = state.settings.fontSize;
-            elements.fontStyleSelect.value = state.settings.fontStyle;
-            elements.typingSpeedSelect.value = state.settings.typingSpeed;
-            
-            if (state.settings.autoExecute) {
-                elements.autoExecuteToggle.classList.add('active');
+            // Update settings UI with null checks
+            if (elements.themeSelect) {
+                elements.themeSelect.value = state.settings.theme;
             }
             
-            if (state.settings.sandboxPreview) {
-                elements.sandboxPreviewToggle.classList.add('active');
+            if (elements.fontSizeSelect) {
+                elements.fontSizeSelect.value = state.settings.fontSize;
             }
             
-            if (state.settings.agentic) {
-                elements.agenticToggle.classList.add('active');
+            if (elements.fontStyleSelect) {
+                elements.fontStyleSelect.value = state.settings.fontStyle;
             }
             
-            if (state.settings.memory) {
-                elements.memoryToggle.classList.add('active');
+            if (elements.typingSpeedSelect) {
+                elements.typingSpeedSelect.value = state.settings.typingSpeed;
             }
             
-            if (state.settings.structured) {
-                elements.structuredToggle.classList.add('active');
+            if (elements.autoExecuteToggle) {
+                if (state.settings.autoExecute) {
+                    elements.autoExecuteToggle.classList.add('active');
+                } else {
+                    elements.autoExecuteToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.voiceInput) {
-                elements.voiceInputToggle.classList.add('active');
-                elements.voiceInputBtn.style.display = 'flex';
-            } else {
-                elements.voiceInputBtn.style.display = 'none';
+            if (elements.sandboxPreviewToggle) {
+                if (state.settings.sandboxPreview) {
+                    elements.sandboxPreviewToggle.classList.add('active');
+                } else {
+                    elements.sandboxPreviewToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.studyMode) {
-                elements.studyModeSettingsToggle.classList.add('active');
-                elements.studyModeSwitch.classList.add('active');
-                elements.studyModeToggle.classList.add('active');
-                state.studyMode = true;
+            if (elements.agenticToggle) {
+                if (state.settings.agentic) {
+                    elements.agenticToggle.classList.add('active');
+                } else {
+                    elements.agenticToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.taskNotifications) {
-                elements.taskNotificationToggle.classList.add('active');
+            if (elements.memoryToggle) {
+                if (state.settings.memory) {
+                    elements.memoryToggle.classList.add('active');
+                } else {
+                    elements.memoryToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.errorNotifications) {
-                elements.errorNotificationToggle.classList.add('active');
+            if (elements.structuredToggle) {
+                if (state.settings.structured) {
+                    elements.structuredToggle.classList.add('active');
+                } else {
+                    elements.structuredToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.messageAnimations) {
-                elements.messageAnimationsToggle.classList.add('active');
+            if (elements.voiceInputToggle) {
+                if (state.settings.voiceInput) {
+                    elements.voiceInputToggle.classList.add('active');
+                    elements.voiceInputBtn.style.display = 'flex';
+                } else {
+                    elements.voiceInputToggle.classList.remove('active');
+                    elements.voiceInputBtn.style.display = 'none';
+                }
             }
             
-            if (state.settings.keyboardShortcuts) {
-                elements.keyboardShortcutsToggle.classList.add('active');
+            if (elements.studyModeSettingsToggle) {
+                if (state.settings.studyMode) {
+                    elements.studyModeSettingsToggle.classList.add('active');
+                    elements.studyModeSwitch.classList.add('active');
+                    elements.studyModeToggle.classList.add('active');
+                    state.studyMode = true;
+                } else {
+                    elements.studyModeSettingsToggle.classList.remove('active');
+                    elements.studyModeSwitch.classList.remove('active');
+                    elements.studyModeToggle.classList.remove('active');
+                    state.studyMode = false;
+                }
             }
             
-            if (state.settings.followUp) {
-                elements.followUpToggle.classList.add('active');
+            if (elements.taskNotificationToggle) {
+                if (state.settings.taskNotifications) {
+                    elements.taskNotificationToggle.classList.add('active');
+                } else {
+                    elements.taskNotificationToggle.classList.remove('active');
+                }
             }
             
-            if (state.settings.studyReminders) {
-                elements.studyRemindersToggle.classList.add('active');
+            if (elements.errorNotificationToggle) {
+                if (state.settings.errorNotifications) {
+                    elements.errorNotificationToggle.classList.add('active');
+                } else {
+                    elements.errorNotificationToggle.classList.remove('active');
+                }
             }
             
-            elements.personaSelect.value = state.settings.persona;
+            if (elements.messageAnimationsToggle) {
+                if (state.settings.messageAnimations) {
+                    elements.messageAnimationsToggle.classList.add('active');
+                } else {
+                    elements.messageAnimationsToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.keyboardShortcutsToggle) {
+                if (state.settings.keyboardShortcuts) {
+                    elements.keyboardShortcutsToggle.classList.add('active');
+                } else {
+                    elements.keyboardShortcutsToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.followUpToggle) {
+                if (state.settings.followUp) {
+                    elements.followUpToggle.classList.add('active');
+                } else {
+                    elements.followUpToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.studyRemindersToggle) {
+                if (state.settings.studyReminders) {
+                    elements.studyRemindersToggle.classList.add('active');
+                } else {
+                    elements.studyRemindersToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.personaSelect) {
+                elements.personaSelect.value = state.settings.persona;
+            }
         }
 
         // Handle window resize
@@ -9333,116 +8338,6 @@ Remember the user's preferences and previous interactions to provide personalize
                     }
                 }
             }
-        }
-
-        // Start onboarding
-        function startOnboarding() {
-            // Removed onboarding functionality
-        }
-
-        // Show notification banner
-        function showNotificationBanner() {
-            elements.notificationBanner.classList.add('active');
-        }
-
-        // Dismiss notification banner
-        function dismissNotificationBanner() {
-            elements.notificationBanner.classList.remove('active');
-        }
-
-        // Enable notifications
-        async function enableNotifications() {
-            if ('Notification' in window) {
-                try {
-                    const permission = await Notification.requestPermission();
-                    if (permission === 'granted') {
-                        elements.notificationBanner.classList.remove('active');
-                        showToast('Notifications enabled', 'success');
-                    } else {
-                        showToast('Notification permission denied', 'warning');
-                    }
-                } catch (error) {
-                    console.error('Error requesting notification permission:', error);
-                    showToast('Error enabling notifications', 'error');
-                }
-            } else {
-                showToast('Notifications not supported in your browser', 'warning');
-            }
-        }
-
-        // Toggle language dropdown
-        function toggleLanguageDropdown() {
-            elements.languageDropdown.classList.toggle('active');
-        }
-
-        // Change language
-        function changeLanguage(lang) {
-            state.currentLanguage = lang;
-            
-            // Update button text
-            elements.languageBtn.querySelector('span').textContent = lang.toUpperCase();
-            
-            // Update active option
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-            });
-            document.querySelector(`.language-option[data-lang="${lang}"]`).classList.add('active');
-            
-            // Close dropdown
-            elements.languageDropdown.classList.remove('active');
-            
-            // Update voice recognition language if supported
-            if (state.voiceRecognition) {
-                state.voiceRecognition.lang = lang === 'en' ? 'en-US' : `${lang}-${lang.toUpperCase()}`;
-            }
-            
-            showToast(`Language changed to ${lang}`, 'success');
-        }
-
-        // Show shortcuts modal
-        function showShortcutsModal() {
-            elements.shortcutsModal.classList.add('active');
-        }
-
-        // Hide shortcuts modal
-        function hideShortcutsModal() {
-            elements.shortcutsModal.classList.remove('active');
-        }
-
-        // Upload profile avatar
-        function uploadProfileAvatar() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const imageUrl = event.target.result;
-                    
-                    // Update avatar
-                    elements.userProfileAvatar.style.backgroundImage = `url(${imageUrl})`;
-                    elements.userProfileAvatar.textContent = '';
-                    elements.userAvatar.style.backgroundImage = `url(${imageUrl})`;
-                    elements.userAvatar.textContent = '';
-                    
-                    // Save to Firestore
-                    if (state.user) {
-                        db.collection('users').doc(state.user.uid).update({
-                            photoURL: imageUrl
-                        }).catch(error => {
-                            console.error('Error updating profile picture:', error);
-                            showToast('Error updating profile picture', 'error');
-                        });
-                    }
-                    
-                    showToast('Profile picture updated', 'success');
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
         }
 
         // Apply theme
