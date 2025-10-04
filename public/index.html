@@ -20,8 +20,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Pyodide for Python execution -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    
     <style>
-        /* ChatGPT-inspired Theme with Tomo Academy branding */
+        /* All your existing CSS styles remain here */
         :root {
             --primary: #10a37f;
             --primary-dark: #0d8f70;
@@ -1143,7 +1149,7 @@
             gap: 8px;
         }
 
-        .copy-btn, .preview-btn {
+        .copy-btn, .preview-btn, .run-btn {
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
@@ -1157,8 +1163,17 @@
             transition: all 0.2s;
         }
 
-        .copy-btn:hover, .preview-btn:hover {
+        .copy-btn:hover, .preview-btn:hover, .run-btn:hover {
             background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .run-btn {
+            background-color: rgba(16, 163, 127, 0.2);
+            border-color: rgba(16, 163, 127, 0.3);
+        }
+
+        .run-btn:hover {
+            background-color: rgba(16, 163, 127, 0.3);
         }
 
         .copy-btn.copied {
@@ -2416,7 +2431,7 @@
                 padding: 6px 12px;
             }
             
-            .copy-btn, .preview-btn {
+            .copy-btn, .preview-btn, .run-btn {
                 padding: 3px 6px;
                 font-size: 0.7rem;
             }
@@ -3124,6 +3139,693 @@
         .offline-indicator.active {
             display: block;
         }
+
+        /* NEW STYLES FOR ADDED FEATURES */
+
+        /* Web Search Results */
+        .search-results-panel {
+            position: fixed;
+            right: -400px;
+            top: 60px;
+            width: 400px;
+            height: calc(100vh - 60px);
+            background-color: var(--surface);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            overflow: hidden;
+        }
+
+        .search-results-panel.active {
+            right: 0;
+        }
+
+        .search-results-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-results-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .search-results-close {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-results-close:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .search-results-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .search-result-item {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .search-result-item-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .search-result-item-url {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+        }
+
+        .search-result-item-snippet {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Image Generation Panel */
+        .image-generation-panel {
+            position: fixed;
+            right: -400px;
+            top: 60px;
+            width: 400px;
+            height: calc(100vh - 60px);
+            background-color: var(--surface);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            overflow: hidden;
+        }
+
+        .image-generation-panel.active {
+            right: 0;
+        }
+
+        .image-generation-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .image-generation-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .image-generation-close {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-generation-close:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .image-generation-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .image-prompt-input {
+            width: 100%;
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 1rem;
+            resize: none;
+            min-height: 100px;
+        }
+
+        .image-prompt-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
+        }
+
+        .image-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .image-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .image-option-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .image-option-select {
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            width: 150px;
+            cursor: pointer;
+        }
+
+        .image-generate-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .image-generate-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .image-generate-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .image-results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .image-result {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+        }
+
+        .image-result img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-result-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .image-result:hover .image-result-actions {
+            opacity: 1;
+        }
+
+        .image-result-action {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .image-result-action:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Code Execution Panel */
+        .code-execution-panel {
+            position: fixed;
+            right: -500px;
+            top: 60px;
+            width: 500px;
+            height: calc(100vh - 60px);
+            background-color: var(--surface);
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            overflow: hidden;
+        }
+
+        .code-execution-panel.active {
+            right: 0;
+        }
+
+        .code-execution-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-execution-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .code-execution-close {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .code-execution-close:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .code-execution-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .code-editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-editor-header {
+            padding: 0.5rem 1rem;
+            background-color: var(--surface-elevated);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-editor-language {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .code-editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .code-editor-action {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .code-editor-action:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .code-editor-textarea {
+            flex: 1;
+            background-color: var(--editor-bg);
+            border: none;
+            color: var(--editor-text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            padding: 1rem;
+            resize: none;
+            outline: none;
+        }
+
+        .code-output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-output-header {
+            padding: 0.5rem 1rem;
+            background-color: var(--surface-elevated);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-output-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .code-output-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .code-output-action {
+            width: 30px;
+            height: 30px;
+            border-radius: var(--radius);
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .code-output-action:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .code-output-content {
+            flex: 1;
+            background-color: var(--editor-bg);
+            color: var(--editor-text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            padding: 1rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .code-run-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .code-run-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .code-run-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Enhanced Chat Input with More Options */
+        .enhanced-chat-input-container {
+            padding: 1.5rem;
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 5;
+        }
+
+        .enhanced-chat-input-wrapper {
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enhanced-chat-input-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .enhanced-chat-input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
+        }
+
+        .enhanced-chat-input-wrapper:focus-within::before {
+            opacity: 0.5;
+        }
+
+        .enhanced-chat-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            max-height: 200px;
+            line-height: 1.5;
+            font-family: inherit;
+            padding: 4px 0;
+        }
+
+        .enhanced-chat-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .enhanced-chat-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .enhanced-chat-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .enhanced-chat-action-btn:hover {
+            background-color: var(--surface-highlight);
+            color: var(--text-primary);
+        }
+
+        .enhanced-chat-action-btn.active {
+            color: var(--primary);
+        }
+
+        .enhanced-chat-action-btn .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--surface-elevated);
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            margin-bottom: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            z-index: 10;
+        }
+
+        .enhanced-chat-action-btn:hover .tooltip {
+            opacity: 1;
+        }
+
+        .enhanced-chat-send-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--tomo-gradient);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .enhanced-chat-send-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .enhanced-chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Keyboard Shortcuts Help */
+        .shortcuts-help {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        .shortcuts-help.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .shortcuts-help-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .shortcuts-help-key {
+            font-family: monospace;
+            font-weight: 600;
+            color: var(--text-primary);
+            background-color: var(--surface-elevated);
+            padding: 0.125rem 0.25rem;
+            border-radius: var(--radius-sm);
+            margin: 0 0.25rem;
+        }
+
+        /* Mobile Touch Actions */
+        @media (max-width: 768px) {
+            .touch-action {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .touch-action::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 5px;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.5);
+                opacity: 0;
+                border-radius: 100%;
+                transform: scale(1, 1) translate(-50%);
+                transform-origin: 50% 50%;
+            }
+            
+            .touch-action:focus:not(:active)::after {
+                animation: ripple 1s ease-out;
+            }
+            
+            @keyframes ripple {
+                0% {
+                    transform: scale(0, 0);
+                    opacity: 1;
+                }
+                20% {
+                    transform: scale(25, 25);
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(40, 40);
+                }
+            }
+        }
     </style>
 </head>
 <body>
@@ -3302,21 +4004,130 @@
                     <!-- Messages will be loaded here -->
                 </div>
 
-                <div class="chat-input-container">
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input" id="chatInput" placeholder="Ask your AI Assistant anything..." rows="1"></textarea>
-                        <div class="chat-actions">
-                            <button class="chat-action-btn" id="attachBtn" title="Attach file">
+                <div class="enhanced-chat-input-container">
+                    <div class="enhanced-chat-input-wrapper">
+                        <textarea class="enhanced-chat-input" id="chatInput" placeholder="Ask your AI Assistant anything..." rows="1"></textarea>
+                        <div class="enhanced-chat-actions">
+                            <button class="enhanced-chat-action-btn" id="attachBtn" title="Attach file">
                                 <i class="fas fa-paperclip"></i>
+                                <span class="tooltip">Attach file</span>
                             </button>
-                            <button class="voice-input-btn" id="voiceInputBtn" title="Voice input">
+                            <button class="enhanced-chat-action-btn" id="voiceInputBtn" title="Voice input">
                                 <i class="fas fa-microphone"></i>
+                                <span class="tooltip">Voice input</span>
                             </button>
-                            <button class="chat-send-btn" id="sendBtn">
+                            <button class="enhanced-chat-action-btn" id="webSearchBtn" title="Web search">
+                                <i class="fas fa-search"></i>
+                                <span class="tooltip">Web search</span>
+                            </button>
+                            <button class="enhanced-chat-action-btn" id="imageGenBtn" title="Generate image">
+                                <i class="fas fa-image"></i>
+                                <span class="tooltip">Generate image</span>
+                            </button>
+                            <button class="enhanced-chat-action-btn" id="codeExecBtn" title="Execute code">
+                                <i class="fas fa-code"></i>
+                                <span class="tooltip">Execute code</span>
+                            </button>
+                            <button class="enhanced-chat-send-btn" id="sendBtn">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Web Search Results Panel -->
+    <div class="search-results-panel" id="searchResultsPanel">
+        <div class="search-results-header">
+            <div class="search-results-title">Web Search Results</div>
+            <button class="search-results-close" id="searchResultsClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-results-content" id="searchResultsContent">
+            <!-- Search results will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Image Generation Panel -->
+    <div class="image-generation-panel" id="imageGenerationPanel">
+        <div class="image-generation-header">
+            <div class="image-generation-title">Image Generation</div>
+            <button class="image-generation-close" id="imageGenerationClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="image-generation-content">
+            <textarea class="image-prompt-input" id="imagePromptInput" placeholder="Describe the image you want to generate..."></textarea>
+            <div class="image-options">
+                <div class="image-option">
+                    <div class="image-option-label">Style</div>
+                    <select class="image-option-select" id="imageStyleSelect">
+                        <option value="realistic">Realistic</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="abstract">Abstract</option>
+                        <option value="oil-painting">Oil Painting</option>
+                        <option value="watercolor">Watercolor</option>
+                        <option value="sketch">Sketch</option>
+                    </select>
+                </div>
+                <div class="image-option">
+                    <div class="image-option-label">Size</div>
+                    <select class="image-option-select" id="imageSizeSelect">
+                        <option value="512x512">512x512</option>
+                        <option value="1024x1024">1024x1024</option>
+                        <option value="1024x768">1024x768</option>
+                        <option value="768x1024">768x1024</option>
+                    </select>
+                </div>
+            </div>
+            <button class="image-generate-btn" id="imageGenerateBtn">Generate Image</button>
+            <div class="image-results" id="imageResults">
+                <!-- Generated images will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Execution Panel -->
+    <div class="code-execution-panel" id="codeExecutionPanel">
+        <div class="code-execution-header">
+            <div class="code-execution-title">Code Execution</div>
+            <button class="code-execution-close" id="codeExecutionClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="code-execution-content">
+            <div class="code-editor">
+                <div class="code-editor-header">
+                    <div class="code-editor-language">Python</div>
+                    <div class="code-editor-actions">
+                        <button class="code-editor-action" id="codeClearBtn" title="Clear code">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="code-editor-action" id="codeCopyBtn" title="Copy code">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <textarea class="code-editor-textarea" id="codeEditorTextarea" placeholder="Enter your Python code here..."></textarea>
+            </div>
+            <button class="code-run-btn" id="codeRunBtn">Run Code</button>
+            <div class="code-output">
+                <div class="code-output-header">
+                    <div class="code-output-title">Output</div>
+                    <div class="code-output-actions">
+                        <button class="code-output-action" id="outputClearBtn" title="Clear output">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="code-output-action" id="outputCopyBtn" title="Copy output">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="code-output-content" id="codeOutputContent">
+                    <!-- Code output will be displayed here -->
                 </div>
             </div>
         </div>
@@ -3468,6 +4279,33 @@
                         <div class="settings-description">Enable keyboard shortcuts for faster navigation</div>
                     </div>
                     <div class="settings-toggle active" id="keyboardShortcutsToggle">
+                        <div class="settings-toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Web Search</div>
+                        <div class="settings-description">Enable web search for real-time information</div>
+                    </div>
+                    <div class="settings-toggle active" id="webSearchToggle">
+                        <div class="settings-toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Image Generation</div>
+                        <div class="settings-description">Enable AI image generation</div>
+                    </div>
+                    <div class="settings-toggle active" id="imageGenToggle">
+                        <div class="settings-toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Code Execution</div>
+                        <div class="settings-description">Enable Python code execution</div>
+                    </div>
+                    <div class="settings-toggle active" id="codeExecToggle">
                         <div class="settings-toggle-slider"></div>
                     </div>
                 </div>
@@ -3805,13 +4643,39 @@
                     </div>
                 </div>
                 <div class="shortcuts-section">
+                    <div class="shortcuts-section-title">Features</div>
+                    <div class="shortcuts-list">
+                        <div class="shortcut-item">
+                            <div class="shortcut-description">Web Search</div>
+                            <div class="shortcut-keys">
+                                <span class="shortcut-key">Ctrl</span>
+                                <span class="shortcut-key">S</span>
+                            </div>
+                        </div>
+                        <div class="shortcut-item">
+                            <div class="shortcut-description">Image Generation</div>
+                            <div class="shortcut-keys">
+                                <span class="shortcut-key">Ctrl</span>
+                                <span class="shortcut-key">I</span>
+                            </div>
+                        </div>
+                        <div class="shortcut-item">
+                            <div class="shortcut-description">Code Execution</div>
+                            <div class="shortcut-keys">
+                                <span class="shortcut-key">Ctrl</span>
+                                <span class="shortcut-key">E</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="shortcuts-section">
                     <div class="shortcuts-section-title">Study Mode</div>
                     <div class="shortcuts-list">
                         <div class="shortcut-item">
                             <div class="shortcut-description">Toggle Study Mode</div>
                             <div class="shortcut-keys">
                                 <span class="shortcut-key">Ctrl</span>
-                                <span class="shortcut-key">S</span>
+                                <span class="shortcut-key">M</span>
                             </div>
                         </div>
                         <div class="shortcut-item">
@@ -3847,6 +4711,13 @@
     <!-- Offline Indicator -->
     <div class="offline-indicator" id="offlineIndicator">
         <i class="fas fa-wifi"></i> You are offline. Some features may not be available.
+    </div>
+
+    <!-- Keyboard Shortcuts Help -->
+    <div class="shortcuts-help" id="shortcutsHelp">
+        <div class="shortcuts-help-text">
+            Press <span class="shortcuts-help-key">?</span> for keyboard shortcuts
+        </div>
     </div>
 
     <!-- Overlay -->
@@ -3907,7 +4778,10 @@
                 keyboardShortcuts: true,
                 followUp: true,
                 persona: 'friendly',
-                studyReminders: false
+                studyReminders: false,
+                webSearch: true,
+                imageGen: true,
+                codeExec: true
             },
             uploadedFiles: [],
             activeTasks: [],
@@ -3971,8 +4845,12 @@
                 'ctrl+enter': () => sendMessage(),
                 'shift+enter': () => addNewLine(),
                 'ctrl+v': () => toggleVoiceInput(),
-                'ctrl+s': () => toggleStudyMode(),
-                'ctrl+t': () => toggleStudyTimer()
+                'ctrl+s': () => toggleWebSearchPanel(),
+                'ctrl+i': () => toggleImageGenPanel(),
+                'ctrl+e': () => toggleCodeExecPanel(),
+                'ctrl+m': () => toggleStudyMode(),
+                'ctrl+t': () => toggleStudyTimer(),
+                '?': () => showShortcutsModal()
             },
             // Language
             currentLanguage: 'en',
@@ -3984,7 +4862,17 @@
             shareSettings: {
                 allowComments: true,
                 expiration: 'never'
-            }
+            },
+            // Web search
+            webSearchResults: [],
+            isSearching: false,
+            // Image generation
+            imageGenResults: [],
+            isGeneratingImage: false,
+            // Code execution
+            pyodide: null,
+            isPyodideLoading: false,
+            isRunningCode: false
         };
 
         // Typing speeds (characters per millisecond)
@@ -4036,6 +4924,9 @@
             sendBtn: document.getElementById('sendBtn'),
             attachBtn: document.getElementById('attachBtn'),
             voiceInputBtn: document.getElementById('voiceInputBtn'),
+            webSearchBtn: document.getElementById('webSearchBtn'),
+            imageGenBtn: document.getElementById('imageGenBtn'),
+            codeExecBtn: document.getElementById('codeExecBtn'),
             studyModeBtn: document.getElementById('studyModeBtn'),
             timerBtn: document.getElementById('timerBtn'),
             citationBtn: document.getElementById('citationBtn'),
@@ -4066,6 +4957,9 @@
             followUpToggle: document.getElementById('followUpToggle'),
             personaSelect: document.getElementById('personaSelect'),
             studyRemindersToggle: document.getElementById('studyRemindersToggle'),
+            webSearchToggle: document.getElementById('webSearchToggle'),
+            imageGenToggle: document.getElementById('imageGenToggle'),
+            codeExecToggle: document.getElementById('codeExecToggle'),
             searchChatBtn: document.getElementById('searchChatBtn'),
             exportChatBtn: document.getElementById('exportChatBtn'),
             clearChatBtn: document.getElementById('clearChatBtn'),
@@ -4116,7 +5010,28 @@
             dislikeFeedbackModal: document.getElementById('dislikeFeedbackModal'),
             dislikeFeedbackOther: document.getElementById('dislikeFeedbackOther'),
             dislikeFeedbackCancelBtn: document.getElementById('dislikeFeedbackCancelBtn'),
-            dislikeFeedbackSubmitBtn: document.getElementById('dislikeFeedbackSubmitBtn')
+            dislikeFeedbackSubmitBtn: document.getElementById('dislikeFeedbackSubmitBtn'),
+            // New elements for added features
+            searchResultsPanel: document.getElementById('searchResultsPanel'),
+            searchResultsClose: document.getElementById('searchResultsClose'),
+            searchResultsContent: document.getElementById('searchResultsContent'),
+            imageGenerationPanel: document.getElementById('imageGenerationPanel'),
+            imageGenerationClose: document.getElementById('imageGenerationClose'),
+            imagePromptInput: document.getElementById('imagePromptInput'),
+            imageStyleSelect: document.getElementById('imageStyleSelect'),
+            imageSizeSelect: document.getElementById('imageSizeSelect'),
+            imageGenerateBtn: document.getElementById('imageGenerateBtn'),
+            imageResults: document.getElementById('imageResults'),
+            codeExecutionPanel: document.getElementById('codeExecutionPanel'),
+            codeExecutionClose: document.getElementById('codeExecutionClose'),
+            codeEditorTextarea: document.getElementById('codeEditorTextarea'),
+            codeRunBtn: document.getElementById('codeRunBtn'),
+            codeOutputContent: document.getElementById('codeOutputContent'),
+            codeClearBtn: document.getElementById('codeClearBtn'),
+            codeCopyBtn: document.getElementById('codeCopyBtn'),
+            outputClearBtn: document.getElementById('outputClearBtn'),
+            outputCopyBtn: document.getElementById('outputCopyBtn'),
+            shortcutsHelp: document.getElementById('shortcutsHelp')
         };
 
         // Initialize app
@@ -4150,10 +5065,21 @@
                     // Start sync timer for cross-device synchronization
                     startSyncTimer();
                     
+                    // Initialize Pyodide for code execution
+                    initializePyodide();
+                    
                     // Check if notification banner should be shown
                     if ('Notification' in window && Notification.permission === 'default') {
                         setTimeout(() => showNotificationBanner(), 2000);
                     }
+                    
+                    // Show keyboard shortcuts help after a delay
+                    setTimeout(() => {
+                        elements.shortcutsHelp.classList.add('visible');
+                        setTimeout(() => {
+                            elements.shortcutsHelp.classList.remove('visible');
+                        }, 5000);
+                    }, 3000);
                 } else {
                     // User is signed out
                     state.user = null;
@@ -4203,6 +5129,30 @@
                 applySettings();
             }, 100);
         });
+
+        // Initialize Pyodide for Python code execution
+        async function initializePyodide() {
+            if (state.isPyodideLoading) return;
+            
+            state.isPyodideLoading = true;
+            showToast('Loading Python environment...', 'success');
+            
+            try {
+                state.pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/"
+                });
+                
+                // Install common packages
+                await state.pyodide.loadPackage(['numpy', 'matplotlib', 'pandas', 'scipy']);
+                
+                showToast('Python environment ready', 'success');
+            } catch (error) {
+                console.error('Error loading Pyodide:', error);
+                showToast('Error loading Python environment', 'error');
+            } finally {
+                state.isPyodideLoading = false;
+            }
+        }
 
         // Update online status
         function updateOnlineStatus() {
@@ -4985,6 +5935,48 @@
                 elements.voiceInputBtn.addEventListener('click', toggleVoiceInput);
             }
             
+            // Web search
+            if (elements.webSearchBtn) {
+                elements.webSearchBtn.addEventListener('click', toggleWebSearchPanel);
+            }
+            if (elements.searchResultsClose) {
+                elements.searchResultsClose.addEventListener('click', closeWebSearchPanel);
+            }
+            
+            // Image generation
+            if (elements.imageGenBtn) {
+                elements.imageGenBtn.addEventListener('click', toggleImageGenPanel);
+            }
+            if (elements.imageGenerationClose) {
+                elements.imageGenerationClose.addEventListener('click', closeImageGenPanel);
+            }
+            if (elements.imageGenerateBtn) {
+                elements.imageGenerateBtn.addEventListener('click', generateImage);
+            }
+            
+            // Code execution
+            if (elements.codeExecBtn) {
+                elements.codeExecBtn.addEventListener('click', toggleCodeExecPanel);
+            }
+            if (elements.codeExecutionClose) {
+                elements.codeExecutionClose.addEventListener('click', closeCodeExecPanel);
+            }
+            if (elements.codeRunBtn) {
+                elements.codeRunBtn.addEventListener('click', runCode);
+            }
+            if (elements.codeClearBtn) {
+                elements.codeClearBtn.addEventListener('click', clearCode);
+            }
+            if (elements.codeCopyBtn) {
+                elements.codeCopyBtn.addEventListener('click', copyCode);
+            }
+            if (elements.outputClearBtn) {
+                elements.outputClearBtn.addEventListener('click', clearOutput);
+            }
+            if (elements.outputCopyBtn) {
+                elements.outputCopyBtn.addEventListener('click', copyOutput);
+            }
+            
             // Study mode
             if (elements.studyModeBtn) {
                 elements.studyModeBtn.addEventListener('click', toggleStudyMode);
@@ -5085,6 +6077,15 @@
             }
             if (elements.studyRemindersToggle) {
                 elements.studyRemindersToggle.addEventListener('click', toggleStudyReminders);
+            }
+            if (elements.webSearchToggle) {
+                elements.webSearchToggle.addEventListener('click', toggleWebSearch);
+            }
+            if (elements.imageGenToggle) {
+                elements.imageGenToggle.addEventListener('click', toggleImageGen);
+            }
+            if (elements.codeExecToggle) {
+                elements.codeExecToggle.addEventListener('click', toggleCodeExec);
             }
             
             // Chat history management
@@ -5489,11 +6490,11 @@
                 
                 if (isKeyboardOpen) {
                     // When keyboard is open, make input container stick to bottom
-                    document.querySelector('.chat-input-container').style.position = 'fixed';
+                    document.querySelector('.enhanced-chat-input-container').style.position = 'fixed';
                     document.querySelector('.chat-messages').style.height = 'calc(100vh - 180px)';
                 } else {
                     // When keyboard is closed, restore normal layout
-                    document.querySelector('.chat-input-container').style.position = 'fixed';
+                    document.querySelector('.enhanced-chat-input-container').style.position = 'fixed';
                     document.querySelector('.chat-messages').style.height = 'calc(100vh - 160px)';
                 }
             }
@@ -5564,6 +6565,9 @@
             elements.sidebar.classList.remove('active');
             elements.settingsPanel.classList.remove('active');
             elements.userProfilePanel.classList.remove('active');
+            elements.searchResultsPanel.classList.remove('active');
+            elements.imageGenerationPanel.classList.remove('active');
+            elements.codeExecutionPanel.classList.remove('active');
             elements.overlay.classList.remove('active');
             
             // Reset to chat view
@@ -5709,6 +6713,8 @@ I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</s
         <li>Helping with research and citations</li>
         <li>Assisting with math and science problems</li>
         <li>Providing writing feedback and suggestions</li>
+        <li>Web search for real-time information</li>
+        <li>Image generation for visual learning</li>
     </ul>
 </div>
 
@@ -5726,6 +6732,8 @@ I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</s
         <li>Helping with research and citations</li>
         <li>Assisting with math and science problems</li>
         <li>Providing writing feedback and suggestions</li>
+        <li>Web search for real-time information</li>
+        <li>Image generation for visual learning</li>
     </ul>
 </div>
 
@@ -6267,6 +7275,12 @@ I can format my responses with tables and boxes for better readability. How can 
                                         <span>Preview</span>
                                     </button>
                                 ` : ''}
+                                ${language === 'python' ? `
+                                    <button class="run-btn" onclick="runCodeFromMessage('${codeId}')">
+                                        <i class="fas fa-play"></i>
+                                        <span>Run</span>
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
                         <div class="code-with-line-numbers">
@@ -6452,7 +7466,10 @@ Remember the user's preferences and previous interactions to provide personalize
                             messages: apiMessages,
                             model: state.selectedModel || 'llama-3.3-70b-versatile',
                             stream: true,
-                            userId: state.user ? state.user.uid : null
+                            userId: state.user ? state.user.uid : null,
+                            enableWebSearch: state.settings.webSearch,
+                            enableImageGen: state.settings.imageGen,
+                            enableCodeExec: state.settings.codeExec
                         }),
                         signal: state.abortController.signal
                     });
@@ -6811,6 +7828,350 @@ Remember the user's preferences and previous interactions to provide personalize
             } else {
                 startVoiceRecording();
             }
+        }
+
+        // Toggle web search panel
+        function toggleWebSearchPanel() {
+            elements.searchResultsPanel.classList.toggle('active');
+            elements.webSearchBtn.classList.toggle('active');
+            
+            // If opening, focus on search input
+            if (elements.searchResultsPanel.classList.contains('active')) {
+                // Create search input if it doesn't exist
+                if (!document.getElementById('webSearchInput')) {
+                    const searchInput = document.createElement('input');
+                    searchInput.id = 'webSearchInput';
+                    searchInput.type = 'text';
+                    searchInput.placeholder = 'Search the web...';
+                    searchInput.className = 'form-input';
+                    searchInput.style.margin = '1rem';
+                    
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            performWebSearch(searchInput.value);
+                        }
+                    });
+                    
+                    elements.searchResultsContent.appendChild(searchInput);
+                }
+                
+                document.getElementById('webSearchInput').focus();
+            }
+        }
+
+        // Close web search panel
+        function closeWebSearchPanel() {
+            elements.searchResultsPanel.classList.remove('active');
+            elements.webSearchBtn.classList.remove('active');
+        }
+
+        // Perform web search
+        async function performWebSearch(query) {
+            if (!query.trim()) return;
+            
+            state.isSearching = true;
+            elements.searchResultsContent.innerHTML = '<div class="spinner"></div>';
+            
+            try {
+                // In a real implementation, you would use a web search API
+                // For demonstration, we'll simulate search results
+                setTimeout(() => {
+                    const mockResults = [
+                        {
+                            title: 'Search Result 1',
+                            url: 'https://example.com/result1',
+                            snippet: 'This is a mock search result snippet that would contain relevant information about the query.'
+                        },
+                        {
+                            title: 'Search Result 2',
+                            url: 'https://example.com/result2',
+                            snippet: 'This is another mock search result that provides additional context for the user query.'
+                        },
+                        {
+                            title: 'Search Result 3',
+                            url: 'https://example.com/result3',
+                            snippet: 'This is a third mock search result that offers a different perspective on the topic.'
+                        }
+                    ];
+                    
+                    state.webSearchResults = mockResults;
+                    renderWebSearchResults();
+                    state.isSearching = false;
+                }, 1500);
+            } catch (error) {
+                console.error('Error performing web search:', error);
+                elements.searchResultsContent.innerHTML = '<p>Error performing search. Please try again.</p>';
+                state.isSearching = false;
+            }
+        }
+
+        // Render web search results
+        function renderWebSearchResults() {
+            elements.searchResultsContent.innerHTML = '';
+            
+            if (state.webSearchResults.length === 0) {
+                elements.searchResultsContent.innerHTML = '<p>No results found. Try a different search term.</p>';
+                return;
+            }
+            
+            state.webSearchResults.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'search-result-item';
+                resultItem.innerHTML = `
+                    <div class="search-result-item-title">${result.title}</div>
+                    <div class="search-result-item-url">${result.url}</div>
+                    <div class="search-result-item-snippet">${result.snippet}</div>
+                `;
+                
+                resultItem.addEventListener('click', () => {
+                    // Add search result to chat
+                    const searchResultMessage = `I found this information from the web:\n\n**${result.title}**\n${result.snippet}\n\nSource: ${result.url}`;
+                    
+                    elements.chatInput.value = searchResultMessage;
+                    closeWebSearchPanel();
+                });
+                
+                elements.searchResultsContent.appendChild(resultItem);
+            });
+        }
+
+        // Toggle image generation panel
+        function toggleImageGenPanel() {
+            elements.imageGenerationPanel.classList.toggle('active');
+            elements.imageGenBtn.classList.toggle('active');
+            
+            // If opening, focus on prompt input
+            if (elements.imageGenerationPanel.classList.contains('active')) {
+                elements.imagePromptInput.focus();
+            }
+        }
+
+        // Close image generation panel
+        function closeImageGenPanel() {
+            elements.imageGenerationPanel.classList.remove('active');
+            elements.imageGenBtn.classList.remove('active');
+        }
+
+        // Generate image
+        async function generateImage() {
+            const prompt = elements.imagePromptInput.value.trim();
+            if (!prompt) {
+                showToast('Please enter a prompt for image generation', 'error');
+                return;
+            }
+            
+            const style = elements.imageStyleSelect.value;
+            const size = elements.imageSizeSelect.value;
+            
+            state.isGeneratingImage = true;
+            elements.imageGenerateBtn.disabled = true;
+            elements.imageGenerateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            
+            try {
+                // In a real implementation, you would use an image generation API
+                // For demonstration, we'll simulate image generation
+                setTimeout(() => {
+                    const mockImages = [
+                        'https://picsum.photos/seed/image1/512/512.jpg',
+                        'https://picsum.photos/seed/image2/512/512.jpg',
+                        'https://picsum.photos/seed/image3/512/512.jpg',
+                        'https://picsum.photos/seed/image4/512/512.jpg'
+                    ];
+                    
+                    state.imageGenResults = mockImages;
+                    renderImageResults();
+                    state.isGeneratingImage = false;
+                    elements.imageGenerateBtn.disabled = false;
+                    elements.imageGenerateBtn.innerHTML = 'Generate Image';
+                    
+                    showToast('Images generated successfully', 'success');
+                }, 3000);
+            } catch (error) {
+                console.error('Error generating image:', error);
+                showToast('Error generating image', 'error');
+                state.isGeneratingImage = false;
+                elements.imageGenerateBtn.disabled = false;
+                elements.imageGenerateBtn.innerHTML = 'Generate Image';
+            }
+        }
+
+        // Render image results
+        function renderImageResults() {
+            elements.imageResults.innerHTML = '';
+            
+            if (state.imageGenResults.length === 0) {
+                return;
+            }
+            
+            state.imageGenResults.forEach((imageUrl, index) => {
+                const imageResult = document.createElement('div');
+                imageResult.className = 'image-result';
+                imageResult.innerHTML = `
+                    <img src="${imageUrl}" alt="Generated image ${index + 1}">
+                    <div class="image-result-actions">
+                        <button class="image-result-action" onclick="addImageToChat('${imageUrl}')" title="Add to chat">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="image-result-action" onclick="downloadImage('${imageUrl}', ${index})" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                `;
+                
+                elements.imageResults.appendChild(imageResult);
+            });
+        }
+
+        // Add image to chat
+        function addImageToChat(imageUrl) {
+            const imageMessage = `![Generated Image](${imageUrl})`;
+            elements.chatInput.value = imageMessage;
+            closeImageGenPanel();
+        }
+
+        // Download image
+        function downloadImage(imageUrl, index) {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = `generated-image-${index + 1}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Toggle code execution panel
+        function toggleCodeExecPanel() {
+            elements.codeExecutionPanel.classList.toggle('active');
+            elements.codeExecBtn.classList.toggle('active');
+            
+            // If opening, focus on code editor
+            if (elements.codeExecutionPanel.classList.contains('active')) {
+                elements.codeEditorTextarea.focus();
+            }
+        }
+
+        // Close code execution panel
+        function closeCodeExecPanel() {
+            elements.codeExecutionPanel.classList.remove('active');
+            elements.codeExecBtn.classList.remove('active');
+        }
+
+        // Run code
+        async function runCode() {
+            const code = elements.codeEditorTextarea.value.trim();
+            if (!code) {
+                showToast('Please enter some code to run', 'error');
+                return;
+            }
+            
+            if (!state.pyodide) {
+                showToast('Python environment is still loading. Please wait...', 'warning');
+                return;
+            }
+            
+            state.isRunningCode = true;
+            elements.codeRunBtn.disabled = true;
+            elements.codeRunBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            elements.codeOutputContent.textContent = 'Running code...';
+            
+            try {
+                // Run the code in Pyodide
+                await state.pyodide.runPythonAsync(code);
+                
+                // Get the output from stdout
+                const output = state.pyodide.runPython(`
+import sys
+import io
+from contextlib import redirect_stdout
+
+# Capture stdout
+old_stdout = sys.stdout
+sys.stdout = captured_output = io.StringIO()
+
+# Run the user's code again to capture output
+try:
+ ${code.split('\n').map(line => '    ' + line).join('\n')}
+except Exception as e:
+    print(f"Error: {e}")
+
+# Get the output
+output = captured_output.getvalue()
+
+# Restore stdout
+sys.stdout = old_stdout
+
+# Return the output
+output
+`);
+                
+                elements.codeOutputContent.textContent = output || 'Code executed successfully (no output)';
+                showToast('Code executed successfully', 'success');
+            } catch (error) {
+                console.error('Error running code:', error);
+                elements.codeOutputContent.textContent = `Error: ${error.message}`;
+                showToast('Error running code', 'error');
+            } finally {
+                state.isRunningCode = false;
+                elements.codeRunBtn.disabled = false;
+                elements.codeRunBtn.innerHTML = 'Run Code';
+            }
+        }
+
+        // Run code from message
+        function runCodeFromMessage(codeId) {
+            const codeElement = document.getElementById(codeId);
+            if (!codeElement) return;
+            
+            const code = codeElement.textContent;
+            
+            // Open code execution panel
+            toggleCodeExecPanel();
+            
+            // Set the code in the editor
+            elements.codeEditorTextarea.value = code;
+            
+            // Run the code
+            setTimeout(() => {
+                runCode();
+            }, 500);
+        }
+
+        // Clear code
+        function clearCode() {
+            elements.codeEditorTextarea.value = '';
+        }
+
+        // Copy code
+        function copyCode() {
+            const code = elements.codeEditorTextarea.value;
+            
+            navigator.clipboard.writeText(code)
+                .then(() => {
+                    showToast('Code copied to clipboard', 'success');
+                })
+                .catch(err => {
+                    showToast('Failed to copy code', 'error');
+                    console.error('Failed to copy:', err);
+                });
+        }
+
+        // Clear output
+        function clearOutput() {
+            elements.codeOutputContent.textContent = '';
+        }
+
+        // Copy output
+        function copyOutput() {
+            const output = elements.codeOutputContent.textContent;
+            
+            navigator.clipboard.writeText(output)
+                .then(() => {
+                    showToast('Output copied to clipboard', 'success');
+                })
+                .catch(err => {
+                    showToast('Failed to copy output', 'error');
+                    console.error('Failed to copy:', err);
+                });
         }
 
         // Toggle study mode
@@ -7287,6 +8648,30 @@ Remember the user's preferences and previous interactions to provide personalize
             showToast(`Study reminders ${state.settings.studyReminders ? 'enabled' : 'disabled'}`, 'success');
         }
 
+        // Toggle web search
+        function toggleWebSearch() {
+            state.settings.webSearch = !state.settings.webSearch;
+            elements.webSearchToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Web search ${state.settings.webSearch ? 'enabled' : 'disabled'}`, 'success');
+        }
+
+        // Toggle image generation
+        function toggleImageGen() {
+            state.settings.imageGen = !state.settings.imageGen;
+            elements.imageGenToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Image generation ${state.settings.imageGen ? 'enabled' : 'disabled'}`, 'success');
+        }
+
+        // Toggle code execution
+        function toggleCodeExec() {
+            state.settings.codeExec = !state.settings.codeExec;
+            elements.codeExecToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Code execution ${state.settings.codeExec ? 'enabled' : 'disabled'}`, 'success');
+        }
+
         // Apply settings
         function applySettings() {
             // Apply theme
@@ -7429,6 +8814,30 @@ Remember the user's preferences and previous interactions to provide personalize
                     elements.studyRemindersToggle.classList.add('active');
                 } else {
                     elements.studyRemindersToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.webSearchToggle) {
+                if (state.settings.webSearch) {
+                    elements.webSearchToggle.classList.add('active');
+                } else {
+                    elements.webSearchToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.imageGenToggle) {
+                if (state.settings.imageGen) {
+                    elements.imageGenToggle.classList.add('active');
+                } else {
+                    elements.imageGenToggle.classList.remove('active');
+                }
+            }
+            
+            if (elements.codeExecToggle) {
+                if (state.settings.codeExec) {
+                    elements.codeExecToggle.classList.add('active');
+                } else {
+                    elements.codeExecToggle.classList.remove('active');
                 }
             }
             
@@ -8315,6 +9724,12 @@ Remember the user's preferences and previous interactions to provide personalize
                     e.preventDefault();
                     state.keyboardShortcuts[keyCombo]();
                 }
+                
+                // Handle special case for ? key (help)
+                if (e.key === '?' && !ctrl && !shift) {
+                    e.preventDefault();
+                    showShortcutsModal();
+                }
             });
         }
 
@@ -8484,6 +9899,9 @@ Remember the user's preferences and previous interactions to provide personalize
         window.navigateTo = navigateTo;
         window.undoDislike = undoDislike;
         window.askFollowUp = askFollowUp;
+        window.runCodeFromMessage = runCodeFromMessage;
+        window.addImageToChat = addImageToChat;
+        window.downloadImage = downloadImage;
     </script>
 </body>
 </html>
