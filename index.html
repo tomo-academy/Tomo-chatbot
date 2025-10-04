@@ -2269,6 +2269,142 @@
             background-size: 1000px 100%;
             animation: shimmer 2s infinite;
         }
+
+        /* Corporate Enhancements */
+        .header {
+            background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--surface) 100%);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elevated) 100%);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-input-wrapper {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: var(--radius-xl);
+        }
+
+        .message.ai .message-content {
+            background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--surface-highlight) 100%);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.2);
+        }
+
+        .code-block {
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: linear-gradient(90deg, var(--surface-highlight) 0%, var(--surface-elevated) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .btn {
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-panel {
+            background: linear-gradient(180deg, var(--glass-bg) 0%, var(--surface-elevated) 100%);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-footer {
+            background: linear-gradient(180deg, var(--surface-elevated) 0%, var(--surface) 100%);
+            border-top: 1px solid var(--border);
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .message-text .info-box {
+            background: linear-gradient(135deg, var(--box-bg) 0%, var(--surface-highlight) 100%);
+            border: 1px solid var(--box-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .toast {
+            background: linear-gradient(135deg, var(--glass-bg) 0%, var(--surface-elevated) 100%);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+        }
+
+        .login-container {
+            background: linear-gradient(135deg, var(--glass-bg) 0%, var(--surface-elevated) 100%);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .brand-tomo, .brand-ai {
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(30, 58, 138, 0.2);
+        }
+
+        .typing-indicator {
+            background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--surface-highlight) 100%);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-container {
+            background: linear-gradient(135deg, var(--glass-bg) 0%, var(--surface-elevated) 100%);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .modal {
+            background: linear-gradient(135deg, var(--glass-bg) 0%, var(--surface-elevated) 100%);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem 1rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            .chat-input-container {
+                background: linear-gradient(180deg, var(--surface) 0%, var(--surface-elevated) 100%);
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            }
+            
+            .sidebar {
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+            }
+        }
     </style>
 </head>
 <body>
@@ -2391,7 +2527,7 @@
                             <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">
                         </div>
                         <div class="message-content">
-                            <div class="message-text">
+                            <div class="message-text" id="welcome-message">
                                 <h1>Hello! I'm <span class="brand-ai">Tomo AI</span> 🚀</h1>
                                 <p>I'm your advanced AI learning assistant, powered by cutting-edge language models and developed by the innovative team at <span class="brand-tomo">Tomo Academy</span>. I'm here to help you with a wide range of educational tasks and provide intelligent, thoughtful responses.</p>
                                 
@@ -2674,15 +2810,14 @@
             dislikedMessages: new Set()
         };
 
-     
         // API Configuration
-const API_CONFIG = {
-    // Update this to your Vercel deployment URL
-    baseUrl: 'https://tomo-chatbot.vercel.app',
-    endpoint: '/api/chat',
-    authEndpoint: '/api/auth',
-    historyEndpoint: '/api/chat-history'
-};
+        const API_CONFIG = {
+            // Update this to your Vercel deployment URL
+            baseUrl: 'https://tomo-chatbot.vercel.app',
+            endpoint: '/api/chat',
+            authEndpoint: '/api/auth',
+            historyEndpoint: '/api/chat-history'
+        };
 
         // DOM Elements
         const elements = {
