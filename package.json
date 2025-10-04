@@ -4,10 +4,9 @@
   "description": "Advanced AI Learning Platform by Tomo Academy",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "vercel dev",
+    "build": "echo 'Build completed'",
+    "start": "vercel dev"
   },
   "dependencies": {
     "@ai-sdk/xai": "^2.0.23",
@@ -19,13 +18,7 @@
     "highlight.js": "^11.9.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-next": "14.2.5",
-    "typescript": "^5.5.3",
-    "@types/node": "^20.14.11",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/dompurify": "^3.0.5"
+    "vercel": "^37.4.0"
   },
   "engines": {
     "node": ">=20"
