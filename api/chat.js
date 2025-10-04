@@ -1,8 +1,20 @@
 import { streamText, generateText } from 'ai';
 import { xai } from '@ai-sdk/xai';
 import { createClient } from '@supabase/supabase-js';
+import { getAuth } from 'firebase-admin/auth';
+import { initializeApp } from 'firebase-admin/app';
 
-// Supported xAI models (aligned with your frontend <select id="model">)
+// Initialize Firebase Admin SDK
+const firebaseConfig = {
+  projectId: "tomo-3c4bc",
+};
+
+// Initialize Firebase Admin if not already initialized
+if (!getAuth().app) {
+  initializeApp(firebaseConfig);
+}
+
+// Supported xAI models
 const languageModels = {
   'grok-4': 'grok-4-latest',
   'grok-3': 'grok-3-latest',
@@ -42,7 +54,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `Invalid model: ${model}` });
     }
 
-    // Verify JWT token if userId is provided (for authenticated users)
+    // Verify Firebase token if userId is provided (for authenticated users)
     let verifiedUserId = null;
     if (userId) {
       const token = req.headers.authorization?.replace('Bearer ', '');
@@ -51,14 +63,14 @@ export default async function handler(req, res) {
       }
       
       try {
-        const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
-        if (error || !user || user.id !== userId) {
+        const decodedToken = await getAuth().verifyIdToken(token);
+        if (decodedToken.uid !== userId) {
           return res.status(401).json({ error: 'Invalid or unauthorized token' });
         }
-        verifiedUserId = user.id;
+        verifiedUserId = decodedToken.uid;
       } catch (authError) {
         console.error('Authentication error:', authError);
-        return res.status(401).json({ error: 'Authentication failed' });
+        return res.status(401).json({ error: 'Authentication failed: ' + authError.message });
       }
     }
 
