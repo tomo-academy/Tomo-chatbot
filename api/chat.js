@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     // Handle streaming response
     if (stream) {
       try {
-        const { textStream } = await streamText({
+        const result = await streamText({
           model: modelInstance,
           messages,
           temperature: 0.7,
@@ -101,17 +101,31 @@ export default async function handler(req, res) {
         });
 
         // Stream response and collect full text for Supabase
-        const reader = textStream.getReader();
+        const textStream = result.toDataStream();
         
         try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            const chunk = new TextDecoder().decode(value);
-            generatedText += chunk;
-            res.write(`data: ${JSON.stringify({ choices: [{ delta: { content: chunk } }] })}\n\n`);
+          for await (const chunk of textStream) {
+            // Parse the chunk to extract content
+            const chunkStr = chunk.toString();
+            const lines = chunkStr.split('\n');
+            
+            for (const line of lines) {
+              if (line.startsWith('0:"')) {
+                // Extract content from the chunk
+                const contentMatch = line.match(/^0:"(.*)"$/);
+                if (contentMatch) {
+                  const content = contentMatch[1];
+                  generatedText += content;
+                  
+                  // Format as expected by the frontend
+                  res.write(`data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`);
+                }
+              } else if (line === 'd') {
+                // End of stream
+                res.write('data: [DONE]\n\n');
+              }
+            }
           }
-          res.write('data: [DONE]\n\n');
 
           // Save to Supabase for authenticated users (non-blocking)
           if (verifiedUserId) {
