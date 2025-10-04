@@ -2,7 +2,7 @@ import { streamText, generateText } from 'ai';
 import { xai } from '@ai-sdk/xai';
 import { createClient } from '@supabase/supabase-js';
 
-// Supported xAI models
+// Supported xAI models (aligned with your frontend <select id="model">)
 const languageModels = {
   'grok-4': 'grok-4-latest',
   'grok-3': 'grok-3-latest',
