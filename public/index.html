@@ -107,6 +107,13 @@
             --editor-comment: #6a9955;
             --editor-function: #dcdcaa;
             --editor-variable: #9cdcfe;
+            /* Grok-inspired code block colors */
+            --grok-code-bg: #161616;
+            --grok-code-border: #333333;
+            --grok-code-text: #e6e6e6;
+            --grok-line-numbers-bg: #1e1e1e;
+            --grok-line-numbers-text: #858585;
+            --grok-code-header-bg: #2a2a2a;
         }
 
         /* Dark theme variables */
@@ -141,6 +148,13 @@
             --editor-line-numbers: #858585;
             --editor-selection: #264f78;
             --editor-cursor: #aeafad;
+            /* Grok-inspired dark theme code block colors */
+            --grok-code-bg: #161616;
+            --grok-code-border: #333333;
+            --grok-code-text: #e6e6e6;
+            --grok-line-numbers-bg: #1e1e1e;
+            --grok-line-numbers-text: #858585;
+            --grok-code-header-bg: #2a2a2a;
         }
 
         /* Vibrant theme */
@@ -168,6 +182,13 @@
             --action-btn-bg: rgba(99, 102, 241, 0.1);
             --action-btn-hover: rgba(99, 102, 241, 0.2);
             --action-btn-active: rgba(99, 102, 241, 0.3);
+            /* Grok-inspired vibrant theme code block colors */
+            --grok-code-bg: #f0f9ff;
+            --grok-code-border: #bae6fd;
+            --grok-code-text: #0c4a6e;
+            --grok-line-numbers-bg: #e0f2fe;
+            --grok-line-numbers-text: #64748b;
+            --grok-code-header-bg: #dbeafe;
         }
 
         * {
@@ -1124,29 +1145,27 @@
             color: var(--primary);
         }
 
-        /* Enhanced Code Block Styles - Fixed for proper fitting */
+        /* Grok-inspired Code Block Styles */
         .code-block {
             margin-top: 1rem;
             border-radius: 12px;
             overflow: hidden;
-            background-color: var(--editor-bg);
-            border: 1px solid var(--code-border);
+            background-color: var(--grok-code-bg);
+            border: 1px solid var(--grok-code-border);
             box-shadow: var(--shadow-md);
             max-width: 100%;
-            /* Fix for code overlap */
-            word-break: break-all;
-            overflow-wrap: break-word;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .code-header {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
+            background-color: var(--grok-code-header-bg);
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.875rem;
             color: var(--text-secondary);
-            border-bottom: 1px solid var(--code-border);
+            border-bottom: 1px solid var(--grok-code-border);
         }
 
         .code-language {
@@ -1194,7 +1213,7 @@
         }
 
         .message-text pre {
-            background-color: var(--editor-bg);
+            background-color: var(--grok-code-bg);
             border-radius: 0;
             padding: 16px;
             overflow-x: auto;
@@ -1202,7 +1221,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
             border: none;
-            color: var(--editor-text);
+            color: var(--grok-code-text);
             white-space: pre;
             word-break: normal;
             word-wrap: normal;
@@ -1210,7 +1229,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            scrollbar-color: var(--border) var(--surface-elevated);
+            scrollbar-color: var(--grok-code-border) var(--grok-code-bg);
         }
 
         .message-text pre::-webkit-scrollbar {
@@ -1218,11 +1237,11 @@
         }
 
         .message-text pre::-webkit-scrollbar-track {
-            background: var(--surface-elevated);
+            background: var(--grok-code-bg);
         }
 
         .message-text pre::-webkit-scrollbar-thumb {
-            background: var(--border);
+            background: var(--grok-code-border);
             border-radius: 4px;
         }
 
@@ -1502,49 +1521,66 @@
             transform: none;
         }
 
-        /* Code with line numbers */
+        /* Grok-inspired Code with line numbers */
         .code-with-line-numbers {
             position: relative;
             margin: 0;
             padding: 0;
-            background-color: var(--editor-bg);
+            background-color: var(--grok-code-bg);
             border-radius: 0;
             overflow: hidden;
             max-width: 100%;
-            /* Fix for code overlap */
-            word-break: break-all;
-            overflow-wrap: break-word;
+            display: flex;
         }
 
         .code-line-numbers {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 40px;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-right: 1px solid var(--code-border);
+            width: 50px;
+            background-color: var(--grok-line-numbers-bg);
+            border-right: 1px solid var(--grok-code-border);
             padding: 16px 0;
             text-align: right;
-            color: var(--editor-line-numbers);
+            color: var(--grok-line-numbers-text);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
             line-height: 1.5;
             user-select: none;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .code-line-numbers span {
+            display: block;
+            padding-right: 10px;
         }
 
         .code-content {
-            margin-left: 40px;
+            flex: 1;
             padding: 16px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.875rem;
             line-height: 1.5;
             white-space: pre;
             overflow-x: auto;
-            max-width: calc(100% - 40px);
-            /* Fix for code overlap */
-            word-break: break-all;
-            overflow-wrap: break-word;
+            color: var(--grok-code-text);
+            scrollbar-width: thin;
+            scrollbar-color: var(--grok-code-border) var(--grok-code-bg);
+        }
+
+        .code-content::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .code-content::-webkit-scrollbar-track {
+            background: var(--grok-code-bg);
+        }
+
+        .code-content::-webkit-scrollbar-thumb {
+            background: var(--grok-code-border);
+            border-radius: 4px;
+        }
+
+        .code-content::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
         }
 
         /* Follow-up suggestions */
