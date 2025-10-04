@@ -1,36 +1,15 @@
 {
-  "name": "nexariq-ai",
+  "name": "tomo-ai",
   "version": "1.0.0",
-  "description": "Advanced AI Learning Platform by Tomo Academy",
-  "main": "index.js",
+  "description": "Enterprise Agentic Platform",
+  "main": "index.html",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'Build completed'",
-    "start": "vercel dev",
-    "vercel-build": "echo 'Build completed'"
+    "dev": "node api/dev-server.js",
+    "build": "echo 'No build step required'",
+    "start": "node api/dev-server.js"
   },
   "dependencies": {
-    "@ai-sdk/xai": "^2.0.23",
-    "@supabase/supabase-js": "^2.45.4",
-    "ai": "^5.0.60",
-    "firebase-admin": "^12.6.0",
-    "marked": "^12.0.2",
-    "dompurify": "^3.1.5",
-    "highlight.js": "^11.9.0"
-  },
-  "devDependencies": {
-    "vercel": "^37.4.0"
-  },
-  "engines": {
-    "node": ">=20"
-  },
-  "keywords": [
-    "ai",
-    "chatbot",
-    "education",
-    "learning",
-    "tomo-academy"
-  ],
-  "author": "Tomo Academy",
-  "license": "MIT"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
 }
