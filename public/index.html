@@ -387,6 +387,35 @@
             font-size: 0.875rem;
         }
 
+        /* Auth Loading State */
+        .auth-loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .auth-loading .login-btn {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .auth-loading .login-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* App Container */
         .app-container {
             display: flex;
@@ -2811,13 +2840,13 @@
         };
 
         // API Configuration
-const API_CONFIG = {
-    // Use relative paths for API calls
-    baseUrl: '', // Empty string means use the same domain
-    endpoint: '/api/chat',
-    authEndpoint: '/api/auth',
-    historyEndpoint: '/api/chat-history'
-};
+        const API_CONFIG = {
+            // Use relative paths for API calls
+            baseUrl: '', // Empty string means use the same domain
+            endpoint: '/api/chat',
+            authEndpoint: '/api/auth',
+            historyEndpoint: '/api/chat-history'
+        };
 
         // DOM Elements
         const elements = {
@@ -2907,44 +2936,147 @@ const API_CONFIG = {
             
             // Start AI status checking
             startAIStatusCheck();
+            
+            // Check if user was previously signed in
+            const savedUser = localStorage.getItem('nexariqUser');
+            const savedToken = localStorage.getItem('nexariqToken');
+
+            if (savedUser && savedToken) {
+                console.log('Found saved user session, attempting to restore...');
+                try {
+                    const user = JSON.parse(savedUser);
+                    state.user = user;
+                    state.accessToken = savedToken;
+                    state.isGuest = false;
+                    
+                    // Update UI immediately
+                    updateUserUI();
+                    elements.guestBanner.style.display = 'none';
+                    
+                    // Verify token with backend
+                    verifyTokenWithBackend(savedToken).then(() => {
+                        console.log('Session restored successfully');
+                        loadChatHistory();
+                    }).catch(error => {
+                        console.error('Failed to restore session:', error);
+                        // Clear invalid session
+                        localStorage.removeItem('nexariqToken');
+                        localStorage.removeItem('nexariqUser');
+                        state.user = null;
+                        state.accessToken = null;
+                        state.isGuest = true;
+                        updateUserUI();
+                        elements.guestBanner.style.display = 'flex';
+                    });
+                } catch (error) {
+                    console.error('Failed to parse saved user:', error);
+                    localStorage.removeItem('nexariqToken');
+                    localStorage.removeItem('nexariqUser');
+                }
+            }
         });
 
         // Authentication functions
         async function signInWithGoogle() {
             try {
+                console.log('Starting Google sign in...');
+                showToast('Signing in with Google...', 'info');
+                
                 const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
+                const result = await auth.signInWithPopup(provider);
+                
+                console.log('Google sign in successful:', result.user);
                 showToast('Signed in with Google successfully', 'success');
+                
+                // Hide login modal immediately
+                hideLoginModal();
+                
             } catch (error) {
                 console.error('Google sign in error:', error);
-                showToast('Failed to sign in with Google', 'error');
+                handleAuthError(error);
             }
         }
 
         async function signInWithGitHub() {
             try {
+                console.log('Starting GitHub sign in...');
+                showToast('Signing in with GitHub...', 'info');
+                
                 const provider = new firebase.auth.GithubAuthProvider();
-                await auth.signInWithPopup(provider);
+                const result = await auth.signInWithPopup(provider);
+                
+                console.log('GitHub sign in successful:', result.user);
                 showToast('Signed in with GitHub successfully', 'success');
+                
+                // Hide login modal immediately
+                hideLoginModal();
+                
             } catch (error) {
                 console.error('GitHub sign in error:', error);
-                showToast('Failed to sign in with GitHub', 'error');
+                handleAuthError(error);
             }
         }
 
         async function signOut() {
             try {
+                console.log('Signing out...');
+                showToast('Signing out...', 'info');
+                
                 await auth.signOut();
+                
+                // Clear state immediately
+                state.user = null;
+                state.accessToken = null;
+                state.isGuest = true;
+                state.chatHistory = [];
+                
+                // Clear localStorage
+                localStorage.removeItem('nexariqToken');
+                localStorage.removeItem('nexariqUser');
+                
+                // Update UI
+                updateUserUI();
+                elements.guestBanner.style.display = 'flex';
+                
+                // Clear chat history
+                renderChatHistory();
+                
+                // Start new chat
+                startNewChat();
+                
                 showToast('Signed out successfully', 'success');
+                
             } catch (error) {
                 console.error('Sign out error:', error);
                 showToast('Failed to sign out', 'error');
             }
         }
 
+        // Add this function to handle authentication errors
+        function handleAuthError(error) {
+            console.error('Authentication error:', error);
+            
+            let errorMessage = 'Authentication failed';
+            
+            if (error.code === 'auth/popup-closed-by-user') {
+                errorMessage = 'Sign-in was cancelled';
+            } else if (error.code === 'auth/popup-blocked') {
+                errorMessage = 'Pop-up was blocked. Please allow pop-ups and try again.';
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = 'Network error. Please check your connection.';
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+            
+            showToast(errorMessage, 'error');
+            elements.loginModal.classList.remove('auth-loading');
+        }
+
         // Check authentication status
         function checkAuthStatus() {
             auth.onAuthStateChanged(async user => {
+                console.log('Auth state changed:', user ? 'User signed in' : 'User signed out');
+                
                 if (user) {
                     // User is signed in
                     state.user = {
@@ -2964,24 +3096,41 @@ const API_CONFIG = {
                         
                         // Verify token with backend
                         await verifyTokenWithBackend(token);
+                        
+                        // Save user to localStorage
+                        localStorage.setItem('nexariqUser', JSON.stringify(state.user));
+                        
+                        // Update UI
+                        updateUserUI();
+                        
+                        // Hide login modal and guest banner
+                        hideLoginModal();
+                        elements.guestBanner.style.display = 'none';
+                        
+                        // Close all panels
+                        closeAllPanels();
+                        
+                        // Load chat history
+                        await loadChatHistory();
+                        
+                        // Show success message
+                        showToast('Successfully signed in!', 'success');
+                        
+                        // Focus on chat input
+                        setTimeout(() => {
+                            elements.chatInput.focus();
+                        }, 500);
+                        
                     } catch (error) {
                         console.error('Token refresh error:', error);
                         // Force sign out if token refresh fails
                         await signOut();
+                        showToast('Authentication failed. Please try again.', 'error');
                         return;
                     }
-                    
-                    // Save user to localStorage
-                    localStorage.setItem('nexariqUser', JSON.stringify(state.user));
-                    
-                    // Update UI
-                    updateUserUI();
-                    elements.guestBanner.style.display = 'none';
-                    
-                    // Load chat history
-                    loadChatHistory();
                 } else {
                     // User is signed out
+                    console.log('User signed out');
                     state.user = null;
                     state.accessToken = null;
                     state.isGuest = true;
@@ -2993,6 +3142,10 @@ const API_CONFIG = {
                     // Update UI
                     updateUserUI();
                     elements.guestBanner.style.display = 'flex';
+                    
+                    // Clear chat history
+                    state.chatHistory = [];
+                    renderChatHistory();
                 }
             });
         }
@@ -3000,6 +3153,7 @@ const API_CONFIG = {
         // Add token verification function
         async function verifyTokenWithBackend(token) {
             try {
+                console.log('Verifying token with backend...');
                 const response = await fetch(`${API_CONFIG.baseUrl}/api/verify-token`, {
                     method: 'POST',
                     headers: {
@@ -3009,10 +3163,13 @@ const API_CONFIG = {
                 });
                 
                 if (!response.ok) {
-                    throw new Error('Token verification failed');
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Token verification failed');
                 }
                 
-                return await response.json();
+                const data = await response.json();
+                console.log('Token verification successful:', data);
+                return data;
             } catch (error) {
                 console.error('Token verification error:', error);
                 throw error;
@@ -3064,6 +3221,8 @@ const API_CONFIG = {
         // Hide login modal
         function hideLoginModal() {
             elements.loginModal.classList.remove('active');
+            // Clear any error states
+            elements.loginModal.querySelector('.login-container').classList.remove('error');
         }
 
         // Continue as guest
@@ -3076,6 +3235,8 @@ const API_CONFIG = {
 
         // Update user UI
         function updateUserUI() {
+            console.log('Updating user UI, isGuest:', state.isGuest, 'user:', state.user);
+            
             if (state.isGuest) {
                 elements.userAvatar.textContent = 'G';
                 elements.userName.textContent = 'Guest User';
@@ -3108,6 +3269,19 @@ const API_CONFIG = {
                 // Update usage statistics
                 updateUserStats();
             }
+            
+            // Force a re-render of the user menu
+            const userMenu = elements.userMenu;
+            const parent = userMenu.parentNode;
+            const clone = userMenu.cloneNode(true);
+            parent.replaceChild(clone, userMenu);
+            
+            // Re-attach event listeners
+            clone.addEventListener('click', toggleUserProfilePanel);
+            elements.userMenu = clone;
+            elements.userAvatar = clone.querySelector('.user-avatar');
+            elements.userName = clone.querySelector('.user-name');
+            elements.userEmail = clone.querySelector('.user-email');
         }
 
         // Update user statistics
@@ -3129,8 +3303,17 @@ const API_CONFIG = {
             elements.continueAsGuestBtn.addEventListener('click', continueAsGuest);
             
             // Authentication
-            elements.googleSignInBtn.addEventListener('click', signInWithGoogle);
-            elements.githubSignInBtn.addEventListener('click', signInWithGitHub);
+            elements.googleSignInBtn.addEventListener('click', async () => {
+                elements.loginModal.classList.add('auth-loading');
+                await signInWithGoogle();
+                elements.loginModal.classList.remove('auth-loading');
+            });
+            
+            elements.githubSignInBtn.addEventListener('click', async () => {
+                elements.loginModal.classList.add('auth-loading');
+                await signInWithGitHub();
+                elements.loginModal.classList.remove('auth-loading');
+            });
             
             // Sign out
             elements.signOutBtn.addEventListener('click', signOut);
