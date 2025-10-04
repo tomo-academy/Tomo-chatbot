@@ -63,7 +63,6 @@ async function handleGet(req, res) {
     const sessions = await Promise.all(chats.map(async (chat) => {
       const { data: messages, error: messagesError } = await supabaseAdmin
         .from('messages')
-        .select('*')
         .eq('chat_id', chat.id)
         .order('created_at', { ascending: true });
 
@@ -175,8 +174,8 @@ async function handleDelete(req, res) {
         // Delete all messages for these chats
         const { error: messagesError } = await supabaseAdmin
           .from('messages')
-          .delete()
-          .in('chat_id', chatIds);
+          .in('chat_id', chatIds)
+          .delete();
 
         if (messagesError) {
           console.error('Error deleting messages:', messagesError);
@@ -186,14 +185,13 @@ async function handleDelete(req, res) {
         // Delete all chats
         const { error: deleteError } = await supabaseAdmin
           .from('chats')
-          .delete()
-          .eq('user_id', userId);
+          .eq('user_id', userId)
+          .delete();
 
         if (deleteError) {
           console.error('Error deleting chats:', deleteError);
           return res.status(500).json({ error: 'Failed to delete chats' });
         }
-      }
 
       return res.status(200).json({ success: true });
     }
