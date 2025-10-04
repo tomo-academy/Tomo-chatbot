@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Build completed'",
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "vercel-build": "echo 'Build completed'"
   },
   "dependencies": {
     "@ai-sdk/xai": "^2.0.23",
