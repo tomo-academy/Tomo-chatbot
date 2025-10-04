@@ -21,23 +21,23 @@
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* Corporate Professional Theme with Tomo Academy branding */
+        /* ChatGPT-inspired Theme with Tomo Academy branding */
         :root {
-            --primary: #1e3a8a;
-            --primary-dark: #1e2f5f;
-            --secondary: #3b82f6;
-            --accent: #1e40af;
+            --primary: #10a37f;
+            --primary-dark: #0d8f70;
+            --secondary: #5436da;
+            --accent: #6366f1;
             --background: #ffffff;
-            --surface: #f8fafc;
-            --surface-elevated: #f1f5f9;
-            --surface-highlight: #e2e8f0;
-            --border: #cbd5e1;
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --success: #059669;
-            --warning: #d97706;
-            --error: #dc2626;
+            --surface: #f7f7f8;
+            --surface-elevated: #ffffff;
+            --surface-highlight: #ececf1;
+            --border: #e5e5e5;
+            --text-primary: #202123;
+            --text-secondary: #6e6e80;
+            --text-tertiary: #acacbe;
+            --success: #10a37f;
+            --warning: #f59e0b;
+            --error: #ef4444;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,44 +45,44 @@
             --radius-sm: 0.25rem;
             --radius: 0.375rem;
             --radius-lg: 0.5rem;
-            --transition: all 0.15s ease;
+            --transition: all 0.2s ease;
             --logo-size: 40px;
-            --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            --gradient-accent: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            --code-bg: #f8fafc;
-            --code-border: #e2e8f0;
-            --code-text: #1e293b;
-            --table-header-bg: rgba(30, 58, 138, 0.1);
+            --gradient-primary: linear-gradient(135deg, #10a37f 0%, #5436da 100%);
+            --gradient-accent: linear-gradient(135deg, #6366f1 0%, #10a37f 100%);
+            --code-bg: #f7f7f8;
+            --code-border: #e5e5e5;
+            --code-text: #202123;
+            --table-header-bg: rgba(16, 163, 127, 0.1);
             --table-row-alt: rgba(0, 0, 0, 0.02);
-            --box-bg: rgba(30, 58, 138, 0.05);
+            --box-bg: rgba(16, 163, 127, 0.05);
             --box-border: var(--primary);
-            --user-name-gradient: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-            --action-btn-bg: rgba(30, 58, 138, 0.1);
-            --action-btn-hover: rgba(30, 58, 138, 0.2);
-            --action-btn-active: rgba(30, 58, 138, 0.3);
-            --action-btn-like: #059669;
-            --action-btn-dislike: #dc2626;
+            --user-name-gradient: linear-gradient(135deg, #202123 0%, #6e6e80 100%);
+            --action-btn-bg: rgba(16, 163, 127, 0.1);
+            --action-btn-hover: rgba(16, 163, 127, 0.2);
+            --action-btn-active: rgba(16, 163, 127, 0.3);
+            --action-btn-like: #10a37f;
+            --action-btn-dislike: #ef4444;
             /* New gradient for user name */
-            --user-name-gradient-colorful: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #059669 100%);
+            --user-name-gradient-colorful: linear-gradient(90deg, #10a37f 0%, #5436da 25%, #6366f1 50%, #8b5cf6 75%, #10a37f 100%);
             /* Tomo Academy-inspired gradients */
-            --tomo-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            --tomo-gradient-alt: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-            --tomo-glow: 0 0 10px rgba(30, 58, 138, 0.2);
+            --tomo-gradient: linear-gradient(135deg, #10a37f 0%, #5436da 100%);
+            --tomo-gradient-alt: linear-gradient(135deg, #5436da 0%, #10a37f 100%);
+            --tomo-glow: 0 0 10px rgba(16, 163, 127, 0.2);
             /* Enhanced animation variables */
-            --animation-duration: 0.15s;
+            --animation-duration: 0.2s;
             --animation-timing: ease;
             --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(203, 213, 225, 0.5);
+            --glass-border: rgba(229, 229, 229, 0.5);
             --glass-blur: blur(8px);
-            --neon-glow: 0 0 10px rgba(30, 58, 138, 0.3);
-            --neon-glow-hover: 0 0 15px rgba(30, 58, 138, 0.4);
+            --neon-glow: 0 0 10px rgba(16, 163, 127, 0.3);
+            --neon-glow-hover: 0 0 15px rgba(16, 163, 127, 0.4);
             /* Student-specific colors */
-            --math-color: #3b82f6;
-            --science-color: #059669;
-            --history-color: #d97706;
+            --math-color: #6366f1;
+            --science-color: #10a37f;
+            --history-color: #f59e0b;
             --literature-color: #8b5cf6;
             --coding-color: #6366f1;
-            --art-color: #dc2626;
+            --art-color: #ef4444;
             /* Vibrant theme colors */
             --vibrant-primary: #6366f1;
             --vibrant-secondary: #8b5cf6;
@@ -94,30 +94,30 @@
 
         /* Dark theme variables */
         [data-theme="dark"] {
-            --background: #0f172a;
-            --surface: #1e293b;
-            --surface-elevated: #334155;
-            --surface-highlight: #475569;
-            --border: #475569;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --code-bg: #1e293b;
-            --code-border: #334155;
-            --code-text: #f1f5f9;
-            --table-header-bg: rgba(30, 58, 138, 0.2);
+            --background: #343541;
+            --surface: #202123;
+            --surface-elevated: #2a2b32;
+            --surface-highlight: #353740;
+            --border: #4e4f60;
+            --text-primary: #ececf1;
+            --text-secondary: #acacbe;
+            --text-tertiary: #8e8ea0;
+            --code-bg: #2a2b32;
+            --code-border: #4e4f60;
+            --code-text: #ececf1;
+            --table-header-bg: rgba(16, 163, 127, 0.2);
             --table-row-alt: rgba(255, 255, 255, 0.02);
-            --box-bg: rgba(30, 58, 138, 0.1);
-            --user-name-gradient: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            --box-bg: rgba(16, 163, 127, 0.1);
+            --user-name-gradient: linear-gradient(135deg, #ececf1 0%, #acacbe 100%);
             --action-btn-bg: rgba(255, 255, 255, 0.05);
             --action-btn-hover: rgba(255, 255, 255, 0.1);
-            --action-btn-active: rgba(30, 58, 138, 0.2);
+            --action-btn-active: rgba(16, 163, 127, 0.2);
             /* Dark theme colorful gradient */
-            --user-name-gradient-colorful: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #059669 100%);
-            --glass-bg: rgba(30, 41, 59, 0.8);
-            --glass-border: rgba(71, 85, 105, 0.5);
-            --neon-glow: 0 0 10px rgba(30, 58, 138, 0.2);
-            --neon-glow-hover: 0 0 15px rgba(30, 58, 138, 0.3);
+            --user-name-gradient-colorful: linear-gradient(90deg, #10a37f 0%, #5436da 25%, #6366f1 50%, #8b5cf6 75%, #10a37f 100%);
+            --glass-bg: rgba(52, 53, 65, 0.8);
+            --glass-border: rgba(78, 79, 96, 0.5);
+            --neon-glow: 0 0 10px rgba(16, 163, 127, 0.2);
+            --neon-glow-hover: 0 0 15px rgba(16, 163, 127, 0.3);
         }
 
         /* Vibrant theme */
@@ -160,7 +160,7 @@
             line-height: 1.5;
             overflow: hidden;
             height: 100vh;
-            transition: background-color 0.15s ease, color 0.15s ease;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         /* Dyslexia-friendly font option */
@@ -177,12 +177,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f7f7f8 0%, #ececf1 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: opacity 0.15s ease, visibility 0.15s ease;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
 
         .login-screen.hidden {
@@ -311,7 +311,7 @@
         .login-error {
             margin-top: 1rem;
             padding: 0.75rem;
-            background-color: rgba(220, 38, 38, 0.1);
+            background-color: rgba(239, 68, 68, 0.1);
             border: 1px solid var(--error);
             border-radius: var(--radius);
             color: var(--error);
@@ -354,12 +354,12 @@
             color: var(--text-primary);
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
         }
 
         .register-btn {
@@ -405,7 +405,7 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-            transition: opacity 0.15s ease, transform 0.15s ease;
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
         .app-container.hidden {
@@ -414,7 +414,7 @@
 
         /* Professional Sidebar */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background-color: var(--surface);
             border-right: 1px solid var(--border);
             display: flex;
@@ -540,7 +540,7 @@
         }
 
         .new-chat-btn:hover {
-            background-color: var(--surface-elevated);
+            background-color: var(--surface-highlight);
         }
 
         /* Professional Chat history */
@@ -623,7 +623,7 @@
         }
 
         .chat-group-header i {
-            transition: transform 0.15s ease;
+            transition: transform 0.2s ease;
         }
 
         .chat-group-header.collapsed i {
@@ -640,7 +640,7 @@
             max-height: 0;
         }
 
-        /* Professional chat item layout - NO HOVER EFFECTS */
+        /* Professional chat item layout */
         .chat-item {
             padding: 0.75rem 1rem;
             border-radius: var(--radius);
@@ -651,7 +651,7 @@
             gap: 0.75rem;
             position: relative;
             overflow: hidden;
-            transition: background-color 0.15s ease;
+            transition: background-color 0.2s ease;
         }
 
         .chat-item:hover {
@@ -666,7 +666,7 @@
             height: 100%;
             width: 3px;
             background-color: transparent;
-            transition: background-color 0.15s ease;
+            transition: background-color 0.2s ease;
         }
 
         .chat-item.active {
@@ -715,7 +715,7 @@
             display: flex;
             gap: 0.25rem;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
         }
 
         .chat-item:hover .chat-item-actions {
@@ -1134,7 +1134,7 @@
 
         .message-text code {
             font-family: 'JetBrains Mono', monospace;
-            background-color: rgba(30, 58, 138, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
             padding: 0.125rem 0.25rem;
             border-radius: 0.25rem;
             font-size: 0.875em;
@@ -1156,7 +1156,7 @@
             gap: 0.5rem;
             margin-top: 0.75rem;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
         }
 
         .message:hover .message-actions {
@@ -1211,7 +1211,7 @@
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
             margin-bottom: 0.5rem;
             box-shadow: var(--shadow-sm);
             z-index: 10;
@@ -1317,12 +1317,12 @@
             height: 1px;
             background: linear-gradient(to right, transparent, var(--primary), transparent);
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
         }
 
         .chat-input-wrapper:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
         }
 
         .chat-input-wrapper:focus-within::before {
@@ -1437,7 +1437,7 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            transition: all 0.15s;
+            transition: all 0.2s;
         }
 
         .copy-btn:hover, .preview-btn:hover {
@@ -1467,10 +1467,10 @@
             backdrop-filter: var(--glass-blur);
             border-left: 1px solid var(--glass-border);
             box-shadow: var(--shadow-lg);
-            z-index: 100;
+            z-index: 1002;
             display: flex;
             flex-direction: column;
-            transition: right 0.15s ease;
+            transition: right 0.2s ease;
         }
 
         .settings-panel.active {
@@ -1552,12 +1552,12 @@
             color: var(--text-primary);
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
         }
 
         .form-text {
@@ -1644,7 +1644,7 @@
             border-radius: var(--radius);
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s;
             border: none;
         }
 
@@ -1687,10 +1687,10 @@
             backdrop-filter: var(--glass-blur);
             border-right: 1px solid var(--glass-border);
             box-shadow: var(--shadow-lg);
-            z-index: 100;
+            z-index: 1002;
             display: flex;
             flex-direction: column;
-            transition: left 0.15s ease;
+            transition: left 0.2s ease;
         }
 
         .user-profile-panel.active {
@@ -1834,7 +1834,7 @@
             position: fixed;
             bottom: 1.5rem;
             right: 1.5rem;
-            z-index: 1000;
+            z-index: 1003;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
@@ -1851,7 +1851,7 @@
             align-items: center;
             gap: 0.75rem;
             min-width: 300px;
-            animation: slideIn 0.15s ease, slideOut 0.15s ease 2.7s forwards;
+            animation: slideIn 0.2s ease, slideOut 0.2s ease 2.7s forwards;
             opacity: 0;
             transform: translateX(100%);
         }
@@ -1917,7 +1917,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -1937,7 +1937,7 @@
             max-width: 400px;
             border: 1px solid var(--glass-border);
             transform: scale(0.9);
-            animation: modalScale 0.15s ease forwards;
+            animation: modalScale 0.2s ease forwards;
         }
 
         @keyframes modalScale {
@@ -1975,7 +1975,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: flex-start;
             justify-content: center;
@@ -1996,7 +1996,7 @@
             border: 1px solid var(--glass-border);
             overflow: hidden;
             transform: scale(0.9);
-            animation: modalScale 0.15s ease forwards;
+            animation: modalScale 0.2s ease forwards;
         }
 
         .search-header {
@@ -2065,7 +2065,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -2139,7 +2139,7 @@
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
-                left: -280px;
+                left: -260px;
                 height: 100vh;
                 z-index: 20;
                 box-shadow: var(--shadow-lg);
@@ -2355,7 +2355,7 @@
         .spinner {
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(30, 58, 138, 0.3);
+            border: 2px solid rgba(16, 163, 127, 0.3);
             border-radius: 50%;
             border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
@@ -2439,7 +2439,7 @@
 
         /* Professional animations for micro-interactions */
         .hover-lift {
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .hover-lift:hover {
@@ -2448,7 +2448,7 @@
         }
 
         .hover-scale {
-            transition: transform 0.15s ease;
+            transition: transform 0.2s ease;
         }
 
         .hover-scale:hover {
@@ -2457,12 +2457,12 @@
 
         /* Professional focus states */
         .focus-ring {
-            transition: box-shadow 0.15s ease;
+            transition: box-shadow 0.2s ease;
         }
 
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.2);
         }
 
         /* Student-specific features */
@@ -2477,17 +2477,17 @@
         }
 
         .subject-tag.math {
-            background-color: rgba(59, 130, 246, 0.1);
+            background-color: rgba(99, 102, 241, 0.1);
             color: var(--math-color);
         }
 
         .subject-tag.science {
-            background-color: rgba(5, 150, 105, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
             color: var(--science-color);
         }
 
         .subject-tag.history {
-            background-color: rgba(217, 119, 6, 0.1);
+            background-color: rgba(245, 158, 11, 0.1);
             color: var(--history-color);
         }
 
@@ -2502,7 +2502,7 @@
         }
 
         .subject-tag.art {
-            background-color: rgba(220, 38, 38, 0.1);
+            background-color: rgba(239, 68, 68, 0.1);
             color: var(--art-color);
         }
 
@@ -2710,7 +2710,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1001;
+            z-index: 1003;
             display: none;
         }
 
@@ -2725,7 +2725,7 @@
             padding: 1.5rem;
             box-shadow: var(--shadow-lg);
             max-width: 300px;
-            z-index: 1002;
+            z-index: 1004;
         }
 
         .onboarding-tooltip-title {
@@ -2771,7 +2771,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -2890,7 +2890,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -2966,17 +2966,17 @@
 
         .quiz-option.selected {
             border-color: var(--primary);
-            background-color: rgba(30, 58, 138, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
         }
 
         .quiz-option.correct {
             border-color: var(--success);
-            background-color: rgba(5, 150, 105, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
         }
 
         .quiz-option.incorrect {
             border-color: var(--error);
-            background-color: rgba(220, 38, 38, 0.1);
+            background-color: rgba(239, 68, 68, 0.1);
         }
 
         .quiz-explanation {
@@ -3143,7 +3143,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -3409,7 +3409,7 @@
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
             margin-bottom: 0.5rem;
             box-shadow: var(--shadow-sm);
             z-index: 10;
@@ -3499,7 +3499,7 @@
 
         .persona-option.active {
             border-color: var(--primary);
-            background-color: rgba(30, 58, 138, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
         }
 
         .persona-icon {
@@ -3699,7 +3699,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
             min-width: 300px;
-            animation: slideIn 0.15s ease;
+            animation: slideIn 0.2s ease;
         }
 
         .undo-toast-message {
@@ -3734,7 +3734,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -3784,7 +3784,7 @@
 
         .dislike-feedback-option.selected {
             border-color: var(--primary);
-            background-color: rgba(30, 58, 138, 0.1);
+            background-color: rgba(16, 163, 127, 0.1);
         }
 
         .dislike-feedback-option-text {
@@ -3896,7 +3896,7 @@
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(30, 58, 138, 0.2);
+            border: 3px solid rgba(16, 163, 127, 0.2);
             border-radius: 50%;
             border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
@@ -4058,7 +4058,7 @@
         .breadcrumb-link {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.15s ease;
+            transition: color 0.2s ease;
         }
 
         .breadcrumb-link:hover {
@@ -4090,7 +4090,7 @@
             font-size: 0.875rem;
             z-index: 10;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.2s ease;
         }
 
         .swipe-indicator.left {
@@ -4113,7 +4113,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1001;
             display: none;
             align-items: center;
             justify-content: center;
@@ -4601,6 +4601,17 @@
 
         .study-reminder-toggle.active .study-reminder-toggle-slider {
             transform: translateX(20px);
+        }
+
+        /* Fix for all modal buttons */
+        .modal button, .modal-overlay button, .search-modal button, 
+        .rename-modal button, .export-modal button, .citation-modal button,
+        .share-modal button, .flashcard-modal button, .quiz-modal button,
+        .dislike-feedback-modal button, .shortcuts-modal button,
+        .onboarding-tooltip button {
+            pointer-events: auto !important;
+            z-index: 10 !important;
+            position: relative !important;
         }
     </style>
 </head>
@@ -9499,12 +9510,12 @@ Remember the user's preferences and previous interactions to provide personalize
             // Auto remove after 3 seconds (or longer for undo toasts)
             const duration = options.undo ? 5000 : 3000;
             setTimeout(() => {
-                toast.style.animation = 'slideOut 0.15s ease forwards';
+                toast.style.animation = 'slideOut 0.2s ease forwards';
                 setTimeout(() => {
                     if (toast.parentNode) {
                         toast.parentNode.removeChild(toast);
                     }
-                }, 150);
+                }, 200);
             }, duration);
         }
 
@@ -9926,10 +9937,10 @@ Remember the user's preferences and previous interactions to provide personalize
     <title>Tomo Academy Chat History</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #1e3a8a; }
+        h1 { color: #10a37f; }
         .chat { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
         .message { margin-bottom: 10px; }
-        .user { color: #3b82f6; }
+        .user { color: #10a37f; }
         .ai { color: #059669; }
         .timestamp { color: #64748b; font-size: 0.8em; }
     </style>
@@ -10448,23 +10459,24 @@ Remember the user's preferences and previous interactions to provide personalize
             // Position tooltip
             const rect = element.getBoundingClientRect();
             const tooltipRect = elements.onboardingTooltip.getBoundingClientRect();
+            const overlayRect = elements.onboardingOverlay.getBoundingClientRect();
             
             let top, left;
             
             // Default position: below the element
-            top = rect.bottom + 10;
-            left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+            top = rect.bottom - overlayRect.top + 10;
+            left = rect.left - overlayRect.left + (rect.width / 2) - (tooltipRect.width / 2);
             
             // Adjust if tooltip goes off screen
-            if (top + tooltipRect.height > window.innerHeight) {
+            if (top + tooltipRect.height > overlayRect.height) {
                 // Position above the element
-                top = rect.top - tooltipRect.height - 10;
+                top = rect.top - overlayRect.top - tooltipRect.height - 10;
             }
             
             if (left < 10) {
                 left = 10;
-            } else if (left + tooltipRect.width > window.innerWidth - 10) {
-                left = window.innerWidth - tooltipRect.width - 10;
+            } else if (left + tooltipRect.width > overlayRect.width - 10) {
+                left = overlayRect.width - tooltipRect.width - 10;
             }
             
             elements.onboardingTooltip.style.top = `${top}px`;
@@ -10480,6 +10492,10 @@ Remember the user's preferences and previous interactions to provide personalize
             } else {
                 elements.onboardingNextBtn.textContent = 'Next';
             }
+            
+            // Ensure buttons are clickable
+            elements.onboardingSkipBtn.style.pointerEvents = 'auto';
+            elements.onboardingNextBtn.style.pointerEvents = 'auto';
         }
 
         // Next onboarding step
@@ -10945,6 +10961,50 @@ Remember the user's preferences and previous interactions to provide personalize
             `;
             
             elements.quizControls.style.display = 'none';
+        }
+
+        // Update study progress UI
+        function updateStudyProgressUI() {
+            elements.studyStreakValue.textContent = state.studyProgress.streak;
+            elements.studySessionsValue.textContent = state.studyProgress.sessions;
+            elements.studyMinutesValue.textContent = state.studyProgress.minutes;
+            
+            // Update topics
+            const topicsContainer = elements.progressTopicsContainer;
+            topicsContainer.innerHTML = '';
+            
+            Object.entries(state.studyProgress.topics).forEach(([topic, progress]) => {
+                const topicElement = document.createElement('div');
+                topicElement.className = 'progress-topic';
+                topicElement.innerHTML = `
+                    <div class="progress-topic-name">${topic}</div>
+                    <div class="progress-topic-bar">
+                        <div class="progress-topic-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-topic-value">${progress}%</div>
+                `;
+                topicsContainer.appendChild(topicElement);
+            });
+        }
+
+        // Update badges UI
+        function updateBadgesUI() {
+            const badgesContainer = elements.badgesContainer;
+            badgesContainer.innerHTML = '';
+            
+            Object.entries(state.badges).forEach(([badgeId, badge]) => {
+                const badgeElement = document.createElement('div');
+                badgeElement.className = 'badge';
+                badgeElement.innerHTML = `
+                    <div class="badge-icon ${badge.earned ? 'earned' : ''}">
+                        <i class="${badge.icon}"></i>
+                        ${badge.earned ? '<i class="fas fa-check"></i>' : ''}
+                    </div>
+                    <div class="badge-name">${badge.name}</div>
+                    <div class="badge-tooltip">${badge.earned ? 'Earned!' : 'Not yet earned'}</div>
+                `;
+                badgesContainer.appendChild(badgeElement);
+            });
         }
 
         // Upload profile avatar
