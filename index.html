@@ -6,7 +6,7 @@
     <title>Tomo Academy - Advanced AI Learning Platform</title>
     
     <!-- Favicon - Using Tomo Academy logo -->
-    <link rel="icon" href="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3">
+    <link rel="icon" href="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -2286,7 +2286,7 @@
                 <i class="fas fa-arrow-left"></i>
             </button>
             <div class="login-logo">
-                <img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo Academy" class="logo-img">
+                <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo Academy" class="logo-img">
                 <span class="logo-text">Tomo Academy</span>
             </div>
             <h1>Welcome to Tomo Academy</h1>
@@ -2388,7 +2388,7 @@
                 <div class="chat-messages" id="chatMessages">
                     <div class="message ai">
                         <div class="message-avatar">
-                            <img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">
+                            <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">
                         </div>
                         <div class="message-content">
                             <div class="message-text">
@@ -2810,7 +2810,7 @@
 
         // Check authentication status
         function checkAuthStatus() {
-            auth.onAuthStateChanged(user => {
+            auth.onAuthStateChanged(async user => {
                 if (user) {
                     // User is signed in
                     state.user = {
@@ -2822,11 +2822,20 @@
                     };
                     state.isGuest = false;
                     
-                    // Get Firebase ID token
-                    user.getIdToken().then(token => {
+                    // Get Firebase ID token with force refresh
+                    try {
+                        const token = await user.getIdToken(true);
                         state.accessToken = token;
                         localStorage.setItem('nexariqToken', token);
-                    });
+                        
+                        // Verify token with backend
+                        await verifyTokenWithBackend(token);
+                    } catch (error) {
+                        console.error('Token refresh error:', error);
+                        // Force sign out if token refresh fails
+                        await signOut();
+                        return;
+                    }
                     
                     // Save user to localStorage
                     localStorage.setItem('nexariqUser', JSON.stringify(state.user));
@@ -2852,6 +2861,28 @@
                     elements.guestBanner.style.display = 'flex';
                 }
             });
+        }
+
+        // Add token verification function
+        async function verifyTokenWithBackend(token) {
+            try {
+                const response = await fetch(`${API_CONFIG.baseUrl}/api/verify-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Token verification failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Token verification error:', error);
+                throw error;
+            }
         }
 
         // Load chat history from Supabase
@@ -3051,15 +3082,15 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        messages: [{ role: 'user', content: 'ping' }],  // Matches curl
-                        model: 'grok-4',  // Matches curl
-                        stream: false,    // Matches curl
-                        temperature: 0    // Matches curl
+                        messages: [{ role: 'user', content: 'ping' }],
+                        model: 'grok-4',
+                        stream: false,
+                        temperature: 0
                     })
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('AI Status Response:', data);  // Debug
+                    console.log('AI Status Response:', data);
                     setAIOnline(true);
                 } else {
                     const errorData = await response.json();
@@ -3464,7 +3495,7 @@ How can I assist you today? 🤔`;
                 
                 const avatar = message.role === 'user' 
                     ? (state.isGuest ? 'G' : (state.user?.displayName?.charAt(0) || state.user?.email?.charAt(0) || 'U'))
-                    : `<img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">`;
+                    : `<img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">`;
                 
                 const time = formatTime(message.timestamp);
                 
@@ -3624,8 +3655,8 @@ How can I assist you today? 🤔`;
                 });
                 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to send message');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
                 }
                 
                 // Handle streaming response
@@ -3652,7 +3683,7 @@ How can I assist you today? 🤔`;
                 
                 messageEl.innerHTML = `
                     <div class="message-avatar">
-                        <img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">
+                        <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">
                     </div>
                     <div class="message-content">
                         <div class="message-text" id="text-${aiMessageId}"></div>
@@ -3697,6 +3728,12 @@ How can I assist you today? 🤔`;
                             
                             try {
                                 const data = JSON.parse(dataStr);
+                                
+                                // Check for error in the stream
+                                if (data.error) {
+                                    throw new Error(data.error);
+                                }
+                                
                                 const delta = data.choices?.[0]?.delta?.content;
                                 
                                 if (delta) {
@@ -3711,6 +3748,10 @@ How can I assist you today? 🤔`;
                                 }
                             } catch (e) {
                                 console.error('Error parsing streaming data:', e);
+                                // If we can't parse the data, it might be an error message
+                                if (dataStr.includes('error')) {
+                                    throw new Error('Error in streaming response');
+                                }
                             }
                         }
                     }
@@ -3739,6 +3780,23 @@ How can I assist you today? 🤔`;
                 addAIMessage(`I'm sorry, I encountered an error: ${error.message}`);
                 
                 showToast('Error processing your request', 'error');
+                
+                // If it's an authentication error, try to refresh the token
+                if (error.message.includes('token') || error.message.includes('unauthorized')) {
+                    if (state.user && !state.isGuest) {
+                        try {
+                            const token = await state.user.getIdToken(true);
+                            state.accessToken = token;
+                            localStorage.setItem('nexariqToken', token);
+                            showToast('Authentication refreshed. Please try again.', 'info');
+                        } catch (tokenError) {
+                            console.error('Token refresh error:', tokenError);
+                            showToast('Authentication failed. Please sign in again.', 'error');
+                            // Force sign out
+                            await signOut();
+                        }
+                    }
+                }
             } finally {
                 // Re-enable send button
                 state.isTyping = false;
@@ -3761,7 +3819,7 @@ How can I assist you today? 🤔`;
             
             messageEl.innerHTML = `
                 <div class="message-avatar">
-                    <img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">
+                    <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="message-text" id="text-${messageId}">${formatMessageContent(content)}</div>
@@ -3830,7 +3888,7 @@ How can I assist you today? 🤔`;
             
             typingIndicator.innerHTML = `
                 <div class="message-avatar">
-                    <img src="https://z-cdn-media.chatglm.cn/files/f5028bc6-d919-4098-aa6c-571dd5d5f0a8_TOMO.jpg?auth_key=1791045391-cb8732f72cc94471ba6bf31410a8f682-0-3dbf66f79af0d9befb7d1d0c132d27af3" alt="Tomo AI" class="message-avatar-img">
+                    <img src="https://z-cdn-media.chatglm.cn/files/0411b154-8014-4dbb-8a1d-3d73832b06ee_TOMO.jpg?auth_key=1791077517-bc7337523a2f43eb801a6410d27712ed-0-dbeacdce97f03bca94771b7c55288380" alt="Tomo AI" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="typing-indicator">
