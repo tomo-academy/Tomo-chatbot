@@ -2811,13 +2811,13 @@
         };
 
         // API Configuration
-        const API_CONFIG = {
-            // Update this to your Vercel deployment URL
-            baseUrl: 'https://tomo-chatbot.vercel.app',
-            endpoint: '/api/chat',
-            authEndpoint: '/api/auth',
-            historyEndpoint: '/api/chat-history'
-        };
+const API_CONFIG = {
+    // Use relative paths for API calls
+    baseUrl: '', // Empty string means use the same domain
+    endpoint: '/api/chat',
+    authEndpoint: '/api/auth',
+    historyEndpoint: '/api/chat-history'
+};
 
         // DOM Elements
         const elements = {
