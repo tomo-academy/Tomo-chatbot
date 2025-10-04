@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nexariq AI - Student Assistant Platform</title>
     
-    <!-- Tomo favicon -->
+    <!-- Nexariq favicon -->
     <link rel="icon" href="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,89 +21,96 @@
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* Premium Black UI with Nexariq branding */
+        /* Premium Black Theme with Nexariq branding */
         :root {
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
-            --secondary: #ec4899;
-            --accent: #06b6d4;
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #a78bfa;
+            --accent: #4c1d95;
             --background: #0a0a0a;
-            --surface: #141414;
+            --surface: #111111;
             --surface-elevated: #1a1a1a;
-            --surface-highlight: #262626;
-            --border: #262626;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
+            --surface-highlight: #222222;
+            --border: #2a2a2a;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.5);
             --radius-sm: 0.5rem;
             --radius: 0.75rem;
             --radius-lg: 1rem;
             --transition: all 0.2s ease;
             --logo-size: 40px;
-            --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #06b6d4 100%);
-            --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #4c1d95 100%);
+            --gradient-accent: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
             --code-bg: #1a1a1a;
-            --code-border: #262626;
+            --code-border: #2a2a2a;
             --code-text: #e5e5e5;
-            --table-header-bg: rgba(139, 92, 246, 0.2);
+            --table-header-bg: rgba(124, 58, 237, 0.2);
             --table-row-alt: rgba(255, 255, 255, 0.03);
-            --box-bg: rgba(139, 92, 246, 0.1);
+            --box-bg: rgba(124, 58, 237, 0.1);
             --box-border: var(--primary);
             --user-name-gradient: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             --action-btn-bg: rgba(255, 255, 255, 0.1);
             --action-btn-hover: rgba(255, 255, 255, 0.2);
-            --action-btn-active: rgba(139, 92, 246, 0.3);
+            --action-btn-active: rgba(124, 58, 237, 0.3);
             --action-btn-like: #10b981;
             --action-btn-dislike: #ef4444;
             /* New gradient for user name */
-            --user-name-gradient-colorful: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 25%, #fad0c4 50%, #a1c4fd 75%, #c2e9fb 100%);
+            --user-name-gradient-colorful: linear-gradient(90deg, #7c3aed 0%, #a78bfa 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
             /* Nexariq-inspired gradients */
-            --nexariq-gradient: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --nexariq-gradient-alt: linear-gradient(135deg, #ec4899 0%, #06b6d4 100%);
-            --nexariq-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+            --nexariq-gradient: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            --nexariq-gradient-alt: linear-gradient(135deg, #a78bfa 0%, #4c1d95 100%);
+            --nexariq-glow: 0 0 20px rgba(124, 58, 237, 0.3);
             /* Enhanced animation variables */
             --animation-duration: 0.3s;
             --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-blur: blur(10px);
-            --neon-glow: 0 0 15px rgba(139, 92, 246, 0.5);
-            --neon-glow-hover: 0 0 25px rgba(139, 92, 246, 0.8);
+            --neon-glow: 0 0 15px rgba(124, 58, 237, 0.5);
+            --neon-glow-hover: 0 0 25px rgba(124, 58, 237, 0.8);
+            /* Student-specific colors */
+            --math-color: #3b82f6;
+            --science-color: #10b981;
+            --history-color: #f59e0b;
+            --literature-color: #ec4899;
+            --coding-color: #8b5cf6;
+            --art-color: #ef4444;
         }
 
         /* Light theme variables */
         [data-theme="light"] {
-            --background: #f8fafc;
+            --background: #f9fafb;
             --surface: #ffffff;
-            --surface-elevated: #f1f5f9;
-            --surface-highlight: #e2e8f0;
-            --border: #e2e8f0;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-tertiary: #94a3b8;
-            --code-bg: #f1f5f9;
-            --code-border: #cbd5e1;
-            --code-text: #1e293b;
-            --table-header-bg: rgba(139, 92, 246, 0.1);
+            --surface-elevated: #f3f4f6;
+            --surface-highlight: #e5e7eb;
+            --border: #d1d5db;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --code-bg: #f3f4f6;
+            --code-border: #d1d5db;
+            --code-text: #111827;
+            --table-header-bg: rgba(124, 58, 237, 0.1);
             --table-row-alt: rgba(0, 0, 0, 0.03);
-            --box-bg: rgba(139, 92, 246, 0.05);
-            --user-name-gradient: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            --box-bg: rgba(124, 58, 237, 0.05);
+            --user-name-gradient: linear-gradient(135deg, #111827 0%, #4b5563 100%);
             --action-btn-bg: rgba(0, 0, 0, 0.05);
             --action-btn-hover: rgba(0, 0, 0, 0.1);
-            --action-btn-active: rgba(139, 92, 246, 0.1);
+            --action-btn-active: rgba(124, 58, 237, 0.1);
             /* Light theme colorful gradient */
-            --user-name-gradient-colorful: linear-gradient(90deg, #ff6b6b 0%, #feca57 25%, #48dbfb 50%, #ff9ff3 75%, #54a0ff 100%);
+            --user-name-gradient-colorful: linear-gradient(90deg, #7c3aed 0%, #a78bfa 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%);
             --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(0, 0, 0, 0.1);
-            --neon-glow: 0 0 15px rgba(139, 92, 246, 0.3);
-            --neon-glow-hover: 0 0 25px rgba(139, 92, 246, 0.5);
+            --neon-glow: 0 0 15px rgba(124, 58, 237, 0.3);
+            --neon-glow-hover: 0 0 25px rgba(124, 58, 237, 0.5);
         }
 
         * {
@@ -122,14 +129,14 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Premium Login Screen with circular logo */
+        /* Enhanced Login Screen with glassmorphism */
         .login-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -137,9 +144,9 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
             /* Animated background */
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
             background-size: 200% 200%;
             animation: gradientShift 15s ease infinite;
         }
@@ -204,34 +211,24 @@
 
         .login-logo {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 0.75rem;
             margin-bottom: 2rem;
             position: relative;
         }
 
-        .login-logo .logo-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid transparent;
-            background: linear-gradient(#0a0a0a, #0a0a0a) padding-box,
-                        var(--nexariq-gradient) border-box;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-            margin-bottom: 1rem;
+        .login-logo .logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
             transition: transform var(--animation-duration) var(--animation-timing);
         }
 
-        .login-logo:hover .logo-circle {
-            transform: scale(1.05);
-        }
-
-        .login-logo .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .login-logo:hover .logo-img {
+            transform: rotate(10deg) scale(1.05);
         }
 
         .login-logo .logo-text {
@@ -244,6 +241,7 @@
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
         }
 
         .login-container h1 {
@@ -397,7 +395,7 @@
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
         }
 
         .register-btn {
@@ -481,9 +479,9 @@
             display: none;
         }
 
-        /* Enhanced Sidebar with glassmorphism */
+        /* Enhanced Sidebar with glassmorphism - Premium Black UI */
         .sidebar {
-            width: 260px;
+            width: 280px;
             background-color: var(--surface);
             border-right: 1px solid var(--border);
             display: flex;
@@ -549,9 +547,9 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0); }
         }
 
         .logo-text {
@@ -602,7 +600,7 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Enhanced Chat history with improved organization */
+        /* Enhanced Chat history with improved organization - Premium Black UI */
         .chat-history {
             flex: 1;
             overflow-y: auto;
@@ -679,7 +677,7 @@
             border-radius: var(--radius-sm);
         }
 
-        /* Enhanced chat item layout */
+        /* Enhanced chat item layout - Premium Black UI */
         .chat-item {
             padding: 0.75rem 1rem;
             border-radius: var(--radius);
@@ -884,7 +882,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Enhanced Main Content */
+        /* Enhanced Main Content - Premium Black UI */
         .main-content {
             flex: 1;
             display: flex;
@@ -894,7 +892,7 @@
             background-color: var(--background);
         }
 
-        /* Enhanced Header with glassmorphism */
+        /* Enhanced Header with glassmorphism - Premium Black UI */
         .header {
             height: 60px;
             background-color: var(--surface);
@@ -1013,7 +1011,7 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Enhanced Chat Container */
+        /* Enhanced Chat Container - Premium Black UI */
         .chat-container {
             flex: 1;
             display: flex;
@@ -1389,7 +1387,7 @@
             }
         }
 
-        /* Enhanced Chat Input with glassmorphism */
+        /* Enhanced Chat Input with glassmorphism - Premium Black UI */
         .chat-input-container {
             padding: 1.5rem;
             background-color: var(--surface);
@@ -1437,7 +1435,7 @@
 
         .chat-input-wrapper:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
 
         .chat-input-wrapper:focus-within::before {
@@ -1731,7 +1729,7 @@
 
         .form-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
         }
 
         .form-text {
@@ -2339,7 +2337,7 @@
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
-                left: -260px;
+                left: -280px;
                 height: 100vh;
                 z-index: 20;
                 box-shadow: var(--shadow-lg);
@@ -2511,35 +2509,19 @@
                 height: 36px;
             }
             
-            /* Make current conversation title stand out more */
-            .chat-item.active .chat-item-title {
-                font-weight: 600;
-            }
-            
-            /* Mobile-specific chat history improvements */
-            .chat-item {
-                padding: 1rem;
-            }
-
-            .chat-item-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
             .chat-item-title {
                 font-size: 1rem;
                 font-weight: 500;
             }
-
+            
             .chat-item-date {
                 font-size: 0.8rem;
             }
-
+            
             .chat-item-actions {
                 opacity: 1;
             }
-
+            
             .chat-item-action-btn {
                 width: 32px;
                 height: 32px;
@@ -2629,16 +2611,6 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .brand-lynxa {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            background: var(--nexariq-gradient-alt);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
         /* Enhanced User name styling with colorful gradient */
         .user-name-colorful {
             font-weight: 600;
@@ -2681,7 +2653,7 @@
 
         .focus-ring:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
         }
 
         /* Enhanced ripple effect */
@@ -2707,6 +2679,265 @@
             width: 300px;
             height: 300px;
         }
+
+        /* Student-specific features */
+        .subject-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-tag.math {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--math-color);
+        }
+
+        .subject-tag.science {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--science-color);
+        }
+
+        .subject-tag.history {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--history-color);
+        }
+
+        .subject-tag.literature {
+            background-color: rgba(236, 72, 153, 0.2);
+            color: var(--literature-color);
+        }
+
+        .subject-tag.coding {
+            background-color: rgba(139, 92, 246, 0.2);
+            color: var(--coding-color);
+        }
+
+        .subject-tag.art {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--art-color);
+        }
+
+        /* Study mode toggle */
+        .study-mode-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .study-mode-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .study-mode-toggle-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .study-mode-toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: var(--surface-highlight);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .study-mode-toggle-switch.active {
+            background-color: var(--primary);
+        }
+
+        .study-mode-toggle-switch-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .study-mode-toggle-switch.active .study-mode-toggle-switch-slider {
+            transform: translateX(24px);
+        }
+
+        /* Study timer */
+        .study-timer {
+            position: fixed;
+            top: 80px;
+            right: 1.5rem;
+            z-index: 100;
+            padding: 0.75rem 1rem;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .study-timer.active {
+            display: flex;
+        }
+
+        .study-timer-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .study-timer-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .study-timer-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            border: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .study-timer-btn:hover {
+            background-color: var(--surface-highlight);
+            transform: scale(1.1);
+        }
+
+        /* Voice input button */
+        .voice-input-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            border: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-input-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background-color: var(--surface-highlight);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .voice-input-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .voice-input-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .voice-input-btn.recording {
+            background-color: var(--error);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Export options */
+        .export-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .export-option {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .export-option:hover {
+            background-color: var(--surface-highlight);
+            transform: translateY(-1px);
+        }
+
+        /* Citation generator */
+        .citation-generator {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: var(--radius);
+        }
+
+        .citation-formats {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .citation-format {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .citation-format.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .citation-result {
+            padding: 0.75rem;
+            background-color: var(--surface-elevated);
+            border-radius: var(--radius);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -2714,14 +2945,12 @@
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">
-                <!-- Premium Circular Logo -->
-                <div class="logo-circle">
-                    <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq" class="logo-img">
-                </div>
-                <span class="logo-text">Nexariq</span>
+                <!-- Nexariq Logo Image -->
+                <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq AI" class="logo-img">
+                <span class="logo-text">Nexariq AI</span>
             </div>
             <h1>Welcome to Nexariq AI</h1>
-            <p>Your advanced student assistant for academic excellence</p>
+            <p>Your Personal Student Assistant</p>
             <div class="login-buttons">
                 <button class="login-btn google" id="googleSignInBtn">
                     <i class="fab fa-google"></i>
@@ -2766,9 +2995,9 @@
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="#" class="logo">
-                    <!-- Tomo Logo Image -->
-                    <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq" class="logo-img">
-                    <span class="logo-text">Nexariq</span>
+                    <!-- Nexariq Logo Image -->
+                    <img src="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c" alt="Nexariq AI" class="logo-img">
+                    <span class="logo-text">Nexariq AI</span>
                 </a>
                 <button class="new-chat-btn" id="newChatBtn">
                     <i class="fas fa-plus"></i>
@@ -2781,6 +3010,12 @@
                         <button class="filter-btn active" data-filter="all">All</button>
                         <button class="filter-btn" data-filter="pinned">Pinned</button>
                         <button class="filter-btn" data-filter="recent">Recent</button>
+                        <button class="filter-btn" data-filter="math">Math</button>
+                        <button class="filter-btn" data-filter="science">Science</button>
+                        <button class="filter-btn" data-filter="history">History</button>
+                        <button class="filter-btn" data-filter="literature">Literature</button>
+                        <button class="filter-btn" data-filter="coding">Coding</button>
+                        <button class="filter-btn" data-filter="art">Art</button>
                     </div>
                     <div class="chat-history-sort">
                         <button class="sort-btn" id="sortChatsBtn" title="Sort chats">
@@ -2840,14 +3075,14 @@
                     <div class="header-title">Nexariq AI</div>
                 </div>
                 <div class="header-actions">
-                    <button class="header-btn" id="knowledgeBtn" title="Knowledge Base">
-                        <i class="fas fa-book"></i>
+                    <button class="header-btn" id="studyModeBtn" title="Study Mode">
+                        <i class="fas fa-book-open"></i>
                     </button>
-                    <button class="header-btn" id="projectsBtn" title="Projects">
-                        <i class="fas fa-folder"></i>
+                    <button class="header-btn" id="timerBtn" title="Study Timer">
+                        <i class="fas fa-clock"></i>
                     </button>
-                    <button class="header-btn" id="toolsBtn" title="Tools">
-                        <i class="fas fa-tools"></i>
+                    <button class="header-btn" id="citationBtn" title="Citation Generator">
+                        <i class="fas fa-quote-right"></i>
                     </button>
                     <button class="header-btn" id="settingsBtn" title="Settings">
                         <i class="fas fa-cog"></i>
@@ -2864,26 +3099,26 @@
                     <div class="message ai">
                         <div class="message-avatar">
                             <!-- Updated AI Avatar Image -->
-                            <img src="https://z-cdn-media.chatglm.cn/files/9e95cdab-fb04-4e3e-9707-3a1a42cf4af2_pasted_image_1759042616103.jpg?auth_key=1790578672-8ce8bef12666447cab9411207f3410af-0-15fac8a4b233794ce2b1a852cd1a5d56" alt="Lynxa Pro" class="message-avatar-img">
+                            <img src="https://z-cdn-media.chatglm.cn/files/9e95cdab-fb04-4e3e-9707-3a1a42cf4af2_pasted_image_1759042616103.jpg?auth_key=1790578672-8ce8bef12666447cab9411207f3410af-0-15fac8a4b233794ce2b1a852cd1a5d56" alt="Nexariq AI" class="message-avatar-img">
                         </div>
                         <div class="message-content">
                             <div class="message-text">
-                                <h2>Hello! I'm <span class="brand-lynxa">Lynxa Pro</span></h2>
-                                <p>I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students excel in their academic journey.</p>
+                                <h2>Hello! I'm <span class="brand-nexariq">Nexariq AI</span></h2>
+                                <p>I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks:</p>
                                 
                                 <div class="info-box">
                                     <div class="info-box-title">My Capabilities</div>
                                     <ul>
-                                        <li>Answering questions and providing detailed explanations</li>
-                                        <li>Generating and executing code in multiple languages</li>
-                                        <li>Creating and analyzing documents</li>
-                                        <li>Web scraping and data extraction</li>
-                                        <li>Image generation and analysis</li>
-                                        <li>Complex multi-step tasks and workflows</li>
+                                        <li>Answering questions and providing explanations</li>
+                                        <li>Generating and executing code for programming assignments</li>
+                                        <li>Creating study materials and summaries</li>
+                                        <li>Helping with research and citations</li>
+                                        <li>Assisting with math and science problems</li>
+                                        <li>Providing writing feedback and suggestions</li>
                                     </ul>
                                 </div>
                                 
-                                <p>I have access to various tools and can execute code in a secure sandbox environment. I'll remember your preferences and personalize our conversations to provide the most relevant assistance for your studies.</p>
+                                <p>I have access to various tools and can execute code in a secure sandbox environment. I'll remember your preferences and personalize our conversations to help you learn more effectively.</p>
                                 
                                 <blockquote>
                                     <strong>Personalization:</strong> I'll remember your name and preferences throughout our conversations. Just tell me your name once, and I'll use it in all our future interactions!
@@ -2910,10 +3145,13 @@
 
                 <div class="chat-input-container">
                     <div class="chat-input-wrapper">
-                        <textarea class="chat-input" id="chatInput" placeholder="Ask me anything about your studies..." rows="1"></textarea>
+                        <textarea class="chat-input" id="chatInput" placeholder="Ask Nexariq AI anything..." rows="1"></textarea>
                         <div class="chat-actions">
                             <button class="chat-action-btn" id="attachBtn" title="Attach file">
                                 <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button class="voice-input-btn" id="voiceInputBtn" title="Voice input">
+                                <i class="fas fa-microphone"></i>
                             </button>
                             <button class="chat-send-btn" id="sendBtn">
                                 <i class="fas fa-paper-plane"></i>
@@ -2922,6 +3160,30 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Study Mode Toggle -->
+    <div class="study-mode-toggle" id="studyModeToggle">
+        <span class="study-mode-toggle-label">Study Mode</span>
+        <div class="study-mode-toggle-switch" id="studyModeSwitch">
+            <div class="study-mode-toggle-switch-slider"></div>
+        </div>
+    </div>
+
+    <!-- Study Timer -->
+    <div class="study-timer" id="studyTimer">
+        <div class="study-timer-display" id="studyTimerDisplay">25:00</div>
+        <div class="study-timer-controls">
+            <button class="study-timer-btn" id="studyTimerStartBtn">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="study-timer-btn" id="studyTimerPauseBtn">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button class="study-timer-btn" id="studyTimerResetBtn">
+                <i class="fas fa-redo"></i>
+            </button>
         </div>
     </div>
 
@@ -2953,7 +3215,7 @@
                         <div class="settings-description">Choose the app theme</div>
                     </div>
                     <select class="settings-select" id="themeSelect">
-                        <option value="dark">Dark</option>
+                        <option value="dark" selected>Dark</option>
                         <option value="light">Light</option>
                         <option value="system">System</option>
                     </select>
@@ -3005,10 +3267,19 @@
                 </div>
                 <div class="settings-item">
                     <div>
-                        <div class="settings-label">Agentic Workflows</div>
-                        <div class="settings-description">Enable advanced agentic features</div>
+                        <div class="settings-label">Voice Input</div>
+                        <div class="settings-description">Enable voice input for questions</div>
                     </div>
-                    <div class="settings-toggle active" id="agenticToggle">
+                    <div class="settings-toggle active" id="voiceInputToggle">
+                        <div class="settings-toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <div>
+                        <div class="settings-label">Study Mode</div>
+                        <div class="settings-description">Optimize responses for studying</div>
+                    </div>
+                    <div class="settings-toggle" id="studyModeSettingsToggle">
                         <div class="settings-toggle-slider"></div>
                     </div>
                 </div>
@@ -3209,6 +3480,73 @@
         </div>
     </div>
 
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Export Chat History</div>
+            </div>
+            <div class="modal-description">
+                Choose the format for exporting your chat history:
+            </div>
+            <div class="export-options">
+                <button class="export-option" id="exportJsonBtn">
+                    <i class="fas fa-code"></i> JSON
+                </button>
+                <button class="export-option" id="exportTxtBtn">
+                    <i class="fas fa-file-alt"></i> TXT
+                </button>
+                <button class="export-option" id="exportPdfBtn">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="export-option" id="exportCsvBtn">
+                    <i class="fas fa-file-csv"></i> CSV
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="exportCancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Citation Generator Modal -->
+    <div class="modal-overlay" id="citationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Citation Generator</div>
+            </div>
+            <div class="form-group">
+                <label for="citationTitle" class="form-label">Title</label>
+                <input type="text" class="form-input" id="citationTitle" placeholder="Enter the title">
+            </div>
+            <div class="form-group">
+                <label for="citationAuthor" class="form-label">Author(s)</label>
+                <input type="text" class="form-input" id="citationAuthor" placeholder="Enter author(s)">
+            </div>
+            <div class="form-group">
+                <label for="citationYear" class="form-label">Year</label>
+                <input type="text" class="form-input" id="citationYear" placeholder="Enter publication year">
+            </div>
+            <div class="form-group">
+                <label for="citationPublisher" class="form-label">Publisher</label>
+                <input type="text" class="form-input" id="citationPublisher" placeholder="Enter publisher">
+            </div>
+            <div class="citation-formats">
+                <button class="citation-format active" data-format="apa">APA</button>
+                <button class="citation-format" data-format="mla">MLA</button>
+                <button class="citation-format" data-format="chicago">Chicago</button>
+                <button class="citation-format" data-format="harvard">Harvard</button>
+            </div>
+            <div class="citation-result" id="citationResult">
+                Your citation will appear here...
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="citationCancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="copyCitationBtn">Copy Citation</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
@@ -3259,7 +3597,9 @@
                 taskNotifications: true,
                 errorNotifications: true,
                 memory: true,
-                structured: true
+                structured: true,
+                voiceInput: true,
+                studyMode: false
             },
             uploadedFiles: [],
             activeTasks: [],
@@ -3293,7 +3633,17 @@
             chatsCollection: null,
             currentChatDoc: null,
             isRegistering: false,
-            registrationError: null
+            registrationError: null,
+            studyMode: false,
+            studyTimer: {
+                minutes: 25,
+                seconds: 0,
+                isRunning: false,
+                isPaused: false,
+                interval: null
+            },
+            voiceRecognition: null,
+            isRecording: false
         };
 
         // Typing speeds (characters per millisecond)
@@ -3343,9 +3693,10 @@
             chatInput: document.getElementById('chatInput'),
             sendBtn: document.getElementById('sendBtn'),
             attachBtn: document.getElementById('attachBtn'),
-            toolsBtn: document.getElementById('toolsBtn'),
-            knowledgeBtn: document.getElementById('knowledgeBtn'),
-            projectsBtn: document.getElementById('projectsBtn'),
+            voiceInputBtn: document.getElementById('voiceInputBtn'),
+            studyModeBtn: document.getElementById('studyModeBtn'),
+            timerBtn: document.getElementById('timerBtn'),
+            citationBtn: document.getElementById('citationBtn'),
             settingsBtn: document.getElementById('settingsBtn'),
             settingsPanel: document.getElementById('settingsPanel'),
             settingsClose: document.getElementById('settingsClose'),
@@ -3365,6 +3716,8 @@
             errorNotificationToggle: document.getElementById('errorNotificationToggle'),
             memoryToggle: document.getElementById('memoryToggle'),
             structuredToggle: document.getElementById('structuredToggle'),
+            voiceInputToggle: document.getElementById('voiceInputToggle'),
+            studyModeSettingsToggle: document.getElementById('studyModeSettingsToggle'),
             searchChatBtn: document.getElementById('searchChatBtn'),
             exportChatBtn: document.getElementById('exportChatBtn'),
             clearChatBtn: document.getElementById('clearChatBtn'),
@@ -3384,6 +3737,20 @@
             renameInput: document.getElementById('renameInput'),
             renameCancelBtn: document.getElementById('renameCancelBtn'),
             renameSaveBtn: document.getElementById('renameSaveBtn'),
+            exportModal: document.getElementById('exportModal'),
+            exportJsonBtn: document.getElementById('exportJsonBtn'),
+            exportTxtBtn: document.getElementById('exportTxtBtn'),
+            exportPdfBtn: document.getElementById('exportPdfBtn'),
+            exportCsvBtn: document.getElementById('exportCsvBtn'),
+            exportCancelBtn: document.getElementById('exportCancelBtn'),
+            citationModal: document.getElementById('citationModal'),
+            citationTitle: document.getElementById('citationTitle'),
+            citationAuthor: document.getElementById('citationAuthor'),
+            citationYear: document.getElementById('citationYear'),
+            citationPublisher: document.getElementById('citationPublisher'),
+            citationResult: document.getElementById('citationResult'),
+            citationCancelBtn: document.getElementById('citationCancelBtn'),
+            copyCitationBtn: document.getElementById('copyCitationBtn'),
             loginError: document.getElementById('loginError'),
             registerForm: document.getElementById('registerForm'),
             registerBtn: document.getElementById('registerBtn'),
@@ -3392,7 +3759,14 @@
             registerPassword: document.getElementById('registerPassword'),
             loginToggle: document.getElementById('loginToggle'),
             showRegisterBtn: document.getElementById('showRegisterBtn'),
-            showLoginBtn: document.getElementById('showLoginBtn')
+            showLoginBtn: document.getElementById('showLoginBtn'),
+            studyModeToggle: document.getElementById('studyModeToggle'),
+            studyModeSwitch: document.getElementById('studyModeSwitch'),
+            studyTimer: document.getElementById('studyTimer'),
+            studyTimerDisplay: document.getElementById('studyTimerDisplay'),
+            studyTimerStartBtn: document.getElementById('studyTimerStartBtn'),
+            studyTimerPauseBtn: document.getElementById('studyTimerPauseBtn'),
+            studyTimerResetBtn: document.getElementById('studyTimerResetBtn')
         };
 
         // Initialize app
@@ -3440,7 +3814,60 @@
             
             // Setup scroll event listener for auto-scroll
             elements.chatMessages.addEventListener('scroll', handleScroll);
+            
+            // Initialize voice recognition if supported
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                initVoiceRecognition();
+            }
         });
+
+        // Initialize voice recognition
+        function initVoiceRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            state.voiceRecognition = new SpeechRecognition();
+            state.voiceRecognition.continuous = false;
+            state.voiceRecognition.interimResults = false;
+            state.voiceRecognition.lang = 'en-US';
+            
+            state.voiceRecognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                elements.chatInput.value = transcript;
+                stopVoiceRecording();
+            };
+            
+            state.voiceRecognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                showToast('Voice recognition error: ' + event.error, 'error');
+                stopVoiceRecording();
+            };
+            
+            state.voiceRecognition.onend = () => {
+                stopVoiceRecording();
+            };
+        }
+
+        // Start voice recording
+        function startVoiceRecording() {
+            if (!state.voiceRecognition) {
+                showToast('Voice recognition not supported in your browser', 'error');
+                return;
+            }
+            
+            state.isRecording = true;
+            elements.voiceInputBtn.classList.add('recording');
+            state.voiceRecognition.start();
+            showToast('Listening...', 'success');
+        }
+
+        // Stop voice recording
+        function stopVoiceRecording() {
+            if (state.voiceRecognition && state.isRecording) {
+                state.voiceRecognition.stop();
+            }
+            
+            state.isRecording = false;
+            elements.voiceInputBtn.classList.remove('recording');
+        }
 
         // Handle scroll events to determine if we should auto-scroll
         function handleScroll() {
@@ -4082,6 +4509,37 @@
             });
             elements.sendBtn.addEventListener('click', sendMessage);
             
+            // Voice input
+            elements.voiceInputBtn.addEventListener('click', toggleVoiceInput);
+            
+            // Study mode
+            elements.studyModeBtn.addEventListener('click', toggleStudyMode);
+            elements.studyModeSwitch.addEventListener('click', toggleStudyMode);
+            
+            // Study timer
+            elements.timerBtn.addEventListener('click', toggleStudyTimer);
+            elements.studyTimerStartBtn.addEventListener('click', startStudyTimer);
+            elements.studyTimerPauseBtn.addEventListener('click', pauseStudyTimer);
+            elements.studyTimerResetBtn.addEventListener('click', resetStudyTimer);
+            
+            // Citation generator
+            elements.citationBtn.addEventListener('click', showCitationModal);
+            elements.copyCitationBtn.addEventListener('click', copyCitation);
+            
+            // Citation format buttons
+            document.querySelectorAll('.citation-format').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.citation-format').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    generateCitation();
+                });
+            });
+            
+            // Citation input fields
+            [elements.citationTitle, elements.citationAuthor, elements.citationYear, elements.citationPublisher].forEach(input => {
+                input.addEventListener('input', generateCitation);
+            });
+            
             // Attach file
             elements.attachBtn.addEventListener('click', attachFile);
             
@@ -4102,14 +4560,23 @@
             elements.errorNotificationToggle.addEventListener('click', toggleErrorNotifications);
             elements.memoryToggle.addEventListener('click', toggleMemory);
             elements.structuredToggle.addEventListener('click', toggleStructured);
+            elements.voiceInputToggle.addEventListener('click', toggleVoiceInput);
+            elements.studyModeSettingsToggle.addEventListener('click', toggleStudyModeSettings);
             
             // Chat history management
             elements.searchChatBtn.addEventListener('click', showSearchModal);
-            elements.exportChatBtn.addEventListener('click', exportChatHistory);
+            elements.exportChatBtn.addEventListener('click', showExportModal);
             elements.clearChatBtn.addEventListener('click', showClearChatsConfirm);
-            elements.exportDataBtn.addEventListener('click', exportChatHistory);
+            elements.exportDataBtn.addEventListener('click', showExportModal);
             elements.clearDataBtn.addEventListener('click', showClearChatsConfirm);
             elements.sortChatsBtn.addEventListener('click', toggleChatSort);
+            
+            // Export options
+            elements.exportJsonBtn.addEventListener('click', () => exportChatHistory('json'));
+            elements.exportTxtBtn.addEventListener('click', () => exportChatHistory('txt'));
+            elements.exportPdfBtn.addEventListener('click', () => exportChatHistory('pdf'));
+            elements.exportCsvBtn.addEventListener('click', () => exportChatHistory('csv'));
+            elements.exportCancelBtn.addEventListener('click', hideExportModal);
             
             // Chat filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -4134,6 +4601,9 @@
             // Rename modal
             elements.renameCancelBtn.addEventListener('click', hideRenameModal);
             elements.renameSaveBtn.addEventListener('click', saveRenameChat);
+            
+            // Citation modal
+            elements.citationCancelBtn.addEventListener('click', hideCitationModal);
             
             // Window resize
             window.addEventListener('resize', handleWindowResize);
@@ -4225,12 +4695,6 @@
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const result = await auth.signInWithPopup(provider);
                 
-                // Extract name from Google profile
-                const name = result.user.displayName || '';
-                if (name) {
-                    state.userMemory.name = name;
-                }
-                
                 // Check if user exists in Firestore
                 const userExists = await checkUserExists(result.user.uid);
                 
@@ -4238,7 +4702,7 @@
                     // Show registration form
                     showRegistrationForm();
                     // Pre-fill the registration form with user data
-                    elements.registerName.value = name || '';
+                    elements.registerName.value = result.user.displayName || '';
                     elements.registerEmail.value = result.user.email || '';
                     showToast('Please complete your registration', 'warning');
                 } else {
@@ -4288,12 +4752,6 @@
                 const provider = new firebase.auth.OAuthProvider('apple.com');
                 const result = await auth.signInWithPopup(provider);
                 
-                // Extract name from Apple profile if available
-                const name = result.user.displayName || '';
-                if (name) {
-                    state.userMemory.name = name;
-                }
-                
                 // Check if user exists in Firestore
                 const userExists = await checkUserExists(result.user.uid);
                 
@@ -4301,7 +4759,7 @@
                     // Show registration form
                     showRegistrationForm();
                     // Pre-fill the registration form with user data
-                    elements.registerName.value = name || '';
+                    elements.registerName.value = result.user.displayName || '';
                     elements.registerEmail.value = result.user.email || '';
                     showToast('Please complete your registration', 'warning');
                 } else {
@@ -4403,9 +4861,6 @@
                     displayName: name
                 });
                 
-                // Store name in memory
-                state.userMemory.name = name;
-                
                 // Create user in Firestore
                 await createUserInFirestore(user);
                 
@@ -4458,7 +4913,7 @@
                     state.dislikedMessages.clear();
                     
                     // Clear localStorage
-                    localStorage.removeItem('tomoState');
+                    localStorage.removeItem('nexariqState');
                 })
                 .catch(error => {
                     console.error('Error signing out:', error);
@@ -4513,7 +4968,7 @@
         // Load state from localStorage
         function loadState() {
             try {
-                const savedState = localStorage.getItem('tomoState');
+                const savedState = localStorage.getItem('nexariqState');
                 if (savedState) {
                     const parsedState = JSON.parse(savedState);
                     state.messages = parsedState.messages || [];
@@ -4545,7 +5000,7 @@
                     selectedModel: state.selectedModel,
                     currentChatTitle: state.currentChatTitle
                 };
-                localStorage.setItem('tomoState', JSON.stringify(stateToSave));
+                localStorage.setItem('nexariqState', JSON.stringify(stateToSave));
             } catch (error) {
                 console.error('Error saving state:', error);
             }
@@ -4632,44 +5087,40 @@
             // Add personalized welcome message
             const userName = state.userMemory.name || '';
             const welcomeMessage = userName 
-                ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-lynxa">Lynxa Pro</span>
+                ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students like you excel in your academic journey.
-
-<div class="info-box">
-    <div class="info-box-title">My Capabilities</div>
-    <ul>
-        <li>Answering questions and providing detailed explanations</li>
-        <li>Generating and executing code in multiple languages</li>
-        <li>Creating and analyzing documents</li>
-        <li>Web scraping and data extraction</li>
-        <li>Image generation and analysis</li>
-        <li>Complex multi-step tasks and workflows</li>
-    </ul>
-</div>
-
-I have access to various tools and can execute code in a secure sandbox environment. I'll remember your preferences and personalize our conversations to provide the most relevant assistance for your studies.
-
-How can I help you with your academic journey today, ${userName}?`
-                : `## Hello! I'm <span class="brand-lynxa">Lynxa Pro</span>
-
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students excel in their academic journey.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
 
 <div class="info-box">
     <div class="info-box-title">My Capabilities</div>
     <ul>
-        <li>Answering questions and providing detailed explanations</li>
-        <li>Generating and executing code in multiple languages</li>
-        <li>Creating and analyzing documents</li>
-        <li>Web scraping and data extraction</li>
-        <li>Image generation and analysis</li>
-        <li>Complex multi-step tasks and workflows</li>
+        <li>Answering questions and providing explanations</li>
+        <li>Generating and executing code for programming assignments</li>
+        <li>Creating study materials and summaries</li>
+        <li>Helping with research and citations</li>
+        <li>Assisting with math and science problems</li>
+        <li>Providing writing feedback and suggestions</li>
     </ul>
 </div>
 
-I have access to various tools and can execute code in a secure sandbox environment. I'll remember your preferences and personalize our conversations to provide the most relevant assistance for your studies.
+I can format my responses with tables and boxes for better readability. How can I assist you today?`
+                : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-How can I help you with your academic journey today?`;
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
+
+<div class="info-box">
+    <div class="info-box-title">My Capabilities</div>
+    <ul>
+        <li>Answering questions and providing explanations</li>
+        <li>Generating and executing code for programming assignments</li>
+        <li>Creating study materials and summaries</li>
+        <li>Helping with research and citations</li>
+        <li>Assisting with math and science problems</li>
+        <li>Providing writing feedback and suggestions</li>
+    </ul>
+</div>
+
+I can format my responses with tables and boxes for better readability. How can I assist you today?`;
             
             state.messages.push({
                 id: generateId(),
@@ -4776,16 +5227,16 @@ How can I help you with your academic journey today?`;
                     // Add welcome message
                     const userName = state.userMemory.name || '';
                     const welcomeMessage = userName 
-                        ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-lynxa">Lynxa Pro</span>
+                        ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students like you excel in your academic journey.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
 
-How can I help you with your academic journey today, ${userName}?`
-                        : `## Hello! I'm <span class="brand-lynxa">Lynxa Pro</span>
+How can I assist you today?`
+                        : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students excel in their academic journey.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
 
-How can I help you with your academic journey today?`;
+How can I assist you today?`;
                     
                     state.messages.push({
                         id: generateId(),
@@ -4950,7 +5401,8 @@ How can I help you with your academic journey today?`;
                             title: chatData.title || 'Untitled Chat',
                             messages: chatData.messages || [],
                             timestamp: chatData.createdAt?.toDate() || new Date(),
-                            pinned: chatData.pinned || false
+                            pinned: chatData.pinned || false,
+                            subject: chatData.subject || 'general'
                         });
                     });
                     
@@ -4980,6 +5432,9 @@ How can I help you with your academic journey today?`;
                     const chatDate = new Date(chat.timestamp);
                     return chatDate >= oneWeekAgo;
                 });
+            } else if (state.chatFilter !== 'all') {
+                // Filter by subject
+                filteredChats = filteredChats.filter(chat => chat.subject === state.chatFilter);
             }
             
             // Sort chats
@@ -5050,12 +5505,18 @@ How can I help you with your academic journey today?`;
                         const date = new Date(chat.timestamp);
                         const formattedDate = formatChatItemDate(date);
                         
+                        // Add subject tag if available
+                        let subjectTag = '';
+                        if (chat.subject && chat.subject !== 'general') {
+                            subjectTag = `<span class="subject-tag ${chat.subject}">${chat.subject}</span>`;
+                        }
+                        
                         chatItem.innerHTML = `
                             <div class="chat-item-icon">
                                 <i class="fas fa-comment"></i>
                             </div>
                             <div class="chat-item-content">
-                                <div class="chat-item-title">${chat.title}</div>
+                                <div class="chat-item-title">${chat.title} ${subjectTag}</div>
                                 <div class="chat-item-date">${formattedDate}</div>
                             </div>
                             <div class="chat-item-actions">
@@ -5087,7 +5548,7 @@ How can I help you with your academic journey today?`;
                 
                 const avatar = message.role === 'user' 
                     ? (state.userMemory.name ? state.userMemory.name.charAt(0).toUpperCase() : 'U')
-                    : `<img src="${aiAvatarUrl}" alt="Lynxa Pro" class="message-avatar-img">`;
+                    : `<img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">`;
                 
                 // Use full timestamp format for messages (Z.ai style)
                 const time = formatDateTime(message.timestamp);
@@ -5223,9 +5684,26 @@ How can I help you with your academic journey today?`;
                 
                 // Create a new chat document in Firestore if it doesn't exist
                 if (!state.currentChatDoc && state.chatsCollection) {
+                    // Determine subject based on message content
+                    let subject = 'general';
+                    if (message.toLowerCase().includes('math') || message.toLowerCase().includes('calculate') || message.toLowerCase().includes('equation')) {
+                        subject = 'math';
+                    } else if (message.toLowerCase().includes('science') || message.toLowerCase().includes('experiment') || message.toLowerCase().includes('biology')) {
+                        subject = 'science';
+                    } else if (message.toLowerCase().includes('history') || message.toLowerCase().includes('historical') || message.toLowerCase().includes('war')) {
+                        subject = 'history';
+                    } else if (message.toLowerCase().includes('literature') || message.toLowerCase().includes('book') || message.toLowerCase().includes('poem')) {
+                        subject = 'literature';
+                    } else if (message.toLowerCase().includes('code') || message.toLowerCase().includes('programming') || message.toLowerCase().includes('javascript')) {
+                        subject = 'coding';
+                    } else if (message.toLowerCase().includes('art') || message.toLowerCase().includes('design') || message.toLowerCase().includes('drawing')) {
+                        subject = 'art';
+                    }
+                    
                     state.chatsCollection.add({
                         title: newTitle,
                         messages: state.messages,
+                        subject: subject,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                         pinned: false
@@ -5253,15 +5731,16 @@ How can I help you with your academic journey today?`;
                 // Prepare messages for API
                 const systemMessage = {
                     role: 'system',
-                    content: `You are Lynxa Pro, an advanced AI assistant developed by Nexariq, designed specifically to help students excel in their academic journey.
+                    content: `You are Nexariq AI, an advanced AI assistant developed by Nexariq specifically for students. 
 
- ${state.userMemory.name ? `The student's name is ${state.userMemory.name}. Always address them by their name in a friendly but professional manner.` : ''}
+ ${state.userMemory.name ? `The user's name is ${state.userMemory.name}. Always address them by their name in a friendly, helpful manner like Microsoft Copilot.` : ''}
 
  ${state.userPreferences.responseStyle ? `Use a ${state.userPreferences.responseStyle} tone in your responses.` : ''}
- ${state.userPreferences.detailLevel === 'high' ? 'Provide detailed and comprehensive explanations with examples.` : state.userPreferences.detailLevel === 'low' ? 'Provide concise and brief explanations.' : 'Provide balanced explanations with appropriate detail.'}
+ ${state.userPreferences.detailLevel === 'high' ? 'Provide detailed and comprehensive responses with examples and explanations.' : state.userPreferences.detailLevel === 'low' ? 'Provide concise and brief responses.' : 'Provide balanced responses with appropriate detail.'}
  ${state.settings.structured ? 'When appropriate, use tables to organize information and boxes to highlight important points. Use markdown formatting for tables and blockquotes for boxes.' : ''}
+ ${state.settings.studyMode ? 'You are in study mode. Provide responses optimized for learning and studying. Include study tips, memory techniques, and practice questions when relevant.' : ''}
 
-Remember the student's preferences and previous interactions to provide personalized assistance for their academic journey. Format your responses in a professional, well-structured manner with proper headings, bullet points, and formatting where appropriate.`
+Remember the user's preferences and previous interactions to provide personalized responses. Always be helpful, encouraging, and supportive in your academic journey.`
                 };
                 
                 // Convert messages to API format
@@ -5293,7 +5772,7 @@ Remember the student's preferences and previous interactions to provide personal
                 
                 messageEl.innerHTML = `
                     <div class="message-avatar">
-                        <img src="${aiAvatarUrl}" alt="Lynxa Pro" class="message-avatar-img">
+                        <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
                     </div>
                     <div class="message-content">
                         <div class="message-text typing-text" id="text-${messageId}"></div>
@@ -5491,7 +5970,7 @@ Remember the student's preferences and previous interactions to provide personal
             
             messageEl.innerHTML = `
                 <div class="message-avatar">
-                    <img src="${aiAvatarUrl}" alt="Lynxa Pro" class="message-avatar-img">
+                    <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="message-text typing-text" id="text-${messageId}"></div>
@@ -5617,7 +6096,7 @@ Remember the student's preferences and previous interactions to provide personal
             
             typingIndicator.innerHTML = `
                 <div class="message-avatar">
-                    <img src="${aiAvatarUrl}" alt="Lynxa Pro" class="message-avatar-img">
+                    <img src="${aiAvatarUrl}" alt="Nexariq AI" class="message-avatar-img">
                 </div>
                 <div class="message-content">
                     <div class="typing-indicator">
@@ -5645,6 +6124,239 @@ Remember the student's preferences and previous interactions to provide personal
             if (typingIndicator) {
                 typingIndicator.remove();
             }
+        }
+
+        // Toggle voice input
+        function toggleVoiceInput() {
+            if (state.isRecording) {
+                stopVoiceRecording();
+            } else {
+                startVoiceRecording();
+            }
+        }
+
+        // Toggle study mode
+        function toggleStudyMode() {
+            state.studyMode = !state.studyMode;
+            elements.studyModeSwitch.classList.toggle('active');
+            elements.studyModeToggle.classList.toggle('active');
+            
+            if (state.studyMode) {
+                showToast('Study mode activated. I\'ll provide optimized responses for learning.', 'success');
+            } else {
+                showToast('Study mode deactivated.', 'success');
+            }
+            
+            // Save settings
+            state.settings.studyMode = state.studyMode;
+            saveUserData();
+        }
+
+        // Toggle study timer
+        function toggleStudyTimer() {
+            elements.studyTimer.classList.toggle('active');
+        }
+
+        // Start study timer
+        function startStudyTimer() {
+            if (state.studyTimer.isRunning) return;
+            
+            state.studyTimer.isRunning = true;
+            state.studyTimer.isPaused = false;
+            
+            state.studyTimer.interval = setInterval(() => {
+                if (state.studyTimer.seconds > 0) {
+                    state.studyTimer.seconds--;
+                } else if (state.studyTimer.minutes > 0) {
+                    state.studyTimer.minutes--;
+                    state.studyTimer.seconds = 59;
+                } else {
+                    // Timer finished
+                    pauseStudyTimer();
+                    showToast('Study session completed! Take a break.', 'success');
+                    return;
+                }
+                
+                updateStudyTimerDisplay();
+            }, 1000);
+            
+            showToast('Study timer started', 'success');
+        }
+
+        // Pause study timer
+        function pauseStudyTimer() {
+            if (!state.studyTimer.isRunning) return;
+            
+            state.studyTimer.isRunning = false;
+            state.studyTimer.isPaused = true;
+            
+            if (state.studyTimer.interval) {
+                clearInterval(state.studyTimer.interval);
+                state.studyTimer.interval = null;
+            }
+            
+            showToast('Study timer paused', 'success');
+        }
+
+        // Reset study timer
+        function resetStudyTimer() {
+            pauseStudyTimer();
+            state.studyTimer.minutes = 25;
+            state.studyTimer.seconds = 0;
+            state.studyTimer.isPaused = false;
+            updateStudyTimerDisplay();
+            showToast('Study timer reset', 'success');
+        }
+
+        // Update study timer display
+        function updateStudyTimerDisplay() {
+            const minutes = state.studyTimer.minutes < 10 ? '0' + state.studyTimer.minutes : state.studyTimer.minutes;
+            const seconds = state.studyTimer.seconds < 10 ? '0' + state.studyTimer.seconds : state.studyTimer.seconds;
+            elements.studyTimerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        // Show citation modal
+        function showCitationModal() {
+            elements.citationModal.classList.add('active');
+            generateCitation();
+        }
+
+        // Hide citation modal
+        function hideCitationModal() {
+            elements.citationModal.classList.remove('active');
+        }
+
+        // Generate citation
+        function generateCitation() {
+            const title = elements.citationTitle.value.trim();
+            const author = elements.citationAuthor.value.trim();
+            const year = elements.citationYear.value.trim();
+            const publisher = elements.citationPublisher.value.trim();
+            const format = document.querySelector('.citation-format.active').getAttribute('data-format');
+            
+            let citation = '';
+            
+            if (!title) {
+                elements.citationResult.textContent = 'Please enter at least a title to generate a citation.';
+                return;
+            }
+            
+            switch (format) {
+                case 'apa':
+                    citation = generateAPACitation(title, author, year, publisher);
+                    break;
+                case 'mla':
+                    citation = generateMLACitation(title, author, year, publisher);
+                    break;
+                case 'chicago':
+                    citation = generateChicagoCitation(title, author, year, publisher);
+                    break;
+                case 'harvard':
+                    citation = generateHarvardCitation(title, author, year, publisher);
+                    break;
+                default:
+                    citation = 'Invalid citation format.';
+            }
+            
+            elements.citationResult.textContent = citation;
+        }
+
+        // Generate APA citation
+        function generateAPACitation(title, author, year, publisher) {
+            let citation = '';
+            
+            if (author) {
+                citation += author + ' ';
+            }
+            
+            if (year) {
+                citation += `(${year}). `;
+            }
+            
+            citation += `*${title}*. `;
+            
+            if (publisher) {
+                citation += publisher + '.';
+            }
+            
+            return citation || 'Incomplete information for APA citation.';
+        }
+
+        // Generate MLA citation
+        function generateMLACitation(title, author, year, publisher) {
+            let citation = '';
+            
+            if (author) {
+                citation += author + '. ';
+            }
+            
+            citation += `"${title}." `;
+            
+            if (publisher) {
+                citation += publisher + ', ';
+            }
+            
+            if (year) {
+                citation += year + '.';
+            }
+            
+            return citation || 'Incomplete information for MLA citation.';
+        }
+
+        // Generate Chicago citation
+        function generateChicagoCitation(title, author, year, publisher) {
+            let citation = '';
+            
+            if (author) {
+                citation += author + '. ';
+            }
+            
+            citation += `"${title}." `;
+            
+            if (publisher) {
+                citation += publisher + ', ';
+            }
+            
+            if (year) {
+                citation += year + '.';
+            }
+            
+            return citation || 'Incomplete information for Chicago citation.';
+        }
+
+        // Generate Harvard citation
+        function generateHarvardCitation(title, author, year, publisher) {
+            let citation = '';
+            
+            if (author) {
+                citation += author + ' ';
+            }
+            
+            if (year) {
+                citation += `(${year}) `;
+            }
+            
+            citation += `${title}. `;
+            
+            if (publisher) {
+                citation += publisher + '.';
+            }
+            
+            return citation || 'Incomplete information for Harvard citation.';
+        }
+
+        // Copy citation
+        function copyCitation() {
+            const citation = elements.citationResult.textContent;
+            
+            navigator.clipboard.writeText(citation)
+                .then(() => {
+                    showToast('Citation copied to clipboard', 'success');
+                })
+                .catch(err => {
+                    showToast('Failed to copy citation', 'error');
+                    console.error('Failed to copy:', err);
+                });
         }
 
         // Attach file
@@ -5802,6 +6514,30 @@ Remember the student's preferences and previous interactions to provide personal
             showToast(`Structured responses ${state.settings.structured ? 'enabled' : 'disabled'}`, 'success');
         }
 
+        // Toggle voice input
+        function toggleVoiceInput() {
+            state.settings.voiceInput = !state.settings.voiceInput;
+            elements.voiceInputToggle.classList.toggle('active');
+            
+            // Show/hide voice input button
+            if (state.settings.voiceInput) {
+                elements.voiceInputBtn.style.display = 'flex';
+            } else {
+                elements.voiceInputBtn.style.display = 'none';
+            }
+            
+            saveUserData();
+            showToast(`Voice input ${state.settings.voiceInput ? 'enabled' : 'disabled'}`, 'success');
+        }
+
+        // Toggle study mode settings
+        function toggleStudyModeSettings() {
+            state.settings.studyMode = !state.settings.studyMode;
+            elements.studyModeSettingsToggle.classList.toggle('active');
+            saveUserData();
+            showToast(`Study mode ${state.settings.studyMode ? 'enabled' : 'disabled'}`, 'success');
+        }
+
         // Toggle task notifications
         function toggleTaskNotifications() {
             state.settings.taskNotifications = !state.settings.taskNotifications;
@@ -5850,6 +6586,20 @@ Remember the student's preferences and previous interactions to provide personal
             
             if (state.settings.structured) {
                 elements.structuredToggle.classList.add('active');
+            }
+            
+            if (state.settings.voiceInput) {
+                elements.voiceInputToggle.classList.add('active');
+                elements.voiceInputBtn.style.display = 'flex';
+            } else {
+                elements.voiceInputBtn.style.display = 'none';
+            }
+            
+            if (state.settings.studyMode) {
+                elements.studyModeSettingsToggle.classList.add('active');
+                elements.studyModeSwitch.classList.add('active');
+                elements.studyModeToggle.classList.add('active');
+                state.studyMode = true;
             }
             
             if (state.settings.taskNotifications) {
@@ -6134,16 +6884,16 @@ Remember the student's preferences and previous interactions to provide personal
                 // Add welcome message
                 const userName = state.userMemory.name || '';
                 const welcomeMessage = userName 
-                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-lynxa">Lynxa Pro</span>
+                    ? `## Hello, <span class="user-name-colorful">${userName}</span>! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students like you excel in your academic journey.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I remember your preferences and will personalize our conversations.
 
-How can I help you with your academic journey today, ${userName}?`
-                    : `## Hello! I'm <span class="brand-lynxa">Lynxa Pro</span>
+How can I assist you today?`
+                    : `## Hello! I'm <span class="brand-nexariq">Nexariq AI</span>
 
-I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span>, designed specifically to help students excel in their academic journey.
+I'm an advanced AI assistant developed by <span class="brand-nexariq">Nexariq</span> specifically for students. I can help you with a wide range of academic tasks and will remember your preferences.
 
-How can I help you with your academic journey today?`;
+How can I assist you today?`;
                 
                 state.messages.push({
                     id: generateId(),
@@ -6163,8 +6913,18 @@ How can I help you with your academic journey today?`;
             });
         }
 
+        // Show export modal
+        function showExportModal() {
+            elements.exportModal.classList.add('active');
+        }
+
+        // Hide export modal
+        function hideExportModal() {
+            elements.exportModal.classList.remove('active');
+        }
+
         // Export chat history
-        function exportChatHistory() {
+        function exportChatHistory(format) {
             if (state.chatHistory.length === 0 && state.messages.length <= 1) {
                 showToast('No chat history to export', 'warning');
                 return;
@@ -6196,8 +6956,23 @@ How can I help you with your academic journey today?`;
             // Add chat history
             exportData.chats.push(...state.chatHistory);
             
-            // Convert to JSON
-            const dataStr = JSON.stringify(exportData, null, 2);
+            // Export based on format
+            if (format === 'json') {
+                exportAsJSON(exportData);
+            } else if (format === 'txt') {
+                exportAsTXT(exportData);
+            } else if (format === 'pdf') {
+                exportAsPDF(exportData);
+            } else if (format === 'csv') {
+                exportAsCSV(exportData);
+            }
+            
+            hideExportModal();
+        }
+
+        // Export as JSON
+        function exportAsJSON(data) {
+            const dataStr = JSON.stringify(data, null, 2);
             
             // Create blob and download
             const blob = new Blob([dataStr], { type: 'application/json' });
@@ -6215,7 +6990,153 @@ How can I help you with your academic journey today?`;
                 URL.revokeObjectURL(url);
             }, 100);
             
-            showToast('Chat history exported successfully', 'success');
+            showToast('Chat history exported as JSON', 'success');
+        }
+
+        // Export as TXT
+        function exportAsTXT(data) {
+            let txtContent = `Nexariq AI Chat History\n`;
+            txtContent += `Export Date: ${new Date().toLocaleDateString()}\n`;
+            txtContent += `User: ${data.user.name} (${data.user.email})\n\n`;
+            
+            data.chats.forEach(chat => {
+                txtContent += `========================================\n`;
+                txtContent += `Chat: ${chat.title}\n`;
+                txtContent += `Date: ${new Date(chat.timestamp).toLocaleDateString()}\n\n`;
+                
+                chat.messages.forEach(message => {
+                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const time = new Date(message.timestamp).toLocaleTimeString();
+                    txtContent += `[${time}] ${sender}:\n`;
+                    txtContent += `${message.content}\n\n`;
+                });
+            });
+            
+            // Create blob and download
+            const blob = new Blob([txtContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Clean up
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showToast('Chat history exported as TXT', 'success');
+        }
+
+        // Export as PDF (simplified version)
+        function exportAsPDF(data) {
+            // For a real implementation, you would use a library like jsPDF
+            // This is a simplified version that creates a printable HTML
+            let htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nexariq AI Chat History</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #7c3aed; }
+        .chat { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .message { margin-bottom: 10px; }
+        .user { color: #3b82f6; }
+        .ai { color: #10b981; }
+        .timestamp { color: #9ca3af; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <h1>Nexariq AI Chat History</h1>
+    <p>Export Date: ${new Date().toLocaleDateString()}</p>
+    <p>User: ${data.user.name} (${data.user.email})</p>
+`;
+            
+            data.chats.forEach(chat => {
+                htmlContent += `
+    <div class="chat">
+        <h2>${chat.title}</h2>
+        <p>Date: ${new Date(chat.timestamp).toLocaleDateString()}</p>
+`;
+                
+                chat.messages.forEach(message => {
+                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const time = new Date(message.timestamp).toLocaleTimeString();
+                    const className = message.role === 'user' ? 'user' : 'ai';
+                    
+                    htmlContent += `
+        <div class="message">
+            <span class="${className}"><strong>${sender}</strong></span>
+            <span class="timestamp">[${time}]</span>
+            <p>${message.content.replace(/<[^>]*>/g, '')}</p>
+        </div>
+`;
+                });
+                
+                htmlContent += `
+    </div>
+`;
+            });
+            
+            htmlContent += `
+</body>
+</html>`;
+            
+            // Create blob and download
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Clean up
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showToast('Chat history exported as HTML (PDF-compatible)', 'success');
+        }
+
+        // Export as CSV
+        function exportAsCSV(data) {
+            let csvContent = 'Chat ID,Title,Date,Sender,Message\n';
+            
+            data.chats.forEach(chat => {
+                chat.messages.forEach(message => {
+                    const sender = message.role === 'user' ? 'You' : 'Nexariq AI';
+                    const date = new Date(message.timestamp).toLocaleDateString();
+                    const title = chat.title.replace(/"/g, '""');
+                    const content = message.content.replace(/"/g, '""').replace(/\n/g, '\\n');
+                    
+                    csvContent += `"${chat.id}","${title}","${date}","${sender}","${content}"\n`;
+                });
+            });
+            
+            // Create blob and download
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexariq-chat-history-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Clean up
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showToast('Chat history exported as CSV', 'success');
         }
 
         // Show search modal
