@@ -8,7 +8,7 @@
     <!-- Tomo Academy favicon -->
     <link rel="icon" href="https://z-cdn-media.chatglm.cn/files/c04d33fc-5e5a-4ab6-bea6-a11b88918ae7_TOMO.jpg?auth_key=1791089382-ea973e46df5748e0a8ff4ceedd8f2e49-0-a03e0352f92afb6e9ca5f4a2382dea5c">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
@@ -90,6 +90,17 @@
             --vibrant-surface: #f0f9ff;
             --vibrant-surface-elevated: #e0f2fe;
             --vibrant-surface-highlight: #bae6fd;
+            /* Code editor specific colors */
+            --editor-bg: #1e1e1e;
+            --editor-text: #d4d4d4;
+            --editor-line-numbers: #858585;
+            --editor-selection: #264f78;
+            --editor-cursor: #aeafad;
+            --editor-keyword: #569cd6;
+            --editor-string: #ce9178;
+            --editor-comment: #6a9955;
+            --editor-function: #dcdcaa;
+            --editor-variable: #9cdcfe;
         }
 
         /* Dark theme variables */
@@ -118,6 +129,12 @@
             --glass-border: rgba(78, 79, 96, 0.5);
             --neon-glow: 0 0 10px rgba(16, 163, 127, 0.2);
             --neon-glow-hover: 0 0 15px rgba(16, 163, 127, 0.3);
+            /* Dark theme code editor */
+            --editor-bg: #1e1e1e;
+            --editor-text: #d4d4d4;
+            --editor-line-numbers: #858585;
+            --editor-selection: #264f78;
+            --editor-cursor: #aeafad;
         }
 
         /* Vibrant theme */
@@ -1092,6 +1109,62 @@
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--primary);
+        }
+
+        /* Enhanced Code Block Styles */
+        .code-block {
+            margin-top: 1rem;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .code-header {
+            background-color: var(--surface-highlight);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--code-border);
+        }
+
+        .code-language {
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-primary);
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .copy-btn, .preview-btn {
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover, .preview-btn:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .copy-btn.copied {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
         }
 
         .message-text pre {
@@ -2702,723 +2775,39 @@
             margin-top: 0.5rem;
         }
 
-        /* Onboarding tour */
-        .onboarding-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1003;
-            display: none;
-        }
-
-        .onboarding-overlay.active {
-            display: block;
-        }
-
-        .onboarding-tooltip {
-            position: absolute;
-            background-color: white;
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-lg);
-            max-width: 300px;
-            z-index: 1004;
-        }
-
-        .onboarding-tooltip-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .onboarding-tooltip-content {
-            margin-bottom: 1rem;
+        /* Breadcrumb navigation */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
             color: var(--text-secondary);
         }
 
-        .onboarding-tooltip-actions {
+        .breadcrumb-item {
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .onboarding-tooltip-skip {
-            background: none;
-            border: none;
+        .breadcrumb-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb-separator {
             color: var(--text-tertiary);
-            cursor: pointer;
-            font-size: 0.875rem;
         }
 
-        .onboarding-tooltip-next {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
+        .breadcrumb-current {
+            color: var(--text-primary);
             font-weight: 500;
-        }
-
-        /* Flashcard modal */
-        .flashcard-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flashcard-modal.active {
-            display: flex;
-        }
-
-        .flashcard-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 500px;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .flashcard {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-        }
-
-        .flashcard.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            box-sizing: border-box;
-        }
-
-        .flashcard-back {
-            transform: rotateY(180deg);
-        }
-
-        .flashcard-question, .flashcard-answer {
-            font-size: 1.25rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .flashcard-hint {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .flashcard-controls {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .flashcard-btn {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .flashcard-btn:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .flashcard-btn.primary {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .flashcard-progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background-color: var(--surface-highlight);
-        }
-
-        .flashcard-progress-bar {
-            height: 100%;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        /* Quiz modal */
-        .quiz-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quiz-modal.active {
-            display: flex;
-        }
-
-        .quiz-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .quiz-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .quiz-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .quiz-score {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .quiz-content {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-        }
-
-        .quiz-question {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .quiz-option {
-            padding: 1rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .quiz-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .quiz-option.selected {
-            border-color: var(--primary);
-            background-color: rgba(16, 163, 127, 0.1);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--success);
-            background-color: rgba(16, 163, 127, 0.1);
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--error);
-            background-color: rgba(239, 68, 68, 0.1);
-        }
-
-        .quiz-explanation {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: var(--radius);
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-        }
-
-        .quiz-explanation-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .quiz-controls {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .quiz-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .quiz-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .quiz-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .quiz-results {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .quiz-results-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .quiz-results-score {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .quiz-results-message {
-            font-size: 1.125rem;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-        }
-
-        /* Progress tracking */
-        .progress-container {
-            padding: 1.5rem;
-            background-color: var(--surface-elevated);
-            border-radius: var(--radius-lg);
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .progress-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-stat {
-            text-align: center;
-            padding: 1rem;
-            background-color: var(--surface);
-            border-radius: var(--radius);
-        }
-
-        .progress-stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .progress-stat-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        .progress-chart {
-            height: 200px;
-            margin-bottom: 1rem;
-        }
-
-        .progress-topics {
-            margin-top: 1.5rem;
-        }
-
-        .progress-topics-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .progress-topic {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .progress-topic-name {
-            flex: 1;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .progress-topic-bar {
-            flex: 2;
-            height: 8px;
-            background-color: var(--surface-highlight);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0 1rem;
-        }
-
-        .progress-topic-fill {
-            height: 100%;
-            background-color: var(--primary);
-            border-radius: 4px;
-        }
-
-        .progress-topic-value {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        /* Share modal */
-        .share-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .share-modal.active {
-            display: flex;
-        }
-
-        .share-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 500px;
-            padding: 1.5rem;
-        }
-
-        .share-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .share-options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .share-option {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .share-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .share-option-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-        }
-
-        .share-option-content {
-            flex: 1;
-        }
-
-        .share-option-title {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .share-option-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .share-link {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .share-link-input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            outline: none;
-        }
-
-        .share-link-btn {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            margin-left: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .share-link-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .share-settings {
-            margin-bottom: 1.5rem;
-        }
-
-        .share-setting {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .share-setting:last-child {
-            border-bottom: none;
-        }
-
-        .share-setting-label {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .share-setting-description {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            margin-top: 0.25rem;
-        }
-
-        .share-toggle {
-            position: relative;
-            width: 48px;
-            height: 24px;
-            background-color: var(--surface-highlight);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .share-toggle.active {
-            background-color: var(--primary);
-        }
-
-        .share-toggle-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 20px;
-            height: 20px;
-            background-color: white;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .share-toggle.active .share-toggle-slider {
-            transform: translateX(24px);
-        }
-
-        .share-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        .share-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .share-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .share-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .share-btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .share-btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Gamification badges */
-        .badges-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80px;
-        }
-
-        .badge-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: var(--surface-elevated);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            position: relative;
-        }
-
-        .badge-icon.earned {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .badge-icon.earned::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            background-color: var(--success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.75rem;
-        }
-
-        .badge-name {
-            font-size: 0.75rem;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .badge-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--surface-elevated);
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: var(--radius);
-            font-size: 0.75rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-            margin-bottom: 0.5rem;
-            box-shadow: var(--shadow-sm);
-            z-index: 10;
-            width: 150px;
-            text-align: center;
-        }
-
-        .badge:hover .badge-tooltip {
-            opacity: 1;
         }
 
         /* Language selector */
@@ -3473,636 +2862,6 @@
         .language-option.active {
             background-color: var(--primary);
             color: white;
-        }
-
-        /* AI Persona selector */
-        .persona-selector {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .persona-option {
-            flex: 1;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .persona-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .persona-option.active {
-            border-color: var(--primary);
-            background-color: rgba(16, 163, 127, 0.1);
-        }
-
-        .persona-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .persona-name {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .persona-description {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* Offline indicator */
-        .offline-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--warning);
-            color: white;
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.875rem;
-            z-index: 1000;
-            display: none;
-        }
-
-        .offline-indicator.active {
-            display: block;
-        }
-
-        /* Draft indicator */
-        .draft-indicator {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background-color: var(--warning);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* Follow-up suggestions */
-        .follow-up-suggestions {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-radius: var(--radius);
-        }
-
-        .follow-up-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .follow-up-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .follow-up-option {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.875rem;
-        }
-
-        .follow-up-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        /* Threaded replies */
-        .threaded-reply {
-            margin-left: 2rem;
-            margin-top: 1rem;
-            padding-left: 1rem;
-            border-left: 2px solid var(--border);
-        }
-
-        .reply-to-indicator {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .reply-to-indicator i {
-            font-size: 0.875rem;
-        }
-
-        .reply-to-text {
-            font-style: italic;
-        }
-
-        .reply-btn {
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            background-color: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .reply-btn:hover {
-            background-color: var(--surface-highlight);
-            color: var(--text-primary);
-        }
-
-        /* Swipe actions for mobile */
-        .swipe-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .swipe-actions {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .swipe-action {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.25rem;
-            width: 60px;
-        }
-
-        .swipe-action.delete {
-            background-color: var(--error);
-        }
-
-        .swipe-action.pin {
-            background-color: var(--warning);
-        }
-
-        /* Pull to refresh */
-        .pull-to-refresh {
-            position: absolute;
-            top: -50px;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--surface-elevated);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .pull-to-refresh-icon {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-        }
-
-        .pull-to-refresh.pulling .pull-to-refresh-icon {
-            transform: rotate(180deg);
-        }
-
-        /* Undo toast */
-        .undo-toast {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 1.25rem;
-            background-color: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            min-width: 300px;
-            animation: slideIn 0.2s ease;
-        }
-
-        .undo-toast-message {
-            flex: 1;
-        }
-
-        .undo-toast-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .undo-btn {
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 0.875rem;
-            transition: var(--transition);
-        }
-
-        .undo-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Dislike feedback modal */
-        .dislike-feedback-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dislike-feedback-modal.active {
-            display: flex;
-        }
-
-        .dislike-feedback-container {
-            background-color: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            width: 90%;
-            max-width: 400px;
-            padding: 1.5rem;
-        }
-
-        .dislike-feedback-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .dislike-feedback-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .dislike-feedback-option {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background-color: var(--surface-elevated);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dislike-feedback-option:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .dislike-feedback-option.selected {
-            border-color: var(--primary);
-            background-color: rgba(16, 163, 127, 0.1);
-        }
-
-        .dislike-feedback-option-text {
-            margin-left: 0.75rem;
-        }
-
-        .dislike-feedback-other {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background-color: var(--surface-elevated);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            resize: none;
-            margin-bottom: 1rem;
-        }
-
-        .dislike-feedback-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        .dislike-feedback-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .dislike-feedback-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .dislike-feedback-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .dislike-feedback-btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .dislike-feedback-btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Empty state */
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            color: var(--text-tertiary);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .empty-state-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            max-width: 400px;
-        }
-
-        .empty-state-action {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .empty-state-action:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Loading state */
-        .loading-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(16, 163, 127, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 1rem;
-        }
-
-        .loading-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Error state */
-        .error-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem;
-            text-align: center;
-        }
-
-        .error-icon {
-            font-size: 3rem;
-            color: var(--error);
-            margin-bottom: 1rem;
-        }
-
-        .error-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .error-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            max-width: 400px;
-        }
-
-        .error-action {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .error-action:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Notification permission banner */
-        .notification-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--surface-elevated);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1000;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification-banner.active {
-            transform: translateY(0);
-        }
-
-        .notification-banner-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .notification-banner-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notification-banner-text {
-            flex: 1;
-        }
-
-        .notification-banner-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text-primary);
-        }
-
-        .notification-banner-description {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .notification-banner-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .notification-banner-btn {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .notification-banner-btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .notification-banner-btn-secondary:hover {
-            background-color: var(--surface-highlight);
-        }
-
-        .notification-banner-btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .notification-banner-btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Breadcrumb navigation */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .breadcrumb-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .breadcrumb-link:hover {
-            color: var(--primary);
-        }
-
-        .breadcrumb-separator {
-            color: var(--text-tertiary);
-        }
-
-        .breadcrumb-current {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        /* Swipe gesture indicator */
-        .swipe-indicator {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            font-size: 0.875rem;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .swipe-indicator.left {
-            left: 10px;
-        }
-
-        .swipe-indicator.right {
-            right: 10px;
-        }
-
-        .swipe-indicator.visible {
-            opacity: 1;
         }
 
         /* Keyboard shortcuts modal */
@@ -4607,11 +3366,721 @@
         .modal button, .modal-overlay button, .search-modal button, 
         .rename-modal button, .export-modal button, .citation-modal button,
         .share-modal button, .flashcard-modal button, .quiz-modal button,
-        .dislike-feedback-modal button, .shortcuts-modal button,
-        .onboarding-tooltip button {
+        .dislike-feedback-modal button, .shortcuts-modal button {
             pointer-events: auto !important;
             z-index: 10 !important;
             position: relative !important;
+        }
+
+        /* Enhanced Code Editor for Desktop */
+        @media (min-width: 769px) {
+            .code-editor-container {
+                display: flex;
+                flex-direction: column;
+                margin: 1rem 0;
+                border-radius: var(--radius);
+                overflow: hidden;
+                box-shadow: var(--shadow-md);
+                border: 1px solid var(--code-border);
+                background-color: var(--editor-bg);
+            }
+
+            .code-editor-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                background-color: var(--surface-highlight);
+                border-bottom: 1px solid var(--code-border);
+            }
+
+            .code-editor-title {
+                font-weight: 600;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .code-editor-actions {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .code-editor-btn {
+                padding: 0.25rem 0.5rem;
+                border-radius: var(--radius-sm);
+                background-color: var(--surface-elevated);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                font-size: 0.75rem;
+                cursor: pointer;
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .code-editor-btn:hover {
+                background-color: var(--surface-highlight);
+            }
+
+            .code-editor-content {
+                display: flex;
+                height: 300px;
+            }
+
+            .code-editor-line-numbers {
+                width: 40px;
+                background-color: var(--editor-line-numbers);
+                color: var(--editor-line-numbers);
+                padding: 1rem 0;
+                text-align: right;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.875rem;
+                line-height: 1.5;
+                user-select: none;
+                overflow: hidden;
+            }
+
+            .code-editor-textarea {
+                flex: 1;
+                background-color: var(--editor-bg);
+                color: var(--editor-text);
+                border: none;
+                padding: 1rem;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.875rem;
+                line-height: 1.5;
+                resize: none;
+                outline: none;
+                overflow-y: auto;
+            }
+
+            .code-editor-output {
+                margin-top: 1rem;
+                padding: 1rem;
+                background-color: var(--surface-elevated);
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.875rem;
+                white-space: pre-wrap;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .code-editor-output-title {
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                color: var(--text-primary);
+            }
+        }
+
+        /* Mobile Code Editor */
+        @media (max-width: 768px) {
+            .code-editor-container {
+                margin: 0.75rem -1rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .code-editor-content {
+                height: 250px;
+            }
+
+            .code-editor-line-numbers {
+                width: 30px;
+                font-size: 0.75rem;
+            }
+
+            .code-editor-textarea {
+                font-size: 0.8rem;
+                padding: 0.75rem;
+            }
+        }
+
+        /* Follow-up suggestions */
+        .follow-up-suggestions {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: var(--radius);
+        }
+
+        .follow-up-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .follow-up-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .follow-up-option {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .follow-up-option:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        /* Dislike feedback modal */
+        .dislike-feedback-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dislike-feedback-modal.active {
+            display: flex;
+        }
+
+        .dislike-feedback-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 400px;
+            padding: 1.5rem;
+        }
+
+        .dislike-feedback-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .dislike-feedback-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dislike-feedback-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--surface-elevated);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dislike-feedback-option:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .dislike-feedback-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(16, 163, 127, 0.1);
+        }
+
+        .dislike-feedback-option-text {
+            margin-left: 0.75rem;
+        }
+
+        .dislike-feedback-other {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--surface-elevated);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            margin-bottom: 1rem;
+        }
+
+        .dislike-feedback-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .dislike-feedback-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .dislike-feedback-btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .dislike-feedback-btn-secondary:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .dislike-feedback-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .dislike-feedback-btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Export Modal */
+        .export-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .export-modal.active {
+            display: flex;
+        }
+
+        .export-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 400px;
+            padding: 1.5rem;
+        }
+
+        .export-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .export-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .export-option {
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--surface-elevated);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .export-option:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .export-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .export-option-content {
+            flex: 1;
+        }
+
+        .export-option-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .export-option-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .export-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .export-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .export-btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .export-btn-secondary:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        /* Citation Modal */
+        .citation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .citation-modal.active {
+            display: flex;
+        }
+
+        .citation-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 500px;
+            padding: 1.5rem;
+        }
+
+        .citation-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .citation-formats {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .citation-format {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .citation-format.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .citation-result {
+            padding: 0.75rem;
+            background-color: var(--surface-elevated);
+            border-radius: var(--radius);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .citation-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .citation-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .citation-btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .citation-btn-secondary:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .citation-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .citation-btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Notification Banner */
+        .notification-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--surface-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification-banner.active {
+            transform: translateY(0);
+        }
+
+        .notification-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-banner-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-banner-text {
+            flex: 1;
+        }
+
+        .notification-banner-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .notification-banner-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-banner-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .notification-banner-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .notification-banner-btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .notification-banner-btn-secondary:hover {
+            background-color: var(--surface-highlight);
+        }
+
+        .notification-banner-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .notification-banner-btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Offline Indicator */
+        .offline-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--warning);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            z-index: 1000;
+            display: none;
+        }
+
+        .offline-indicator.active {
+            display: block;
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .empty-state-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+        }
+
+        .empty-state-action {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .empty-state-action:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Loading state */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(16, 163, 127, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Error state */
+        .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            color: var(--error);
+            margin-bottom: 1rem;
+        }
+
+        .error-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .error-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+        }
+
+        .error-action {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .error-action:hover {
+            background-color: var(--primary-dark);
         }
     </style>
 </head>
@@ -4787,11 +4256,6 @@
 
             <!-- Chat Container -->
             <div class="chat-container">
-                <div class="pull-to-refresh" id="pullToRefresh">
-                    <div class="pull-to-refresh-icon">
-                        <i class="fas fa-arrow-down"></i>
-                    </div>
-                </div>
                 <div class="chat-messages" id="chatMessages">
                     <!-- Messages will be loaded here -->
                 </div>
@@ -4962,15 +4426,6 @@
                         <div class="settings-description">Enable keyboard shortcuts for faster navigation</div>
                     </div>
                     <div class="settings-toggle active" id="keyboardShortcutsToggle">
-                        <div class="settings-toggle-slider"></div>
-                    </div>
-                </div>
-                <div class="settings-item">
-                    <div>
-                        <div class="settings-label">Onboarding Tour</div>
-                        <div class="settings-description">Show guided tour for new users</div>
-                    </div>
-                    <div class="settings-toggle active" id="onboardingToggle">
                         <div class="settings-toggle-slider"></div>
                     </div>
                 </div>
@@ -5145,39 +4600,6 @@
                 </div>
             </div>
             
-            <div class="user-profile-section">
-                <div class="user-profile-section-title">Study Progress</div>
-                <div class="progress-container">
-                    <div class="progress-stats">
-                        <div class="progress-stat">
-                            <div class="progress-stat-value" id="studyStreakValue">0</div>
-                            <div class="progress-stat-label">Day Streak</div>
-                        </div>
-                        <div class="progress-stat">
-                            <div class="progress-stat-value" id="studySessionsValue">0</div>
-                            <div class="progress-stat-label">Sessions</div>
-                        </div>
-                        <div class="progress-stat">
-                            <div class="progress-stat-value" id="studyMinutesValue">0</div>
-                            <div class="progress-stat-label">Minutes</div>
-                        </div>
-                    </div>
-                    <div class="progress-topics">
-                        <div class="progress-topics-title">Topics Studied</div>
-                        <div id="progressTopicsContainer">
-                            <!-- Topics will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="user-profile-section">
-                <div class="user-profile-section-title">Achievements</div>
-                <div class="badges-container" id="badgesContainer">
-                    <!-- Badges will be loaded here -->
-                </div>
-            </div>
-            
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelProfileBtn">Cancel</button>
                 <button class="btn btn-primary" id="saveProfileBtn">Save</button>
@@ -5238,40 +4660,52 @@
     </div>
 
     <!-- Export Modal -->
-    <div class="modal-overlay" id="exportModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Export Chat History</div>
-            </div>
-            <div class="modal-description">
+    <div class="export-modal" id="exportModal">
+        <div class="export-container">
+            <div class="export-title">Export Chat History</div>
+            <div class="export-description">
                 Choose the format for exporting your chat history:
             </div>
             <div class="export-options">
-                <button class="export-option" id="exportJsonBtn">
-                    <i class="fas fa-code"></i> JSON
-                </button>
-                <button class="export-option" id="exportTxtBtn">
-                    <i class="fas fa-file-alt"></i> TXT
-                </button>
-                <button class="export-option" id="exportPdfBtn">
-                    <i class="fas fa-file-pdf"></i> PDF
-                </button>
-                <button class="export-option" id="exportCsvBtn">
-                    <i class="fas fa-file-csv"></i> CSV
-                </button>
+                <div class="export-option" id="exportJsonBtn">
+                    <i class="fas fa-code"></i>
+                    <div class="export-option-content">
+                        <div class="export-option-title">JSON</div>
+                        <div class="export-option-description">Structured data format</div>
+                    </div>
+                </div>
+                <div class="export-option" id="exportTxtBtn">
+                    <i class="fas fa-file-alt"></i>
+                    <div class="export-option-content">
+                        <div class="export-option-title">TXT</div>
+                        <div class="export-option-description">Plain text format</div>
+                    </div>
+                </div>
+                <div class="export-option" id="exportPdfBtn">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="export-option-content">
+                        <div class="export-option-title">PDF</div>
+                        <div class="export-option-description">Printable document</div>
+                    </div>
+                </div>
+                <div class="export-option" id="exportCsvBtn">
+                    <i class="fas fa-file-csv"></i>
+                    <div class="export-option-content">
+                        <div class="export-option-title">CSV</div>
+                        <div class="export-option-description">Spreadsheet format</div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="exportCancelBtn">Cancel</button>
+            <div class="export-actions">
+                <button class="export-btn export-btn-secondary" id="exportCancelBtn">Cancel</button>
             </div>
         </div>
     </div>
 
     <!-- Citation Generator Modal -->
-    <div class="modal-overlay" id="citationModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">Citation Generator</div>
-            </div>
+    <div class="citation-modal" id="citationModal">
+        <div class="citation-container">
+            <div class="citation-title">Citation Generator</div>
             <div class="form-group">
                 <label for="citationTitle" class="form-label">Title</label>
                 <input type="text" class="form-input" id="citationTitle" placeholder="Enter the title">
@@ -5297,124 +4731,9 @@
             <div class="citation-result" id="citationResult">
                 Your citation will appear here...
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="citationCancelBtn">Cancel</button>
-                <button class="btn btn-primary" id="copyCitationBtn">Copy Citation</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Share Modal -->
-    <div class="share-modal" id="shareModal">
-        <div class="share-container">
-            <div class="share-title">Share Chat</div>
-            <div class="share-options">
-                <div class="share-option" id="shareLinkOption">
-                    <div class="share-option-icon">
-                        <i class="fas fa-link"></i>
-                    </div>
-                    <div class="share-option-content">
-                        <div class="share-option-title">Share Link</div>
-                        <div class="share-option-description">Create a shareable link</div>
-                    </div>
-                </div>
-                <div class="share-option" id="shareExportOption">
-                    <div class="share-option-icon">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <div class="share-option-content">
-                        <div class="share-option-title">Export</div>
-                        <div class="share-option-description">Download as file</div>
-                    </div>
-                </div>
-                <div class="share-option" id="shareCollaborateOption">
-                    <div class="share-option-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="share-option-content">
-                        <div class="share-option-title">Collaborate</div>
-                        <div class="share-option-description">Invite others to edit</div>
-                    </div>
-                </div>
-            </div>
-            <div class="share-link" id="shareLinkContainer" style="display: none;">
-                <input type="text" class="share-link-input" id="shareLinkInput" readonly>
-                <button class="share-link-btn" id="copyShareLinkBtn">Copy</button>
-            </div>
-            <div class="share-settings" id="shareSettingsContainer" style="display: none;">
-                <div class="share-setting">
-                    <div>
-                        <div class="share-setting-label">Allow Comments</div>
-                        <div class="share-setting-description">Others can comment on this chat</div>
-                    </div>
-                    <div class="share-toggle active" id="shareCommentsToggle">
-                        <div class="share-toggle-slider"></div>
-                    </div>
-                </div>
-                <div class="share-setting">
-                    <div>
-                        <div class="share-setting-label">Set Expiration</div>
-                        <div class="share-setting-description">Link expires after selected time</div>
-                    </div>
-                    <select class="settings-select" id="shareExpirationSelect">
-                        <option value="never">Never</option>
-                        <option value="1day">1 Day</option>
-                        <option value="1week">1 Week</option>
-                        <option value="1month">1 Month</option>
-                    </select>
-                </div>
-            </div>
-            <div class="share-actions" id="shareActionsContainer" style="display: none;">
-                <button class="share-btn share-btn-secondary" id="shareCancelBtn">Cancel</button>
-                <button class="share-btn share-btn-primary" id="shareCreateBtn">Create Share Link</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Flashcard Modal -->
-    <div class="flashcard-modal" id="flashcardModal">
-        <div class="flashcard-container">
-            <div class="flashcard-progress">
-                <div class="flashcard-progress-bar" id="flashcardProgressBar"></div>
-            </div>
-            <div class="flashcard" id="flashcard">
-                <div class="flashcard-front">
-                    <div class="flashcard-question" id="flashcardQuestion">Question</div>
-                    <div class="flashcard-hint" id="flashcardHint">Hint: Click to reveal answer</div>
-                </div>
-                <div class="flashcard-back">
-                    <div class="flashcard-answer" id="flashcardAnswer">Answer</div>
-                </div>
-            </div>
-            <div class="flashcard-controls">
-                <button class="flashcard-btn" id="flashcardPrevBtn">Previous</button>
-                <button class="flashcard-btn" id="flashcardShuffleBtn">Shuffle</button>
-                <button class="flashcard-btn primary" id="flashcardNextBtn">Next</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quiz Modal -->
-    <div class="quiz-modal" id="quizModal">
-        <div class="quiz-container">
-            <div class="quiz-header">
-                <div class="quiz-title" id="quizTitle">Quiz</div>
-                <div class="quiz-score" id="quizScore">Score: 0/0</div>
-            </div>
-            <div class="quiz-content" id="quizContent">
-                <div class="quiz-question" id="quizQuestion">Question</div>
-                <div class="quiz-options" id="quizOptions">
-                    <!-- Options will be loaded here -->
-                </div>
-                <div class="quiz-explanation" id="quizExplanation" style="display: none;">
-                    <div class="quiz-explanation-title">Explanation</div>
-                    <div id="quizExplanationText">Explanation text</div>
-                </div>
-            </div>
-            <div class="quiz-controls">
-                <button class="quiz-btn" id="quizSkipBtn">Skip</button>
-                <button class="quiz-btn" id="quizSubmitBtn" disabled>Submit</button>
-                <button class="quiz-btn" id="quizNextBtn" style="display: none;">Next</button>
+            <div class="citation-actions">
+                <button class="citation-btn citation-btn-secondary" id="citationCancelBtn">Cancel</button>
+                <button class="citation-btn citation-btn-primary" id="copyCitationBtn">Copy Citation</button>
             </div>
         </div>
     </div>
@@ -5539,29 +4858,8 @@
                                 <span class="shortcut-key">T</span>
                             </div>
                         </div>
-                        <div class="shortcut-item">
-                            <div class="shortcut-description">Generate Flashcards</div>
-                            <div class="shortcut-keys">
-                                <span class="shortcut-key">Ctrl</span>
-                                <span class="shortcut-key">F</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Onboarding Overlay -->
-    <div class="onboarding-overlay" id="onboardingOverlay">
-        <div class="onboarding-tooltip" id="onboardingTooltip">
-            <div class="onboarding-tooltip-title" id="onboardingTooltipTitle">Welcome to Tomo Academy</div>
-            <div class="onboarding-tooltip-content" id="onboardingTooltipContent">
-                Let's take a quick tour of the features available to help you with your studies.
-            </div>
-            <div class="onboarding-tooltip-actions">
-                <button class="onboarding-tooltip-skip" id="onboardingSkipBtn">Skip</button>
-                <button class="onboarding-tooltip-next" id="onboardingNextBtn">Next</button>
             </div>
         </div>
     </div>
@@ -5644,7 +4942,6 @@
                 studyMode: false,
                 messageAnimations: true,
                 keyboardShortcuts: true,
-                onboarding: true,
                 followUp: true,
                 persona: 'friendly',
                 studyReminders: false
@@ -5699,62 +4996,7 @@
             syncInterval: 30000, // 30 seconds
             syncTimer: null,
             // New features
-            onboardingStep: 0,
-            onboardingElements: [
-                {
-                    element: '#newChatBtn',
-                    title: 'New Chat',
-                    content: 'Start a new conversation with your AI assistant.'
-                },
-                {
-                    element: '#chatInput',
-                    title: 'Chat Input',
-                    content: 'Type your questions here and press Enter to send.'
-                },
-                {
-                    element: '#studyModeBtn',
-                    title: 'Study Mode',
-                    content: 'Activate study mode for optimized learning responses.'
-                },
-                {
-                    element: '#timerBtn',
-                    title: 'Study Timer',
-                    content: 'Use the Pomodoro timer to manage your study sessions.'
-                },
-                {
-                    element: '#citationBtn',
-                    title: 'Citation Generator',
-                    content: 'Generate citations in various formats for your papers.'
-                },
-                {
-                    element: '#settingsBtn',
-                    title: 'Settings',
-                    content: 'Customize your experience with various settings.'
-                }
-            ],
-            // Study progress
-            studyProgress: {
-                streak: 0,
-                sessions: 0,
-                minutes: 0,
-                topics: {},
-                lastStudyDate: null
-            },
-            // Badges
-            badges: {
-                firstChat: { earned: false, icon: 'fas fa-comment', name: 'First Chat' },
-                dayStreak: { earned: false, icon: 'fas fa-fire', name: 'Day Streak' },
-                studySession: { earned: false, icon: 'fas fa-clock', name: 'Study Session' },
-                flashcardMaster: { earned: false, icon: 'fas fa-layer-group', name: 'Flashcard Master' },
-                quizChampion: { earned: false, icon: 'fas fa-trophy', name: 'Quiz Champion' }
-            },
-            // Flashcards
-            flashcards: [],
-            currentFlashcardIndex: 0,
-            // Quiz
-            quizQuestions: [],
-            currentQuizQuestion: 0,
-            quizScore: 0,
+            userPreferences: {},
             // Draft messages
             draftMessages: {},
             // Keyboard shortcuts
@@ -5767,8 +5009,7 @@
                 'shift+enter': () => addNewLine(),
                 'ctrl+v': () => toggleVoiceInput(),
                 'ctrl+s': () => toggleStudyMode(),
-                'ctrl+t': () => toggleStudyTimer(),
-                'ctrl+f': () => generateFlashcards()
+                'ctrl+t': () => toggleStudyTimer()
             },
             // Language
             currentLanguage: 'en',
@@ -5859,7 +5100,6 @@
             studyModeSettingsToggle: document.getElementById('studyModeSettingsToggle'),
             messageAnimationsToggle: document.getElementById('messageAnimationsToggle'),
             keyboardShortcutsToggle: document.getElementById('keyboardShortcutsToggle'),
-            onboardingToggle: document.getElementById('onboardingToggle'),
             followUpToggle: document.getElementById('followUpToggle'),
             personaSelect: document.getElementById('personaSelect'),
             studyRemindersToggle: document.getElementById('studyRemindersToggle'),
@@ -5919,56 +5159,11 @@
             shortcutsBtn: document.getElementById('shortcutsBtn'),
             shortcutsModal: document.getElementById('shortcutsModal'),
             shortcutsClose: document.getElementById('shortcutsClose'),
-            onboardingOverlay: document.getElementById('onboardingOverlay'),
-            onboardingTooltip: document.getElementById('onboardingTooltip'),
-            onboardingTooltipTitle: document.getElementById('onboardingTooltipTitle'),
-            onboardingTooltipContent: document.getElementById('onboardingTooltipContent'),
-            onboardingSkipBtn: document.getElementById('onboardingSkipBtn'),
-            onboardingNextBtn: document.getElementById('onboardingNextBtn'),
             notificationBanner: document.getElementById('notificationBanner'),
             notificationBannerDismissBtn: document.getElementById('notificationBannerDismissBtn'),
             notificationBannerEnableBtn: document.getElementById('notificationBannerEnableBtn'),
             offlineIndicator: document.getElementById('offlineIndicator'),
-            pullToRefresh: document.getElementById('pullToRefresh'),
             userProfileAvatarUpload: document.getElementById('userProfileAvatarUpload'),
-            studyStreakValue: document.getElementById('studyStreakValue'),
-            studySessionsValue: document.getElementById('studySessionsValue'),
-            studyMinutesValue: document.getElementById('studyMinutesValue'),
-            progressTopicsContainer: document.getElementById('progressTopicsContainer'),
-            badgesContainer: document.getElementById('badgesContainer'),
-            shareModal: document.getElementById('shareModal'),
-            shareLinkOption: document.getElementById('shareLinkOption'),
-            shareExportOption: document.getElementById('shareExportOption'),
-            shareCollaborateOption: document.getElementById('shareCollaborateOption'),
-            shareLinkContainer: document.getElementById('shareLinkContainer'),
-            shareLinkInput: document.getElementById('shareLinkInput'),
-            copyShareLinkBtn: document.getElementById('copyShareLinkBtn'),
-            shareSettingsContainer: document.getElementById('shareSettingsContainer'),
-            shareCommentsToggle: document.getElementById('shareCommentsToggle'),
-            shareExpirationSelect: document.getElementById('shareExpirationSelect'),
-            shareActionsContainer: document.getElementById('shareActionsContainer'),
-            shareCancelBtn: document.getElementById('shareCancelBtn'),
-            shareCreateBtn: document.getElementById('shareCreateBtn'),
-            flashcardModal: document.getElementById('flashcardModal'),
-            flashcard: document.getElementById('flashcard'),
-            flashcardQuestion: document.getElementById('flashcardQuestion'),
-            flashcardHint: document.getElementById('flashcardHint'),
-            flashcardAnswer: document.getElementById('flashcardAnswer'),
-            flashcardProgressBar: document.getElementById('flashcardProgressBar'),
-            flashcardPrevBtn: document.getElementById('flashcardPrevBtn'),
-            flashcardShuffleBtn: document.getElementById('flashcardShuffleBtn'),
-            flashcardNextBtn: document.getElementById('flashcardNextBtn'),
-            quizModal: document.getElementById('quizModal'),
-            quizTitle: document.getElementById('quizTitle'),
-            quizScore: document.getElementById('quizScore'),
-            quizContent: document.getElementById('quizContent'),
-            quizQuestion: document.getElementById('quizQuestion'),
-            quizOptions: document.getElementById('quizOptions'),
-            quizExplanation: document.getElementById('quizExplanation'),
-            quizExplanationText: document.getElementById('quizExplanationText'),
-            quizSkipBtn: document.getElementById('quizSkipBtn'),
-            quizSubmitBtn: document.getElementById('quizSubmitBtn'),
-            quizNextBtn: document.getElementById('quizNextBtn'),
             dislikeFeedbackModal: document.getElementById('dislikeFeedbackModal'),
             dislikeFeedbackOther: document.getElementById('dislikeFeedbackOther'),
             dislikeFeedbackCancelBtn: document.getElementById('dislikeFeedbackCancelBtn'),
@@ -6006,11 +5201,6 @@
                     // Start sync timer for cross-device synchronization
                     startSyncTimer();
                     
-                    // Check if onboarding should be shown
-                    if (state.settings.onboarding && !localStorage.getItem('onboardingCompleted')) {
-                        setTimeout(() => startOnboarding(), 1000);
-                    }
-                    
                     // Check if notification banner should be shown
                     if ('Notification' in window && Notification.permission === 'default') {
                         setTimeout(() => showNotificationBanner(), 2000);
@@ -6047,9 +5237,6 @@
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 initVoiceRecognition();
             }
-            
-            // Setup pull to refresh
-            setupPullToRefresh();
             
             // Setup keyboard shortcuts
             setupKeyboardShortcuts();
@@ -6320,24 +5507,8 @@
                     state.dislikedMessages = new Set(doc.data().dislikedMessages);
                 }
                 
-                // Load study progress
-                if (doc.exists && doc.data().studyProgress) {
-                    state.studyProgress = doc.data().studyProgress;
-                }
-                
-                // Load badges
-                if (doc.exists && doc.data().badges) {
-                    state.badges = { ...state.badges, ...doc.data().badges };
-                }
-                
                 // Update UI with liked/disliked messages
                 updateMessageFeedbackUI();
-                
-                // Update study progress in profile
-                updateStudyProgressUI();
-                
-                // Update badges in profile
-                updateBadgesUI();
             }).catch(error => {
                 console.error('Error loading user memory:', error);
             });
@@ -6354,8 +5525,6 @@
                 preferences: state.userPreferences,
                 likedMessages: Array.from(state.likedMessages),
                 dislikedMessages: Array.from(state.dislikedMessages),
-                studyProgress: state.studyProgress,
-                badges: state.badges,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).catch(error => {
                 console.error('Error saving user memory:', error);
@@ -6385,50 +5554,6 @@
             // Update profile statistics
             elements.userProfileLikedMessages.textContent = state.likedMessages.size;
             elements.userProfileDislikedMessages.textContent = state.dislikedMessages.size;
-        }
-
-        // Update study progress UI
-        function updateStudyProgressUI() {
-            elements.studyStreakValue.textContent = state.studyProgress.streak;
-            elements.studySessionsValue.textContent = state.studyProgress.sessions;
-            elements.studyMinutesValue.textContent = state.studyProgress.minutes;
-            
-            // Update topics
-            const topicsContainer = elements.progressTopicsContainer;
-            topicsContainer.innerHTML = '';
-            
-            Object.entries(state.studyProgress.topics).forEach(([topic, progress]) => {
-                const topicElement = document.createElement('div');
-                topicElement.className = 'progress-topic';
-                topicElement.innerHTML = `
-                    <div class="progress-topic-name">${topic}</div>
-                    <div class="progress-topic-bar">
-                        <div class="progress-topic-fill" style="width: ${progress}%"></div>
-                    </div>
-                    <div class="progress-topic-value">${progress}%</div>
-                `;
-                topicsContainer.appendChild(topicElement);
-            });
-        }
-
-        // Update badges UI
-        function updateBadgesUI() {
-            const badgesContainer = elements.badgesContainer;
-            badgesContainer.innerHTML = '';
-            
-            Object.entries(state.badges).forEach(([badgeId, badge]) => {
-                const badgeElement = document.createElement('div');
-                badgeElement.className = 'badge';
-                badgeElement.innerHTML = `
-                    <div class="badge-icon ${badge.earned ? 'earned' : ''}">
-                        <i class="${badge.icon}"></i>
-                        ${badge.earned ? '<i class="fas fa-check"></i>' : ''}
-                    </div>
-                    <div class="badge-name">${badge.name}</div>
-                    <div class="badge-tooltip">${badge.earned ? 'Earned!' : 'Not yet earned'}</div>
-                `;
-                badgesContainer.appendChild(badgeElement);
-            });
         }
 
         // Extract user information from messages
@@ -6651,9 +5776,7 @@
                         formatting: true
                     },
                     likedMessages: [],
-                    dislikedMessages: [],
-                    studyProgress: state.studyProgress,
-                    badges: state.badges
+                    dislikedMessages: []
                 });
                 
                 return userRef;
@@ -6697,24 +5820,8 @@
                         state.dislikedMessages = new Set(userData.dislikedMessages);
                     }
                     
-                    // Load study progress
-                    if (userData.studyProgress) {
-                        state.studyProgress = userData.studyProgress;
-                    }
-                    
-                    // Load badges
-                    if (userData.badges) {
-                        state.badges = { ...state.badges, ...userData.badges };
-                    }
-                    
                     // Update message feedback UI
                     updateMessageFeedbackUI();
-                    
-                    // Update study progress in profile
-                    updateStudyProgressUI();
-                    
-                    // Update badges in profile
-                    updateBadgesUI();
                 } else {
                     // Create user document
                     createUserInFirestore(state.user).then(() => {
@@ -6788,25 +5895,36 @@
             elements.userProfileDislikedMessages.textContent = state.dislikedMessages.size;
         }
 
-        // Save user data to Firestore
-        function saveUserData() {
+        // Save user profile
+        function saveUserProfile() {
             if (!state.user) return;
             
-            const userRef = db.collection('users').doc(state.user.uid);
+            const displayName = elements.profileDisplayName.value.trim();
             
-            userRef.update({
-                settings: state.settings,
-                memory: state.userMemory,
-                preferences: state.userPreferences,
-                likedMessages: Array.from(state.likedMessages),
-                dislikedMessages: Array.from(state.dislikedMessages),
-                studyProgress: state.studyProgress,
-                badges: state.badges,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).catch(error => {
-                console.error('Error saving user data:', error);
-                showToast('Error saving user data', 'error');
-            });
+            if (displayName) {
+                // Update user profile in Firebase Auth
+                state.user.updateProfile({
+                    displayName: displayName
+                }).then(() => {
+                    // Update user memory
+                    state.userMemory.name = displayName;
+                    saveUserMemory();
+                    
+                    // Update UI
+                    elements.userAvatar.textContent = displayName.charAt(0).toUpperCase();
+                    elements.userName.textContent = displayName;
+                    elements.userProfileName.textContent = displayName;
+                    elements.userProfileAvatar.textContent = displayName.charAt(0).toUpperCase();
+                    
+                    showToast('Profile updated successfully', 'success');
+                    closeUserProfilePanel();
+                }).catch(error => {
+                    console.error('Error updating profile:', error);
+                    showToast('Error updating profile', 'error');
+                });
+            } else {
+                showToast('Please enter a display name', 'error');
+            }
         }
 
         // Setup event listeners
@@ -7003,9 +6121,6 @@
             if (elements.keyboardShortcutsToggle) {
                 elements.keyboardShortcutsToggle.addEventListener('click', toggleKeyboardShortcuts);
             }
-            if (elements.onboardingToggle) {
-                elements.onboardingToggle.addEventListener('click', toggleOnboarding);
-            }
             if (elements.followUpToggle) {
                 elements.followUpToggle.addEventListener('click', toggleFollowUp);
             }
@@ -7110,68 +6225,12 @@
                 elements.shortcutsClose.addEventListener('click', hideShortcutsModal);
             }
             
-            // Onboarding
-            if (elements.onboardingSkipBtn) {
-                elements.onboardingSkipBtn.addEventListener('click', skipOnboarding);
-            }
-            if (elements.onboardingNextBtn) {
-                elements.onboardingNextBtn.addEventListener('click', nextOnboardingStep);
-            }
-            
             // Notification banner
             if (elements.notificationBannerDismissBtn) {
                 elements.notificationBannerDismissBtn.addEventListener('click', dismissNotificationBanner);
             }
             if (elements.notificationBannerEnableBtn) {
                 elements.notificationBannerEnableBtn.addEventListener('click', enableNotifications);
-            }
-            
-            // Share modal
-            if (elements.shareLinkOption) {
-                elements.shareLinkOption.addEventListener('click', showShareLinkOptions);
-            }
-            if (elements.shareExportOption) {
-                elements.shareExportOption.addEventListener('click', () => {
-                    hideShareModal();
-                    showExportModal();
-                });
-            }
-            if (elements.shareCollaborateOption) {
-                elements.shareCollaborateOption.addEventListener('click', showCollaborateOptions);
-            }
-            if (elements.copyShareLinkBtn) {
-                elements.copyShareLinkBtn.addEventListener('click', copyShareLink);
-            }
-            if (elements.shareCancelBtn) {
-                elements.shareCancelBtn.addEventListener('click', hideShareModal);
-            }
-            if (elements.shareCreateBtn) {
-                elements.shareCreateBtn.addEventListener('click', createShareLink);
-            }
-            
-            // Flashcard modal
-            if (elements.flashcard) {
-                elements.flashcard.addEventListener('click', flipFlashcard);
-            }
-            if (elements.flashcardPrevBtn) {
-                elements.flashcardPrevBtn.addEventListener('click', previousFlashcard);
-            }
-            if (elements.flashcardNextBtn) {
-                elements.flashcardNextBtn.addEventListener('click', nextFlashcard);
-            }
-            if (elements.flashcardShuffleBtn) {
-                elements.flashcardShuffleBtn.addEventListener('click', shuffleFlashcards);
-            }
-            
-            // Quiz modal
-            if (elements.quizSkipBtn) {
-                elements.quizSkipBtn.addEventListener('click', skipQuizQuestion);
-            }
-            if (elements.quizSubmitBtn) {
-                elements.quizSubmitBtn.addEventListener('click', submitQuizAnswer);
-            }
-            if (elements.quizNextBtn) {
-                elements.quizNextBtn.addEventListener('click', nextQuizQuestion);
             }
             
             // Dislike feedback modal
@@ -7763,14 +6822,6 @@ I can format my responses with tables and boxes for better readability. How can 
                 }
                 
                 showToast('New chat started', 'success');
-                
-                // Check if this is the first chat
-                if (!state.badges.firstChat.earned) {
-                    state.badges.firstChat.earned = true;
-                    saveUserMemory();
-                    updateBadgesUI();
-                    showToast('Badge earned: First Chat!', 'success');
-                }
             }).catch(error => {
                 console.error('Error creating new chat:', error);
                 showToast('Error creating new chat', 'error');
@@ -8867,13 +7918,6 @@ Remember the user's preferences and previous interactions to provide personalize
                     // Timer finished
                     pauseStudyTimer();
                     showToast('Study session completed! Take a break.', 'success');
-                    
-                    // Update study progress
-                    updateStudyProgress();
-                    
-                    // Check for badge
-                    checkForBadge('studySession');
-                    
                     return;
                 }
                 
@@ -8913,79 +7957,6 @@ Remember the user's preferences and previous interactions to provide personalize
             const minutes = state.studyTimer.minutes < 10 ? '0' + state.studyTimer.minutes : state.studyTimer.minutes;
             const seconds = state.studyTimer.seconds < 10 ? '0' + state.studyTimer.seconds : state.studyTimer.seconds;
             elements.studyTimerDisplay.textContent = `${minutes}:${seconds}`;
-        }
-
-        // Update study progress
-        function updateStudyProgress() {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            // Check if this is a new study day
-            if (!state.studyProgress.lastStudyDate || new Date(state.studyProgress.lastStudyDate) < today) {
-                // This is a new study day, increment streak
-                state.studyProgress.streak++;
-                state.studyProgress.lastStudyDate = today.toISOString();
-                
-                // Check for badge
-                checkForBadge('dayStreak');
-            }
-            
-            // Increment sessions
-            state.studyProgress.sessions++;
-            
-            // Add minutes (25 minutes per session)
-            state.studyProgress.minutes += 25;
-            
-            // Update topic progress (simplified)
-            const currentTopic = detectCurrentTopic();
-            if (currentTopic) {
-                if (!state.studyProgress.topics[currentTopic]) {
-                    state.studyProgress.topics[currentTopic] = 0;
-                }
-                state.studyProgress.topics[currentTopic] = Math.min(100, state.studyProgress.topics[currentTopic] + 5);
-            }
-            
-            // Save progress
-            saveUserMemory();
-            
-            // Update UI
-            updateStudyProgressUI();
-        }
-
-        // Detect current topic based on chat content
-        function detectCurrentTopic() {
-            if (state.messages.length < 2) return null;
-            
-            const lastUserMessage = state.messages[state.messages.length - 2];
-            if (!lastUserMessage || lastUserMessage.role !== 'user') return null;
-            
-            const content = lastUserMessage.content.toLowerCase();
-            
-            if (content.includes('math') || content.includes('equation') || content.includes('calculate')) {
-                return 'Math';
-            } else if (content.includes('science') || content.includes('experiment') || content.includes('biology')) {
-                return 'Science';
-            } else if (content.includes('history') || content.includes('historical') || content.includes('ancient')) {
-                return 'History';
-            } else if (content.includes('literature') || content.includes('book') || content.includes('poem')) {
-                return 'Literature';
-            } else if (content.includes('code') || content.includes('programming') || content.includes('javascript')) {
-                return 'Coding';
-            } else if (content.includes('art') || content.includes('drawing') || content.includes('painting')) {
-                return 'Art';
-            }
-            
-            return null;
-        }
-
-        // Check for badge
-        function checkForBadge(badgeId) {
-            if (state.badges[badgeId] && !state.badges[badgeId].earned) {
-                state.badges[badgeId].earned = true;
-                saveUserMemory();
-                updateBadgesUI();
-                showToast(`Badge earned: ${state.badges[badgeId].name}!`, 'success');
-            }
         }
 
         // Show citation modal
@@ -9343,14 +8314,6 @@ Remember the user's preferences and previous interactions to provide personalize
             showToast(`Keyboard shortcuts ${state.settings.keyboardShortcuts ? 'enabled' : 'disabled'}`, 'success');
         }
 
-        // Toggle onboarding
-        function toggleOnboarding() {
-            state.settings.onboarding = !state.settings.onboarding;
-            elements.onboardingToggle.classList.toggle('active');
-            saveUserData();
-            showToast(`Onboarding ${state.settings.onboarding ? 'enabled' : 'disabled'}`, 'success');
-        }
-
         // Toggle follow-up suggestions
         function toggleFollowUp() {
             state.settings.followUp = !state.settings.followUp;
@@ -9444,10 +8407,6 @@ Remember the user's preferences and previous interactions to provide personalize
             
             if (state.settings.keyboardShortcuts) {
                 elements.keyboardShortcutsToggle.classList.add('active');
-            }
-            
-            if (state.settings.onboarding) {
-                elements.onboardingToggle.classList.add('active');
             }
             
             if (state.settings.followUp) {
@@ -9833,8 +8792,6 @@ Remember the user's preferences and previous interactions to provide personalize
                 preferences: state.userPreferences,
                 likedMessages: Array.from(state.likedMessages),
                 dislikedMessages: Array.from(state.dislikedMessages),
-                studyProgress: state.studyProgress,
-                badges: state.badges,
                 chats: []
             };
             
@@ -10320,58 +9277,6 @@ Remember the user's preferences and previous interactions to provide personalize
             }
         }
 
-        // Setup pull to refresh
-        function setupPullToRefresh() {
-            let startY = 0;
-            let pullDistance = 0;
-            let isPulling = false;
-            
-            elements.chatMessages.addEventListener('touchstart', (e) => {
-                if (elements.chatMessages.scrollTop === 0) {
-                    startY = e.touches[0].clientY;
-                    isPulling = true;
-                }
-            });
-            
-            elements.chatMessages.addEventListener('touchmove', (e) => {
-                if (!isPulling) return;
-                
-                const currentY = e.touches[0].clientY;
-                pullDistance = currentY - startY;
-                
-                if (pullDistance > 0) {
-                    e.preventDefault();
-                    
-                    // Show pull indicator
-                    elements.pullToRefresh.style.transform = `translateY(${Math.min(pullDistance, 100)}px)`;
-                    
-                    if (pullDistance > 80) {
-                        elements.pullToRefresh.classList.add('pulling');
-                    } else {
-                        elements.pullToRefresh.classList.remove('pulling');
-                    }
-                }
-            });
-            
-            elements.chatMessages.addEventListener('touchend', () => {
-                if (!isPulling) return;
-                
-                isPulling = false;
-                
-                // Reset pull indicator
-                elements.pullToRefresh.style.transform = '';
-                elements.pullToRefresh.classList.remove('pulling');
-                
-                // If pulled far enough, refresh
-                if (pullDistance > 80) {
-                    loadChatHistory();
-                    showToast('Chat history refreshed', 'success');
-                }
-                
-                pullDistance = 0;
-            });
-        }
-
         // Setup keyboard shortcuts
         function setupKeyboardShortcuts() {
             document.addEventListener('keydown', (e) => {
@@ -10432,103 +9337,7 @@ Remember the user's preferences and previous interactions to provide personalize
 
         // Start onboarding
         function startOnboarding() {
-            state.onboardingStep = 0;
-            showOnboardingStep();
-            elements.onboardingOverlay.classList.add('active');
-        }
-
-        // Show onboarding step
-        function showOnboardingStep() {
-            if (state.onboardingStep >= state.onboardingElements.length) {
-                completeOnboarding();
-                return;
-            }
-            
-            const step = state.onboardingElements[state.onboardingStep];
-            const element = document.querySelector(step.element);
-            
-            if (!element) {
-                nextOnboardingStep();
-                return;
-            }
-            
-            // Update tooltip content
-            elements.onboardingTooltipTitle.textContent = step.title;
-            elements.onboardingTooltipContent.textContent = step.content;
-            
-            // Position tooltip
-            const rect = element.getBoundingClientRect();
-            const tooltipRect = elements.onboardingTooltip.getBoundingClientRect();
-            const overlayRect = elements.onboardingOverlay.getBoundingClientRect();
-            
-            let top, left;
-            
-            // Default position: below the element
-            top = rect.bottom - overlayRect.top + 10;
-            left = rect.left - overlayRect.left + (rect.width / 2) - (tooltipRect.width / 2);
-            
-            // Adjust if tooltip goes off screen
-            if (top + tooltipRect.height > overlayRect.height) {
-                // Position above the element
-                top = rect.top - overlayRect.top - tooltipRect.height - 10;
-            }
-            
-            if (left < 10) {
-                left = 10;
-            } else if (left + tooltipRect.width > overlayRect.width - 10) {
-                left = overlayRect.width - tooltipRect.width - 10;
-            }
-            
-            elements.onboardingTooltip.style.top = `${top}px`;
-            elements.onboardingTooltip.style.left = `${left}px`;
-            
-            // Highlight the element
-            element.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.5)';
-            element.style.borderRadius = '4px';
-            
-            // Update button text
-            if (state.onboardingStep === state.onboardingElements.length - 1) {
-                elements.onboardingNextBtn.textContent = 'Get Started';
-            } else {
-                elements.onboardingNextBtn.textContent = 'Next';
-            }
-            
-            // Ensure buttons are clickable
-            elements.onboardingSkipBtn.style.pointerEvents = 'auto';
-            elements.onboardingNextBtn.style.pointerEvents = 'auto';
-        }
-
-        // Next onboarding step
-        function nextOnboardingStep() {
-            // Remove highlight from current element
-            const currentElement = document.querySelector(state.onboardingElements[state.onboardingStep].element);
-            if (currentElement) {
-                currentElement.style.boxShadow = '';
-                currentElement.style.borderRadius = '';
-            }
-            
-            state.onboardingStep++;
-            showOnboardingStep();
-        }
-
-        // Skip onboarding
-        function skipOnboarding() {
-            completeOnboarding();
-        }
-
-        // Complete onboarding
-        function completeOnboarding() {
-            elements.onboardingOverlay.classList.remove('active');
-            localStorage.setItem('onboardingCompleted', 'true');
-            
-            // Remove all highlights
-            state.onboardingElements.forEach(step => {
-                const element = document.querySelector(step.element);
-                if (element) {
-                    element.style.boxShadow = '';
-                    element.style.borderRadius = '';
-                }
-            });
+            // Removed onboarding functionality
         }
 
         // Show notification banner
@@ -10600,413 +9409,6 @@ Remember the user's preferences and previous interactions to provide personalize
             elements.shortcutsModal.classList.remove('active');
         }
 
-        // Show share modal
-        function showShareModal() {
-            elements.shareModal.classList.add('active');
-        }
-
-        // Hide share modal
-        function hideShareModal() {
-            elements.shareModal.classList.remove('active');
-        }
-
-        // Show share link options
-        function showShareLinkOptions() {
-            elements.shareLinkContainer.style.display = 'flex';
-            elements.shareSettingsContainer.style.display = 'block';
-            elements.shareActionsContainer.style.display = 'flex';
-        }
-
-        // Show collaborate options
-        function showCollaborateOptions() {
-            elements.shareLinkContainer.style.display = 'flex';
-            elements.shareSettingsContainer.style.display = 'block';
-            elements.shareActionsContainer.style.display = 'flex';
-            
-            // Enable comments by default for collaboration
-            elements.shareCommentsToggle.classList.add('active');
-            state.shareSettings.allowComments = true;
-        }
-
-        // Copy share link
-        function copyShareLink() {
-            const shareLink = elements.shareLinkInput.value;
-            
-            navigator.clipboard.writeText(shareLink)
-                .then(() => {
-                    showToast('Share link copied to clipboard', 'success');
-                })
-                .catch(err => {
-                    showToast('Failed to copy share link', 'error');
-                    console.error('Failed to copy:', err);
-                });
-        }
-
-        // Create share link
-        function createShareLink() {
-            // Generate a unique share ID
-            const shareId = generateId();
-            
-            // Create share link
-            const shareLink = `${window.location.origin}/shared/${shareId}`;
-            
-            // Update input
-            elements.shareLinkInput.value = shareLink;
-            
-            // Save share settings to Firestore
-            if (state.chatsCollection && state.currentChatId) {
-                state.chatsCollection.doc(state.currentChatId).update({
-                    shareId: shareId,
-                    shareSettings: state.shareSettings,
-                    sharedAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).catch(error => {
-                    console.error('Error creating share link:', error);
-                    showToast('Error creating share link', 'error');
-                });
-            }
-            
-            showToast('Share link created successfully', 'success');
-        }
-
-        // Generate flashcards
-        function generateFlashcards() {
-            if (state.messages.length < 2) {
-                showToast('No content to generate flashcards from', 'warning');
-                return;
-            }
-            
-            // Extract key concepts from the last AI response
-            const lastAIMessage = state.messages[state.messages.length - 1];
-            const content = lastAIMessage.content;
-            
-            // Simple implementation - in a real app, this would use AI to generate flashcards
-            const flashcards = [
-                {
-                    question: "What is the main concept discussed?",
-                    answer: extractMainConcept(content)
-                },
-                {
-                    question: "What are the key points?",
-                    answer: extractKeyPoints(content)
-                }
-            ];
-            
-            state.flashcards = flashcards;
-            state.currentFlashcardIndex = 0;
-            
-            // Show flashcard modal
-            showFlashcardModal();
-            
-            // Check for badge
-            checkForBadge('flashcardMaster');
-        }
-
-        // Extract main concept from content
-        function extractMainConcept(content) {
-            // Simple implementation - in a real app, this would use NLP
-            const sentences = content.split('.').filter(s => s.trim().length > 0);
-            return sentences[0] || "No main concept found";
-        }
-
-        // Extract key points from content
-        function extractKeyPoints(content) {
-            // Simple implementation - in a real app, this would use NLP
-            const listItems = content.match(/<li>(.*?)<\/li>/g);
-            if (listItems && listItems.length > 0) {
-                return listItems.map(item => item.replace(/<[^>]*>/g, '')).join('\n');
-            }
-            
-            const sentences = content.split('.').filter(s => s.trim().length > 0);
-            return sentences.slice(0, 3).join('\n') || "No key points found";
-        }
-
-        // Show flashcard modal
-        function showFlashcardModal() {
-            if (state.flashcards.length === 0) {
-                showToast('No flashcards available', 'warning');
-                return;
-            }
-            
-            // Update progress bar
-            updateFlashcardProgress();
-            
-            // Show first flashcard
-            showCurrentFlashcard();
-            
-            // Show modal
-            elements.flashcardModal.classList.add('active');
-        }
-
-        // Show current flashcard
-        function showCurrentFlashcard() {
-            const flashcard = state.flashcards[state.currentFlashcardIndex];
-            
-            elements.flashcardQuestion.textContent = flashcard.question;
-            elements.flashcardAnswer.textContent = flashcard.answer;
-            
-            // Reset flip state
-            elements.flashcard.classList.remove('flipped');
-        }
-
-        // Update flashcard progress
-        function updateFlashcardProgress() {
-            const progress = ((state.currentFlashcardIndex + 1) / state.flashcards.length) * 100;
-            elements.flashcardProgressBar.style.width = `${progress}%`;
-        }
-
-        // Flip flashcard
-        function flipFlashcard() {
-            elements.flashcard.classList.toggle('flipped');
-        }
-
-        // Previous flashcard
-        function previousFlashcard() {
-            if (state.currentFlashcardIndex > 0) {
-                state.currentFlashcardIndex--;
-                showCurrentFlashcard();
-                updateFlashcardProgress();
-            }
-        }
-
-        // Next flashcard
-        function nextFlashcard() {
-            if (state.currentFlashcardIndex < state.flashcards.length - 1) {
-                state.currentFlashcardIndex++;
-                showCurrentFlashcard();
-                updateFlashcardProgress();
-            }
-        }
-
-        // Shuffle flashcards
-        function shuffleFlashcards() {
-            state.flashcards.sort(() => Math.random() - 0.5);
-            state.currentFlashcardIndex = 0;
-            showCurrentFlashcard();
-            updateFlashcardProgress();
-        }
-
-        // Generate quiz
-        function generateQuiz() {
-            if (state.messages.length < 2) {
-                showToast('No content to generate quiz from', 'warning');
-                return;
-            }
-            
-            // Extract questions from the last AI response
-            const lastAIMessage = state.messages[state.messages.length - 1];
-            const content = lastAIMessage.content;
-            
-            // Simple implementation - in a real app, this would use AI to generate quiz questions
-            const quizQuestions = [
-                {
-                    question: "What is the main concept discussed?",
-                    options: [
-                        extractMainConcept(content),
-                        "Option B",
-                        "Option C",
-                        "Option D"
-                    ],
-                    correctAnswer: 0,
-                    explanation: "The main concept is clearly stated in the response."
-                },
-                {
-                    question: "Which of the following is true?",
-                    options: [
-                        "Option A",
-                        "Option B",
-                        "Option C",
-                        "Option D"
-                    ],
-                    correctAnswer: 1,
-                    explanation: "This is explained in the response."
-                }
-            ];
-            
-            state.quizQuestions = quizQuestions;
-            state.currentQuizQuestion = 0;
-            state.quizScore = 0;
-            
-            // Show quiz modal
-            showQuizModal();
-            
-            // Check for badge
-            checkForBadge('quizChampion');
-        }
-
-        // Show quiz modal
-        function showQuizModal() {
-            if (state.quizQuestions.length === 0) {
-                showToast('No quiz questions available', 'warning');
-                return;
-            }
-            
-            // Update title
-            elements.quizTitle.textContent = 'Quiz';
-            
-            // Show first question
-            showCurrentQuizQuestion();
-            
-            // Show modal
-            elements.quizModal.classList.add('active');
-        }
-
-        // Show current quiz question
-        function showCurrentQuizQuestion() {
-            const question = state.quizQuestions[state.currentQuizQuestion];
-            
-            elements.quizQuestion.textContent = question.question;
-            
-            // Clear options
-            elements.quizOptions.innerHTML = '';
-            
-            // Add options
-            question.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'quiz-option';
-                optionElement.textContent = option;
-                optionElement.onclick = () => selectQuizOption(index);
-                elements.quizOptions.appendChild(optionElement);
-            });
-            
-            // Reset UI
-            elements.quizExplanation.style.display = 'none';
-            elements.quizSubmitBtn.disabled = true;
-            elements.quizNextBtn.style.display = 'none';
-            elements.quizSubmitBtn.style.display = 'block';
-            
-            // Update score
-            elements.quizScore.textContent = `Score: ${state.quizScore}/${state.quizQuestions.length}`;
-        }
-
-        // Select quiz option
-        function selectQuizOption(index) {
-            // Clear previous selection
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // Select current option
-            document.querySelectorAll('.quiz-option')[index].classList.add('selected');
-            
-            // Enable submit button
-            elements.quizSubmitBtn.disabled = false;
-        }
-
-        // Submit quiz answer
-        function submitQuizAnswer() {
-            const question = state.quizQuestions[state.currentQuizQuestion];
-            const selectedOption = document.querySelector('.quiz-option.selected');
-            
-            if (!selectedOption) return;
-            
-            const selectedIndex = Array.from(elements.quizOptions.children).indexOf(selectedOption);
-            const isCorrect = selectedIndex === question.correctAnswer;
-            
-            // Show correct/incorrect styling
-            document.querySelectorAll('.quiz-option').forEach((option, index) => {
-                if (index === question.correctAnswer) {
-                    option.classList.add('correct');
-                } else if (index === selectedIndex && !isCorrect) {
-                    option.classList.add('incorrect');
-                }
-            });
-            
-            // Update score
-            if (isCorrect) {
-                state.quizScore++;
-            }
-            
-            // Show explanation
-            elements.quizExplanationText.textContent = question.explanation;
-            elements.quizExplanation.style.display = 'block';
-            
-            // Update UI
-            elements.quizSubmitBtn.style.display = 'none';
-            elements.quizNextBtn.style.display = 'block';
-            elements.quizScore.textContent = `Score: ${state.quizScore}/${state.quizQuestions.length}`;
-            
-            // Disable further selection
-            document.querySelectorAll('.quiz-option').forEach(option => {
-                option.style.pointerEvents = 'none';
-            });
-        }
-
-        // Skip quiz question
-        function skipQuizQuestion() {
-            nextQuizQuestion();
-        }
-
-        // Next quiz question
-        function nextQuizQuestion() {
-            state.currentQuizQuestion++;
-            
-            if (state.currentQuizQuestion < state.quizQuestions.length) {
-                showCurrentQuizQuestion();
-            } else {
-                showQuizResults();
-            }
-        }
-
-        // Show quiz results
-        function showQuizResults() {
-            const percentage = Math.round((state.quizScore / state.quizQuestions.length) * 100);
-            
-            elements.quizContent.innerHTML = `
-                <div class="quiz-results">
-                    <div class="quiz-results-title">Quiz Complete!</div>
-                    <div class="quiz-results-score">${state.quizScore}/${state.quizQuestions.length}</div>
-                    <div class="quiz-results-message">You got ${percentage}% correct!</div>
-                    <button class="quiz-btn" onclick="generateQuiz()">Try Another Quiz</button>
-                </div>
-            `;
-            
-            elements.quizControls.style.display = 'none';
-        }
-
-        // Update study progress UI
-        function updateStudyProgressUI() {
-            elements.studyStreakValue.textContent = state.studyProgress.streak;
-            elements.studySessionsValue.textContent = state.studyProgress.sessions;
-            elements.studyMinutesValue.textContent = state.studyProgress.minutes;
-            
-            // Update topics
-            const topicsContainer = elements.progressTopicsContainer;
-            topicsContainer.innerHTML = '';
-            
-            Object.entries(state.studyProgress.topics).forEach(([topic, progress]) => {
-                const topicElement = document.createElement('div');
-                topicElement.className = 'progress-topic';
-                topicElement.innerHTML = `
-                    <div class="progress-topic-name">${topic}</div>
-                    <div class="progress-topic-bar">
-                        <div class="progress-topic-fill" style="width: ${progress}%"></div>
-                    </div>
-                    <div class="progress-topic-value">${progress}%</div>
-                `;
-                topicsContainer.appendChild(topicElement);
-            });
-        }
-
-        // Update badges UI
-        function updateBadgesUI() {
-            const badgesContainer = elements.badgesContainer;
-            badgesContainer.innerHTML = '';
-            
-            Object.entries(state.badges).forEach(([badgeId, badge]) => {
-                const badgeElement = document.createElement('div');
-                badgeElement.className = 'badge';
-                badgeElement.innerHTML = `
-                    <div class="badge-icon ${badge.earned ? 'earned' : ''}">
-                        <i class="${badge.icon}"></i>
-                        ${badge.earned ? '<i class="fas fa-check"></i>' : ''}
-                    </div>
-                    <div class="badge-name">${badge.name}</div>
-                    <div class="badge-tooltip">${badge.earned ? 'Earned!' : 'Not yet earned'}</div>
-                `;
-                badgesContainer.appendChild(badgeElement);
-            });
-        }
-
         // Upload profile avatar
         function uploadProfileAvatar() {
             const input = document.createElement('input');
@@ -11048,7 +9450,9 @@ Remember the user's preferences and previous interactions to provide personalize
             document.documentElement.setAttribute('data-theme', theme);
             
             // Update theme select
-            elements.themeSelect.value = theme;
+            if (elements.themeSelect) {
+                elements.themeSelect.value = theme;
+            }
         }
 
         // Global functions for onclick handlers
