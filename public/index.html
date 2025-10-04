@@ -5189,6 +5189,18 @@
                     changeLanguage(lang);
                 });
             });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.getAttribute('data-filter');
+                    filterChats(filter);
+                    
+                    // Update active state
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
         }
 
         // Authentication functions
@@ -8348,6 +8360,116 @@ Remember the user's preferences and previous interactions to provide personalize
             if (elements.themeSelect) {
                 elements.themeSelect.value = theme;
             }
+        }
+
+        // Toggle language dropdown
+        function toggleLanguageDropdown() {
+            elements.languageDropdown.classList.toggle('active');
+        }
+
+        // Change language
+        function changeLanguage(lang) {
+            state.currentLanguage = lang;
+            
+            // Update language button
+            const langText = elements.languageBtn.querySelector('span');
+            langText.textContent = lang.toUpperCase();
+            
+            // Update active state
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Update voice recognition language if available
+            if (state.voiceRecognition) {
+                state.voiceRecognition.lang = lang === 'en' ? 'en-US' : `${lang}-${lang.toUpperCase()}`;
+            }
+            
+            // Close dropdown
+            elements.languageDropdown.classList.remove('active');
+            
+            showToast(`Language changed to ${lang}`, 'success');
+        }
+
+        // Show shortcuts modal
+        function showShortcutsModal() {
+            elements.shortcutsModal.classList.add('active');
+        }
+
+        // Hide shortcuts modal
+        function hideShortcutsModal() {
+            elements.shortcutsModal.classList.remove('active');
+        }
+
+        // Show notification banner
+        function showNotificationBanner() {
+            elements.notificationBanner.classList.add('active');
+        }
+
+        // Dismiss notification banner
+        function dismissNotificationBanner() {
+            elements.notificationBanner.classList.remove('active');
+            localStorage.setItem('notificationBannerDismissed', 'true');
+        }
+
+        // Enable notifications
+        function enableNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showToast('Notifications enabled', 'success');
+                        elements.notificationBanner.classList.remove('active');
+                    } else {
+                        showToast('Notification permission denied', 'warning');
+                    }
+                });
+            } else {
+                showToast('Notifications not supported in your browser', 'warning');
+            }
+        }
+
+        // Upload profile avatar
+        function uploadProfileAvatar() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageUrl = e.target.result;
+                        
+                        // Update avatar in UI
+                        elements.userProfileAvatar.style.backgroundImage = `url(${imageUrl})`;
+                        elements.userProfileAvatar.style.backgroundSize = 'cover';
+                        elements.userProfileAvatar.style.backgroundPosition = 'center';
+                        elements.userProfileAvatar.textContent = '';
+                        
+                        elements.userAvatar.style.backgroundImage = `url(${imageUrl})`;
+                        elements.userAvatar.style.backgroundSize = 'cover';
+                        elements.userAvatar.style.backgroundPosition = 'center';
+                        elements.userAvatar.textContent = '';
+                        
+                        // Save to Firestore
+                        if (state.user) {
+                            state.user.updateProfile({
+                                photoURL: imageUrl
+                            }).then(() => {
+                                showToast('Profile picture updated', 'success');
+                            }).catch(error => {
+                                console.error('Error updating profile picture:', error);
+                                showToast('Error updating profile picture', 'error');
+                            });
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
         }
 
         // Global functions for onclick handlers
