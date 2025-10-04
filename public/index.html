@@ -16,6 +16,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
@@ -2060,6 +2061,21 @@
             -webkit-text-fill-color: transparent;
         }
         
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Mobile Responsiveness - Enhanced */
         @media (max-width: 768px) {
             .sidebar {
@@ -2813,6 +2829,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
 
         // Global state
         const state = {
@@ -2938,8 +2955,8 @@
             startAIStatusCheck();
             
             // Check if user was previously signed in
-            const savedUser = localStorage.getItem('nexariqUser');
-            const savedToken = localStorage.getItem('nexariqToken');
+            const savedUser = localStorage.getItem('tomoUser');
+            const savedToken = localStorage.getItem('tomoToken');
 
             if (savedUser && savedToken) {
                 console.log('Found saved user session, attempting to restore...');
@@ -2960,8 +2977,8 @@
                     }).catch(error => {
                         console.error('Failed to restore session:', error);
                         // Clear invalid session
-                        localStorage.removeItem('nexariqToken');
-                        localStorage.removeItem('nexariqUser');
+                        localStorage.removeItem('tomoToken');
+                        localStorage.removeItem('tomoUser');
                         state.user = null;
                         state.accessToken = null;
                         state.isGuest = true;
@@ -2970,8 +2987,8 @@
                     });
                 } catch (error) {
                     console.error('Failed to parse saved user:', error);
-                    localStorage.removeItem('nexariqToken');
-                    localStorage.removeItem('nexariqUser');
+                    localStorage.removeItem('tomoToken');
+                    localStorage.removeItem('tomoUser');
                 }
             }
         });
@@ -2986,7 +3003,31 @@
                 const result = await auth.signInWithPopup(provider);
                 
                 console.log('Google sign in successful:', result.user);
-                showToast('Signed in with Google successfully', 'success');
+                
+                // Check if user exists in our database
+                const userDoc = await db.collection('users').doc(result.user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // New user, create account in database
+                    await db.collection('users').doc(result.user.uid).set({
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        displayName: result.user.displayName,
+                        photoURL: result.user.photoURL,
+                        emailVerified: result.user.emailVerified,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showToast('Account created successfully!', 'success');
+                } else {
+                    // Existing user, update last login
+                    await db.collection('users').doc(result.user.uid).update({
+                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showToast('Signed in successfully!', 'success');
+                }
                 
                 // Hide login modal immediately
                 hideLoginModal();
@@ -3006,7 +3047,31 @@
                 const result = await auth.signInWithPopup(provider);
                 
                 console.log('GitHub sign in successful:', result.user);
-                showToast('Signed in with GitHub successfully', 'success');
+                
+                // Check if user exists in our database
+                const userDoc = await db.collection('users').doc(result.user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // New user, create account in database
+                    await db.collection('users').doc(result.user.uid).set({
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        displayName: result.user.displayName,
+                        photoURL: result.user.photoURL,
+                        emailVerified: result.user.emailVerified,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showToast('Account created successfully!', 'success');
+                } else {
+                    // Existing user, update last login
+                    await db.collection('users').doc(result.user.uid).update({
+                        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showToast('Signed in successfully!', 'success');
+                }
                 
                 // Hide login modal immediately
                 hideLoginModal();
@@ -3031,8 +3096,8 @@
                 state.chatHistory = [];
                 
                 // Clear localStorage
-                localStorage.removeItem('nexariqToken');
-                localStorage.removeItem('nexariqUser');
+                localStorage.removeItem('tomoToken');
+                localStorage.removeItem('tomoUser');
                 
                 // Update UI
                 updateUserUI();
@@ -3064,6 +3129,10 @@
                 errorMessage = 'Pop-up was blocked. Please allow pop-ups and try again.';
             } else if (error.code === 'auth/network-request-failed') {
                 errorMessage = 'Network error. Please check your connection.';
+            } else if (error.code === 'auth/user-not-found') {
+                errorMessage = 'User not found. Please register first.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'Invalid email address. Please use a valid email.';
             } else if (error.message) {
                 errorMessage = error.message;
             }
@@ -3092,13 +3161,13 @@
                     try {
                         const token = await user.getIdToken(true);
                         state.accessToken = token;
-                        localStorage.setItem('nexariqToken', token);
+                        localStorage.setItem('tomoToken', token);
                         
                         // Verify token with backend
                         await verifyTokenWithBackend(token);
                         
                         // Save user to localStorage
-                        localStorage.setItem('nexariqUser', JSON.stringify(state.user));
+                        localStorage.setItem('tomoUser', JSON.stringify(state.user));
                         
                         // Update UI
                         updateUserUI();
@@ -3136,8 +3205,8 @@
                     state.isGuest = true;
                     
                     // Clear localStorage
-                    localStorage.removeItem('nexariqToken');
-                    localStorage.removeItem('nexariqUser');
+                    localStorage.removeItem('tomoToken');
+                    localStorage.removeItem('tomoUser');
                     
                     // Update UI
                     updateUserUI();
@@ -3176,40 +3245,73 @@
             }
         }
 
-        // Load chat history from Supabase
+        // Load chat history from Firestore
         async function loadChatHistory() {
-            if (!state.accessToken) return;
+            if (!state.user || !state.user.id) return;
             
             try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.historyEndpoint}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${state.accessToken}`
-                    }
+                console.log('Loading chat history for user:', state.user.id);
+                
+                // Get user's chat sessions from Firestore
+                const chatSessionsQuery = await db.collection('users')
+                    .doc(state.user.id)
+                    .collection('chatSessions')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                if (chatSessionsQuery.empty) {
+                    console.log('No chat history found for user');
+                    return;
+                }
+                
+                // Convert to our format
+                state.chatHistory = [];
+                
+                chatSessionsQuery.forEach(doc => {
+                    const chatData = doc.data();
+                    state.chatHistory.push({
+                        id: doc.id,
+                        title: chatData.title || 'Untitled Chat',
+                        messages: chatData.messages || [],
+                        timestamp: chatData.createdAt?.toDate()?.toISOString() || new Date().toISOString()
+                    });
                 });
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    // Convert to our format
-                    state.chatHistory = data.sessions.map(session => ({
-                        id: session.id,
-                        title: session.title,
-                        messages: session.messages.map(msg => ({
-                            id: msg.id,
-                            role: msg.role,
-                            content: msg.content,
-                            timestamp: msg.created_at
-                        })),
-                        timestamp: session.created_at
-                    }));
-                    
-                    renderChatHistory();
-                } else {
-                    console.error('Failed to load chat history');
-                }
+                console.log('Loaded chat history:', state.chatHistory.length, 'chats');
+                renderChatHistory();
+                
             } catch (error) {
                 console.error('Load chat history error:', error);
+                showToast('Failed to load chat history', 'error');
+            }
+        }
+
+        // Save chat to Firestore
+        async function saveChatToFirestore(chatId, title, messages) {
+            if (!state.user || !state.user.id) return;
+            
+            try {
+                console.log('Saving chat to Firestore:', chatId);
+                
+                const chatData = {
+                    title: title,
+                    messages: messages,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('users')
+                    .doc(state.user.id)
+                    .collection('chatSessions')
+                    .doc(chatId)
+                    .set(chatData);
+                
+                console.log('Chat saved successfully');
+                return true;
+            } catch (error) {
+                console.error('Save chat error:', error);
+                showToast('Failed to save chat', 'error');
+                return false;
             }
         }
 
@@ -3535,6 +3637,11 @@
                 
                 const chatId = generateId();
                 
+                // Save to Firestore if user is logged in
+                if (!state.isGuest && state.user) {
+                    saveChatToFirestore(chatId, title, state.messages);
+                }
+                
                 state.chatHistory.unshift({
                     id: chatId,
                     title,
@@ -3636,60 +3743,55 @@ How can I assist you today? 🤔`;
 
         // Delete chat
         async function deleteChat(chatId) {
-            if (!state.accessToken) {
+            if (!state.user || !state.user.id) {
                 showToast('Please sign in to delete chats', 'warning');
                 return;
             }
             
             try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.historyEndpoint}?sessionId=${chatId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${state.accessToken}`
-                    }
-                });
+                // Delete from Firestore
+                await db.collection('users')
+                    .doc(state.user.id)
+                    .collection('chatSessions')
+                    .doc(chatId)
+                    .delete();
                 
-                if (response.ok) {
-                    // Find the chat index
-                    const chatIndex = state.chatHistory.findIndex(c => c.id === chatId);
-                    if (chatIndex === -1) return;
+                // Find the chat index
+                const chatIndex = state.chatHistory.findIndex(c => c.id === chatId);
+                if (chatIndex === -1) return;
+                
+                // Remove from chat history
+                state.chatHistory.splice(chatIndex, 1);
+                
+                // If we're deleting the current chat, switch to a new one
+                if (state.currentChatId === chatId) {
+                    state.currentChatId = null;
+                    state.messages = [];
                     
-                    // Remove from chat history
-                    state.chatHistory.splice(chatIndex, 1);
-                    
-                    // If we're deleting the current chat, switch to a new one
-                    if (state.currentChatId === chatId) {
-                        state.currentChatId = null;
-                        state.messages = [];
-                        
-                        // Add welcome message
-                        const welcomeMessage = `## Hello! I'm <span class="brand-ai">Tomo AI</span> 🚀
+                    // Add welcome message
+                    const welcomeMessage = `## Hello! I'm <span class="brand-ai">Tomo AI</span> 🚀
 
 I'm your advanced AI learning assistant, powered by cutting-edge language models and developed by the innovative team at <span class="brand-tomo">Tomo Academy</span>.
 
 How can I assist you today? 🤔`;
-                        
-                        state.messages.push({
-                            id: generateId(),
-                            role: 'assistant',
-                            content: welcomeMessage,
-                            timestamp: new Date().toISOString()
-                        });
-                        
-                        renderMessages();
-                    }
                     
-                    // Re-render chat history
-                    renderChatHistory();
+                    state.messages.push({
+                        id: generateId(),
+                        role: 'assistant',
+                        content: welcomeMessage,
+                        timestamp: new Date().toISOString()
+                    });
                     
-                    // Update user stats
-                    updateUserStats();
-                    
-                    showToast('Chat deleted successfully', 'success');
-                } else {
-                    const data = await response.json();
-                    showToast(data.error || 'Failed to delete chat', 'error');
+                    renderMessages();
                 }
+                
+                // Re-render chat history
+                renderChatHistory();
+                
+                // Update user stats
+                updateUserStats();
+                
+                showToast('Chat deleted successfully', 'success');
             } catch (error) {
                 console.error('Delete chat error:', error);
                 showToast('Failed to delete chat', 'error');
@@ -3697,9 +3799,27 @@ How can I assist you today? 🤔`;
         }
 
         // Rename chat
-        function renameChat(chatId, newTitle) {
+        async function renameChat(chatId, newTitle) {
             const chat = state.chatHistory.find(c => c.id === chatId);
             if (!chat) return;
+            
+            // Update title in Firestore
+            if (!state.isGuest && state.user) {
+                try {
+                    await db.collection('users')
+                        .doc(state.user.id)
+                        .collection('chatSessions')
+                        .doc(chatId)
+                        .update({
+                            title: newTitle,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                } catch (error) {
+                    console.error('Update chat title error:', error);
+                    showToast('Failed to rename chat', 'error');
+                    return;
+                }
+            }
             
             // Update title
             chat.title = newTitle;
@@ -4084,6 +4204,19 @@ How can I assist you today? 🤔`;
                 // Save state
                 saveState();
                 
+                // Save chat to Firestore if user is logged in
+                if (!state.isGuest && state.user && state.messages.length > 1) {
+                    const chatId = state.currentChatId || generateId();
+                    const title = state.currentChatTitle || 'New Chat';
+                    
+                    await saveChatToFirestore(chatId, title, state.messages);
+                    
+                    // Update current chat ID if it was just created
+                    if (!state.currentChatId) {
+                        state.currentChatId = chatId;
+                    }
+                }
+                
                 // Update chat history if needed
                 if (!state.currentChatId && state.settings.chatHistory) {
                     loadChatHistory();
@@ -4104,7 +4237,7 @@ How can I assist you today? 🤔`;
                         try {
                             const token = await state.user.getIdToken(true);
                             state.accessToken = token;
-                            localStorage.setItem('nexariqToken', token);
+                            localStorage.setItem('tomoToken', token);
                             showToast('Authentication refreshed. Please try again.', 'info');
                         } catch (tokenError) {
                             console.error('Token refresh error:', tokenError);
@@ -4633,57 +4766,59 @@ How can I assist you today? 🤔`;
 
         // Clear all chats
         async function clearAllChats() {
-            if (!state.accessToken) {
+            if (!state.user || !state.user.id) {
                 showToast('Please sign in to clear chats', 'warning');
                 return;
             }
             
             try {
-                const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.historyEndpoint}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${state.accessToken}`
-                    }
+                // Get all chat sessions for the user
+                const chatSessionsQuery = await db.collection('users')
+                    .doc(state.user.id)
+                    .collection('chatSessions')
+                    .get();
+                
+                // Delete all chat sessions
+                const batch = db.batch();
+                chatSessionsQuery.forEach(doc => {
+                    batch.delete(doc.ref);
                 });
                 
-                if (response.ok) {
-                    // Clear chat history
-                    state.chatHistory = [];
-                    
-                    // Clear current messages
-                    state.messages = [];
-                    state.currentChatId = null;
-                    
-                    // Reset current chat title
-                    state.currentChatTitle = 'New chat';
-                    updateCurrentChatTitle(state.currentChatTitle);
-                    
-                    // Add welcome message
-                    const welcomeMessage = `## Hello! I'm <span class="brand-ai">Tomo AI</span> 🚀
+                await batch.commit();
+                
+                // Clear chat history
+                state.chatHistory = [];
+                
+                // Clear current messages
+                state.messages = [];
+                state.currentChatId = null;
+                
+                // Reset current chat title
+                state.currentChatTitle = 'New chat';
+                updateCurrentChatTitle(state.currentChatTitle);
+                
+                // Add welcome message
+                const welcomeMessage = `## Hello! I'm <span class="brand-ai">Tomo AI</span> 🚀
 
 I'm your advanced AI learning assistant, powered by cutting-edge language models and developed by the innovative team at <span class="brand-tomo">Tomo Academy</span>.
 
 How can I assist you today? 🤔`;
-                    
-                    state.messages.push({
-                        id: generateId(),
-                        role: 'assistant',
-                        content: welcomeMessage,
-                        timestamp: new Date().toISOString()
-                    });
-                    
-                    // Re-render chat history and messages
-                    renderChatHistory();
-                    renderMessages();
-                    
-                    // Update user stats
-                    updateUserStats();
-                    
-                    showToast('All chats cleared successfully', 'success');
-                } else {
-                    const data = await response.json();
-                    showToast(data.error || 'Failed to clear chats', 'error');
-                }
+                
+                state.messages.push({
+                    id: generateId(),
+                    role: 'assistant',
+                    content: welcomeMessage,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Re-render chat history and messages
+                renderChatHistory();
+                renderMessages();
+                
+                // Update user stats
+                updateUserStats();
+                
+                showToast('All chats cleared successfully', 'success');
             } catch (error) {
                 console.error('Clear chats error:', error);
                 showToast('Failed to clear chats', 'error');
@@ -4944,7 +5079,7 @@ How can I assist you today? 🤔`;
         // Load state from localStorage
         function loadState() {
             try {
-                const savedState = localStorage.getItem('nexariqState');
+                const savedState = localStorage.getItem('tomoState');
                 if (savedState) {
                     const parsedState = JSON.parse(savedState);
                     state.messages = parsedState.messages || [];
@@ -4987,7 +5122,7 @@ How can I assist you today? 🤔`;
                     currentChatId: state.currentChatId,
                     currentChatTitle: state.currentChatTitle
                 };
-                localStorage.setItem('nexariqState', JSON.stringify(stateToSave));
+                localStorage.setItem('tomoState', JSON.stringify(stateToSave));
             } catch (error) {
                 console.error('Error saving state:', error);
             }
